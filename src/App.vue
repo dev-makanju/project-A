@@ -1,20 +1,14 @@
 <template>
-  <c-box>
-    <c-button>
-      Chakra Consumed! ⚡️
-    </c-button>
-  </c-box>
+  <div class="container">
+      <router-view></router-view>
+  </div>
 </template>
 
 <script lang="js">
 
-import { CBox , CButton } from '@chakra-ui/vue'
-
 export default {
   name: 'App',
-  components: {
-    CBox,
-    CButton
-  }
 }
+
 </script>
+
