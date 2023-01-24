@@ -4,12 +4,7 @@
          <c-box dispaly="flex">
             <c-box mb="1.5rem" display='flex' gap="10px" align-items="center">
                <c-box>
-                  <c-image 
-                     objectFit="cover"
-                     :src="require('../../assets/icons/logoIcon.png')"
-                     fallback-src="https://via.placeholder.com/40"  
-                     alt="logo" 
-                  />
+                  <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
                </c-box>
                <c-heading color="white" fontSize="20px">
                   ProtektMe
@@ -152,7 +147,7 @@
 </template>
 
 <script>
-   import { CHeading, CImage , CFlex , CBox , CText , CLink } from "@chakra-ui/vue";
+   import { CHeading, CFlex , CBox , CText , CLink } from "@chakra-ui/vue";
 
    export default {
       name:'BaseFooter',
@@ -161,7 +156,6 @@
          CBox,
          CText,
          CHeading,
-         CImage,
          CLink,
       }
    }

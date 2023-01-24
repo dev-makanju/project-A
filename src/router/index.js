@@ -12,11 +12,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView,
-  },
-  {
     
     path:'/sign-up',
     name: 'sign-up',
@@ -38,6 +33,11 @@ const routes = [
     name:'main-forum',
     component: PageShell,
     children:[
+      {
+        path: '/',
+        name: 'home',
+        component: HomeView,
+      },
       {
         path:'forum',
         name:'forum',

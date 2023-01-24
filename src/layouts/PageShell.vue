@@ -30,10 +30,18 @@
 </script>
 
 <style lang="scss">
+   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&family=Roboto&display=swap');
+
    *{
       padding: 0px;
       margin: 0px;
       box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+   }
+
+   body {
+      font-family: 'Roboto', sans-serif;
+
    }
 
    .main-container {

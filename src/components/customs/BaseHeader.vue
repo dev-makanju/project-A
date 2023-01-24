@@ -1,27 +1,23 @@
 <template>
-   <c-box padding="1rem" bgColor="#006BBB" width="100%">   
+   <c-box padding="1rem" :bgColor="[ isIndexPage ? '#FFFFFF' : '#006BBB']" width="100%" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)">   
       <c-flex :width="{ base:'90%', md: '80%' }" m="auto" 
-      :flex-wrap="{ base:'wrap' , lg:'nowrap'}" 
-      gap="2.5rem" 
-      justify-content="space-between"
-      align-items="center"
+         :flex-wrap="{ base:'wrap' , lg:'nowrap'}" 
+         :gap="{base:'0px' , lg:'2.5rem'}" 
+         justify-content="space-between"
+         align-items="center"
       >
          <c-box dispaly="flex">
             <c-box display='flex' gap="10px" align-items="center">
                <c-box>
-                  <c-image 
-                     objectFit="cover"
-                     :src="require('../../assets/icons/logoIcon.png')"
-                     fallback-src="https://via.placeholder.com/40"  
-                     alt="logo" 
-                  />
+                  <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
                </c-box>
                <c-heading color="white" fontSize="20px">
                   ProtektMe
                </c-heading>
             </c-box>
          </c-box>
-         <c-box dispaly="flex">
+         <template v-if="!isIndexPage">
+            <c-box :display="{base: 'none' , lg: 'flex' }" v-if="isLoggedIn">
             <c-box display='flex' gap="10px" align-items="center">
                <ul class="nav-link">
                   <li>
@@ -35,30 +31,72 @@
                   </li>
                </ul>
             </c-box>
-         </c-box>
-         <c-box display="flex" gap="1rem">
+            </c-box>
+            <c-box :display="{base: 'none' , lg: 'flex' }" gap="1rem">
+               <c-box>   
+                  <c-input-group>
+                     <c-input-left-element><c-icon name="search" color="gray.300" /></c-input-left-element>
+                     <c-input type="text" placeholder="search..."/>
+                  </c-input-group>
+               </c-box>
+               <c-box display='flex' gap="10px" align-items="center" v-if="isLoggedIn">
+                  <c-text color="white" fontSize="14px" font-weight="400">
+                     Timothy A.
+                  </c-text>
+                  <c-icon name="chevron-down" color="#ffffff" cursor="pointer"/>
+                  <c-box>
+                     <c-image
+                        border-radius="50%" 
+                        objectFit="cover"
+                        :src="require('../../assets/icons/logoIcon.png')"
+                        fallback-src="https://via.placeholder.com/40"  
+                        alt="logo" 
+                     />
+                  </c-box>
+               </c-box>
+            </c-box>
+            <!-- hamburger link -->
+            <c-box :display="{base: 'flex' , lg: 'none' }">
+               <div>
+                  <c-box @click="isOpen=true" cursor="pointer" display="flex" gap="3px" flex-direction="column">
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
+                  </c-box>
+                  <c-drawer :placement="placement" :on-close="close" :isOpen="isOpen">
+                     <c-drawer-overlay :display="{base: 'flex' , lg: 'none' }"/>
+                     <c-drawer-content max-width="290px" :display="{base: 'flex' , lg: 'none' }">
+                        <c-drawer-header borderBottomWidth="1px"></c-drawer-header>
+                           <c-drawer-body display="flex" flex-direction="column">
+                              <c-breadcrumb-item padding="1rem 0px">
+                                 <c-breadcrumb-link as="router-link" class="link" @click.prevent="closeNav" color="#006BBB" to="/">Home</c-breadcrumb-link>
+                              </c-breadcrumb-item>
+                              <c-breadcrumb-item padding="1rem 0px">
+                                 <c-breadcrumb-link as="router-link" class="link" @click.prevent="closeNav" color="#006BBB" to="/topics">Topis</c-breadcrumb-link>
+                              </c-breadcrumb-item>
+                              <c-breadcrumb-item padding="1rem 0px">
+                                 <c-breadcrumb-link as="router-link" class="link" color="#006BBB" @click.prevent="closeNav" to="/discussion">Discussion</c-breadcrumb-link>
+                              </c-breadcrumb-item>
+                           </c-drawer-body>
+                        </c-drawer-content>
+                  </c-drawer>
+               </div>
+            </c-box>
+         </template>
+         <template v-if="isIndexPage">
             <c-box>   
-               <c-input-group>
+               <c-input-group :display="{base:'none' , lg:'flex'}">
                   <c-input-left-element><c-icon name="search" color="gray.300" /></c-input-left-element>
                   <c-input type="text" placeholder="search..."/>
                </c-input-group>
             </c-box>
-            <c-box display='flex' gap="10px" align-items="center">
-               <c-text color="white" fontSize="14px" font-weight="400">
-                  Timothy A.
-               </c-text>
-               <c-icon name="chevron-down" color="#ffffff" cursor="pointer"/>
-               <c-box>
-                  <c-image
-                     border-radius="50%" 
-                     objectFit="cover"
-                     :src="require('../../assets/icons/logoIcon.png')"
-                     fallback-src="https://via.placeholder.com/40"  
-                     alt="logo" 
-                  />
+            <c-box display="flex" gap="10px">
+               <c-box :display="{base:'none' , lg:'flex'}">
+                  <router-link class="btn__lin__nav" :to="{name:'sign-up'}">Sign Up</router-link>
                </c-box>
+               <router-link class="btn__lin__nav active" :to="{name:'sign-in'}">Sign In</router-link>
             </c-box>
-         </c-box>
+         </template>
       </c-flex>
    </c-box>
 </template>
@@ -74,11 +112,19 @@
       CInputGroup,
       CInputLeftElement,
       CInput,
+      CDrawerBody,
+      CDrawerContent,
+      CDrawerHeader,
+      CDrawerOverlay,
+      CDrawer,
+      CBreadcrumbItem,
+      CBreadcrumbLink,
    } from "@chakra-ui/vue";
 
    export default {
       name:'BaseHeader',
       components: {
+         CDrawer,
          CFlex,
          CBox,
          CHeading,
@@ -88,11 +134,53 @@
          CInputGroup,
          CInputLeftElement,
          CInput,
+         CDrawerBody,
+         CDrawerContent,
+         CDrawerHeader,
+         CDrawerOverlay,
+         CBreadcrumbItem,
+         CBreadcrumbLink,
+      },
+      data(){
+         return {
+            isLoggedIn: true,
+            isIndexPage: false,
+            isOpen: false,
+            placement: 'left'
+         }
+      },
+      mounted(){
+         this.isLandingPage()
+      },
+      methods: {
+         setPlacement(value) {
+            this.placement = value
+         },
+         close () {
+            this.isOpen = false
+            console.log('hello')
+         },
+         closeNav(){
+            this.isOpen = false
+            console.log('hello')
+         },
+         isLandingPage(){
+            if(this.$route.name === 'home'){
+               this.isIndexPage = true
+            }else{
+               this.isIndexPage = false
+            }
+         },
+      },
+      watch:{
+         $route(){
+            this.isLandingPage()
+         }
       }
    }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
    .nav-link {
       display: flex;
 
@@ -110,5 +198,20 @@
    .link {
       color: white;
       text-decoration: none;
+   }
+
+   .btn__lin__nav {
+      padding: 5px 1rem;
+      color: blue;
+      text-decoration: none;
+      font-weight: 400;
+      letter-spacing: .5px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0 , 0 , 0 , .1);
+
+      &.active {
+         background: blue;
+         color: #fff;
+      }
    }
 </style>
