@@ -3,9 +3,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Chakra, { CThemeProvider } from '@chakra-ui/vue';
+import scrollAnimation from './directives/scrollAnimation';
 
 Vue.config.productionTip = false
-Vue.use(Chakra)
+Vue.use(Chakra);
+Vue.directive('scrollanimation' , scrollAnimation);
 
 new Vue({
   router,
