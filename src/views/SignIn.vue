@@ -5,13 +5,13 @@
             <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
             <c-heading font-size="30px" color="rgba(0, 0, 0, 0.8)" padding="20px 30px">Sign In</c-heading>
             <form class="form">
-               <div class="form__control">
+               <div :class="[ 'form__control' , emailError && 'is-error']">
                   <label for="">Email</label>
-                  <input type="text" placeholder="Enter your email" required>
+                  <input type="text" v-model="email" placeholder="Enter your email" required>
                </div>
-                  <div class="form__control">
+                  <div :class="[ 'form__control' , passwordError && 'is-error']">
                   <label for="">Password</label>
-                  <input type="password" placeholder="Enter your password" required>
+                  <input type="password" v-model="password" placeholder="Enter your password" required>
                </div>
                <div class="form__control__check">
                   <input type="checkbox">
@@ -19,7 +19,7 @@
                </div>
                
                <c-box mt="2rem">
-                  <c-button w="full" variant-color="blue" size="md" border="none">Sign In</c-button>
+                  <c-button @click="loginUser" w="full" variant-color="blue" size="md" border="none">Sign In</c-button>
                </c-box>
 
                <c-box mt="1.5rem" display="flex" justify-content="center" align-items="center">
@@ -42,6 +42,7 @@
 <script>
 
 import { CFlex , CBox , CHeading , CButton  } from "@chakra-ui/vue";
+import { mapActions } from 'vuex'
 
 export default {
    name:'SignIn',
@@ -50,8 +51,58 @@ export default {
       CBox,
       CHeading,
       CButton,
+   },
+   data(){
+      return {
+         email: '',
+         password: '',
+         emailError: false,
+         passwordError: false,
+         error: null,
+         success: null,
+         isEmailInput: null,
+         isPasswordInput:null,
+         loading:null,
+         modalMessage:'',
+         messageInfo:''
+      }
+   },
+   methods: {
+      ...mapActions(['userLogin']),
+      validate(){
+         this.emailError = this.email === ''
+         this.passwordError = this.password === ''
+      },
+      loginUser(){
+         if(this.email === '' || this.password === ''){
+            this.validate();
+         }else{
+            let input =  {
+              email: this.email,
+              password: this.password,
+            }
+            this.userLogin(input).then( res => {
+               if(res.status === 200){
+                  this.loading = false;
+                  if(this.$store.state.auth.role === 'ADMIN'){
+                        this.$router.push('/dashboard');
+                  }this.$router.push({name:'MarketPlace'});
+               }else{
+                  this.loading = false;
+                  this.error = true;
+                  this.messageInfo = res.data.error.message
+               }
+            }).catch(err => {
+               this.loading = false;
+               this.error = true;
+               this.messageInfo = 'Oops!! , Try again'
+               console.log(err);
+            });
+         }
+      }
    }
 }
+
 </script>
 
 <style lang="scss">
@@ -104,5 +155,9 @@ export default {
 
    .logo {
       width: 70px;
+   }
+
+   .is-error input{
+      border-bottom: 1px solid red !important ;
    }
 </style>

@@ -7,6 +7,7 @@ import ForumView from '@/views/ForumView';
 import DiscussionView from '@/views/DiscussionView';
 import TopicView from '@/views/TopicView';
 import PageShell from '@/layouts/PageShell';
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -37,13 +38,15 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView,
+        requiresAuth: false,
       },
       {
         path:'forum',
         name:'forum',
         component: ForumView,
         meta: {
-          title: 'Forum'
+          title: 'Forum',
+          requiresAuth: true,
         }
       },
       {
@@ -51,7 +54,8 @@ const routes = [
         name:'discussion',
         component: DiscussionView,
         meta: {
-          title: 'Discussion'
+          title: 'Discussion',
+          requiresAuth: true,
         }
       },
       {
@@ -59,7 +63,8 @@ const routes = [
         name:'topics',
         component: TopicView,
         meta: {
-          title: 'Topic'
+          title: 'Topic',
+          requiresAuth: true,
         }
       }
     ]
@@ -71,5 +76,17 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to , from , next) => {
+    const user = store.getters.isLoggedIn;
+    if(to.matched.some(res => res.meta.requiresAuth)){
+      if(user){
+        return next();
+      }return next({name:'sign-in'});
+    }else{
+      return next();
+    }
+});
+
 
 export default router
