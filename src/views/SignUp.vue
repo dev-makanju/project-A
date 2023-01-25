@@ -5,7 +5,7 @@
       </c-box>
       <c-box flex="1" display="flex" justify-content="center" mt="1rem">
          <c-box w="400px">
-            <c-box display="flex" align-items="center" justify-content="space-between">  
+            <c-box display="flex" ml="1rem" mr="1rem" align-items="center" justify-content="space-between">  
                <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
                <p class="back" @click="$router.go(-1)" cursor="pointer">back</p>
             </c-box>

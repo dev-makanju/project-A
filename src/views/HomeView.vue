@@ -79,11 +79,11 @@ export default {
 
       & h2 {
          margin: 1rem;
-         font-size: 34px;
+         font-size: 28px;
       }
 
       & p {
-         font-size: 22px;
+         font-size: 20px;
       }
 
       &.before-enter{
@@ -154,13 +154,14 @@ export default {
          position: absolute;
          bottom: -50%;
          right: 0;
+
          
          @media (max-width: 768px) {
-            bottom: -45%;
+            bottom: -55%;
          }
 
-         @media (max-width: 450px) {
-            bottom: -35%;
+         @media (max-width: 350px) {
+            bottom: 20%;
          }
 
       }
@@ -173,13 +174,13 @@ export default {
 
       h1{
          padding: 2rem 0;
-         font-size: 64px;
+         font-size: 34px;
          color: #fff;
          font-weight: 600;
       }
 
       p {
-         font-size: 20px;
+         font-size: 18px;
          color: #fff;
       }
    }
