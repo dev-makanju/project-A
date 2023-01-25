@@ -1,5 +1,5 @@
 import axios from 'axios'
-import eventService from '../../Events/EventService'
+import eventService from '../../events/eventService';
 import router from '../../router'
 
 const state = {

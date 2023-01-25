@@ -22,7 +22,10 @@
                </div>
                
                <c-box mt="2rem">
-                  <c-button @click="loginUser" w="full" variant-color="blue" size="md" border="none">Sign In</c-button>
+                  <c-button @click="loginUser" w="full" variant-color="blue" size="md" border="none"
+                     :is-loading="loading"
+                     loading-text="signing in"
+                  >Sign In</c-button>
                </c-box>
 
                <c-box mt="1.5rem" display="flex" justify-content="center" align-items="center">
@@ -61,13 +64,13 @@ export default {
          password: '',
          emailError: false,
          passwordError: false,
-         error: null,
          success: null,
          isEmailInput: null,
          isPasswordInput:null,
          loading:null,
          modalMessage:'',
-         messageInfo:''
+         messageInfo:'',
+         statusInfo: '',
       }
    },
    methods: {
@@ -76,28 +79,35 @@ export default {
          this.emailError = this.email === ''
          this.passwordError = this.password === ''
       },
+       showToast() {
+         this.$toast({
+            title: 'Account created.',
+            description: this.messageInfo,
+            status: this.statusInfo,
+            duration: 10000,
+         })
+      },
       loginUser(){
          if(this.email === '' || this.password === ''){
             this.validate();
          }else{
-            let input =  {
+            let input = {
               email: this.email,
               password: this.password,
             }
+            this.loading = true;
             this.userLogin(input).then( res => {
                if(res.status === 200){
                   this.loading = false;
-                  if(this.$store.state.auth.role === 'ADMIN'){
-                        this.$router.push('/dashboard');
-                  }this.$router.push({name:'MarketPlace'});
-               }else{
+                  this.$router.push('/topics');
+               }else {
+                  this.statusInfo = 'error',
                   this.loading = false;
-                  this.error = true;
                   this.messageInfo = res.data.error.message
                }
             }).catch(err => {
                this.loading = false;
-               this.error = true;
+               this.statusInfo = 'error',
                this.messageInfo = 'Oops!! , Try again'
                console.log(err);
             });
