@@ -6,6 +6,7 @@ import HomeView from '@/views/HomeView';
 import ForumView from '@/views/ForumView';
 import DiscussionView from '@/views/DiscussionView';
 import TopicView from '@/views/TopicView';
+import NotFound from '../views/NotFound.vue';
 import PageShell from '@/layouts/PageShell';
 import store from '../store'
 
@@ -66,9 +67,17 @@ const routes = [
           title: 'Topic',
           requiresAuth: true,
         }
-      }
+      },
     ]
   },
+  {
+    path: '/:catchAll(.*)*',
+    name: 'error',
+    component: NotFound,
+    meta:{
+        title:'404-notfound'
+    }
+  }
 ]
 
 const router = new VueRouter({

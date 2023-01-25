@@ -2,7 +2,10 @@
    <c-flex width="100%" flex-direction="rows" h="100vh">
       <c-box flex="1" display="flex" justify-content="center" mt="1rem">
          <c-box w="400px">
-            <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
+            <c-box display="flex" align-items="center" justify-content="space-between">  
+               <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
+               <p class="back" @click="$router.go(-1)" cursor="pointer">back</p>
+            </c-box>
             <c-heading font-size="30px" color="rgba(0, 0, 0, 0.8)" padding="20px 30px">Sign In</c-heading>
             <form class="form">
                <div :class="[ 'form__control' , emailError && 'is-error']">
