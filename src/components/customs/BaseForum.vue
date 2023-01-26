@@ -1,6 +1,6 @@
 <template>
    <c-box 
-      width="300px"
+      :width="{ base:'100%', md:'300px'}"
       border-width="1px" 
       rounded="lg" 
       border="1px solid #eeeeee"
@@ -14,7 +14,7 @@
                <img class="forum__thumbnail" src="" onerror="this.style.display='none'">
             </c-box>
          </c-box>
-         <c-box display="flex" border-bottom="1px solid #eee" gap=".4rem" pb="10px">
+         <c-box display="flex" justify-content="space-between" w="full" border-bottom="1px solid #eee" gap=".4rem" pb="10px">
             <c-box>
                <c-heading color="#555555" font-size="16px">MacroEconomics</c-heading>
                <c-text font-size="12px" color="#555555" opacity=".5">94.6 followers/ 34 active daily post / 20k menbers engagement</c-text>

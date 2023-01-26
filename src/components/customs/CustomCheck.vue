@@ -36,12 +36,11 @@
       position: relative;
       padding-left: 35px;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 18px;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      font-size: 18px;
    }
 
    /* Hide the browser's default checkbox */

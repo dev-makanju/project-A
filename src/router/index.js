@@ -47,7 +47,7 @@ const routes = [
         component: ForumView,
         meta: {
           title: 'Forum',
-          requiresAuth: true,
+          requiresAuth: false,
         }
       },
       {
@@ -56,7 +56,7 @@ const routes = [
         component: DiscussionView,
         meta: {
           title: 'Discussion',
-          requiresAuth: true,
+          requiresAuth: false,
         }
       },
       {
@@ -65,7 +65,7 @@ const routes = [
         component: TopicView,
         meta: {
           title: 'Topic',
-          requiresAuth: true,
+          requiresAuth: false,
         }
       },
     ]

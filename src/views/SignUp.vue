@@ -1,9 +1,9 @@
 <template>
    <c-flex width="100%" flex-direction="rows" h="100vh">
-      <c-box  flex="1" bgColor="#006BBB" :display="{base:'none', md:'flex'}" justify-content="center" align-items="center">
+      <c-box flex="1" bgColor="#006BBB" :display="{base:'none', md:'flex'}" justify-content="center" align-items="center">
          <img class="form__iamge" src="../assets/sponsor/form2.svg" onerror="this.style.display='none'">   
       </c-box>
-      <c-box flex="1" display="flex" justify-content="center" mt="1rem">
+      <c-box flex="1" display="flex" justify-content="center" mt="1rem" overflow-y="auto">
          <c-box w="400px">
             <c-box display="flex" ml="1rem" mr="1rem" align-items="center" justify-content="space-between">  
                <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
@@ -11,21 +11,36 @@
             </c-box>
             <c-heading font-size="30px" color="rgba(0, 0, 0, 0.8)" padding="20px 30px">Sign Up</c-heading>
             <form class="form">
-               <div class="form__control">
+               <div :class="[ 'form__control' , firstNameError && 'is-error']">
+                  <label for="">Firstname</label>
+                  <input type="text" v-model="firstname" placeholder="Enter your firstname" required>
+               </div>
+               <div :class="[ 'form__control' , lastNameError && 'is-error']">
+                  <label for="">Lastname</label>
+                  <input type="text" v-model="lastname" placeholder="Enter your lastname" required>
+               </div>
+               <div :class="[ 'form__control' , occupationError && 'is-error']">
+                  <label for="">Occupation</label>
+                  <input type="text" v-model="occupation" placeholder="Enter your occupation" required>
+               </div>
+               <div :class="[ 'form__control' , emailError && 'is-error']">
                   <label for="">Email</label>
-                  <input type="text" placeholder="Enter your email" required>
+                  <input type="text" v-model="email" placeholder="Enter your email" required>
                </div>
-               <div class="form__control">
+               <div :class="[ 'form__control' , passwordError && 'is-error']">
                   <label for="">Password</label>
-                  <input type="password" placeholder="Enter your password" required>
+                  <input type="password" v-model="password" placeholder="Enter your password" required>
                </div>
-               <div class="form__control">
+               <div :class="[ 'form__control' , confirmError && 'is-error']">
                   <label for="">Confirm Password</label>
-                  <input type="password" placeholder="Confirm your password" required>
+                  <input type="password" v-model="confirmPass" placeholder="Confirm your password" required>
                </div>
                
                <c-box mt="2rem">
-                  <c-button w="full" variant-color="blue" size="md" border="none">Sign Up</c-button>
+                  <c-button @click="registerUser" w="full" variant-color="blue" size="md" border="none"
+                  :is-loading="loading"
+                  loading-text="signing up"
+                  >Sign Up</c-button>
                </c-box>
 
                <c-box mt="1.5rem" display="flex" justify-content="center" align-items="center">
@@ -45,6 +60,7 @@
 <script>
 
 import { CFlex , CBox , CHeading , CButton  } from "@chakra-ui/vue";
+import { mapActions } from 'vuex'
 
 export default {
    name:'SignIn',
@@ -53,6 +69,96 @@ export default {
       CBox,
       CHeading,
       CButton,
+   },
+   data(){
+      return {
+         firstname: '',
+         lastname: '',
+         occupation: '',
+         email: '',
+         password: '',
+         confirmPass:'',
+         emailError: false,
+         passwordError: false,
+         confirmError: false ,
+         firstNameError: false,
+         lastNameError: false,
+         occupationError: false,
+         success: null,
+         isEmailInput: null,
+         isPasswordInput:null,
+         loading:null,
+         modalMessage:'',
+         messageInfo:'',
+         statusInfo: '',
+         toastTitle:'',
+      }
+   },
+    methods: {
+      ...mapActions(['userSignUp']),
+      validate(){
+         this.emailError = this.email === '';
+         this.passwordError = this.password === '';
+         this.confirmError = this.confirmPass === '';
+         this.firstNameError = this.firstname === '';
+         this.lastNameError = this.lastname === '';
+         this.occupationError = this.occupation === '';
+         this.confirmError = this.password !== this.confirmPass;
+      },
+       showToast() {
+         this.$toast({
+            title: this.toastTitle,
+            description: this.messageInfo,
+            status: this.statusInfo,
+            duration: 10000,
+         })
+      },
+      registerUser(){
+         if(
+            this.email === '' || 
+            this.password === '' || 
+            this.confirmPass === '' ||
+            this.firstname === '' ||
+            this.lastname === '' ||
+            this.occupation === '' ||
+            this.password !== this.confirmPass
+         ){
+            this.validate();
+         }else{
+            let input = {
+              email: this.email,
+              password: this.password,
+              firstname : this.firstname,
+              lastname: this.lastname,
+              occupation: this.occupation,
+              confirmpassword: this.confirmPass,
+            }
+            this.loading = true;
+            this.userSignUp(input).then( res => {
+               if(res.status === 201){
+                  this.loading = false;
+                  this.statusInfo = 'success';
+                  this.toastTitle = 'Account created!'
+                  console.log(res.data)
+                  this.messageInfo = res.data.message
+                  this.showToast()
+                  this.$router.push('/sign-in');
+               }else {
+                  this.statusInfo = 'error';
+                  this.toastTitle = 'Error!'
+                  this.loading = false;
+                  console.log(res.data.message)
+                  this.messageInfo = res.data.message
+                  this.showToast()
+               }
+            }).catch(err => {
+               this.loading = false;
+               this.statusInfo = 'error';
+               this.messageInfo = 'Oops!! , Try again'
+               console.log(err);
+            });
+         }
+      }
    }
 }
 </script>

@@ -68,6 +68,7 @@ export default {
          isEmailInput: null,
          isPasswordInput:null,
          loading:null,
+         toastTitle: '',
          modalMessage:'',
          messageInfo:'',
          statusInfo: '',
@@ -81,7 +82,7 @@ export default {
       },
        showToast() {
          this.$toast({
-            title: 'Account created.',
+            title: this.toastTitle,
             description: this.messageInfo,
             status: this.statusInfo,
             duration: 10000,
@@ -97,18 +98,24 @@ export default {
             }
             this.loading = true;
             this.userLogin(input).then( res => {
+               console.log(res)
                if(res.status === 200){
                   this.loading = false;
                   this.$router.push('/topics');
                }else {
-                  this.statusInfo = 'error',
+                  this.toastTitle = 'Error!'
+                  this.statusInfo = 'error';
                   this.loading = false;
+                  console.log(res.data.error.message)
                   this.messageInfo = res.data.error.message
+                  this.showToast()
                }
             }).catch(err => {
+               this.toastTitle = 'An Error occured!'
                this.loading = false;
-               this.statusInfo = 'error',
-               this.messageInfo = 'Oops!! , Try again'
+               this.statusInfo = 'error';
+               this.messageInfo = 'please try again'
+               this.showToast()
                console.log(err);
             });
          }

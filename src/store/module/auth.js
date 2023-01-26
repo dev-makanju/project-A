@@ -40,6 +40,7 @@ const actions = {
       try{ 
          commit('STATUS') 
          const response = await eventService.loginEvent(data)
+         console.log(response);
          if(response.status){
             const token = response.data.token;
             localStorage.setItem("mastertoken" , token);
