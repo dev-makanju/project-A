@@ -3,7 +3,7 @@
       <div class="main-container">
          <BaseHeader/>
          <Basebanner/>
-         <main>
+         <main class="main_width">
             <router-view></router-view>
          </main>
       </div>
@@ -46,6 +46,11 @@
 
    .main-container {
       min-height: 100vh;
+   }
+
+   .main_width{
+      max-width: 1440px;
+      margin: 0px auto;
    }
 
 </style>

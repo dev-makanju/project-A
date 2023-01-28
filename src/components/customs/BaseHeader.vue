@@ -5,6 +5,7 @@
          :gap="{base:'0px' , lg:'2.5rem'}" 
          justify-content="space-between"
          align-items="center"
+         max-width="1440px"
       >
          <c-box dispaly="flex">
             <c-box display='flex' gap="10px" align-items="center">

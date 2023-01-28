@@ -46,6 +46,8 @@ export default {
       align-items: center;
       flex-direction: column;
       gap: 3rem;
+      max-width: 1440px;
+      margin: 0px auto;
 
       & h2 {
          color: #006BBB;
