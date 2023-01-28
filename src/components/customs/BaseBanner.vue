@@ -3,8 +3,8 @@
       <div :class="['main-banner', this.$route.name === 'home' && 'add-padding']">
          <div v-if="this.$route.name !== 'home'" class="banner-container">
             <div class="banner-wrapper">
-               <h1>Welcome</h1>
-               <p>to our</p>
+               <h1 v-scrollanimation class="big-text">Welcome</h1>
+               <p v-scrollanimation class="big-text">to our</p>
                <span class="small-image-holder">
                   <img src="../../assets/NameLogo.svg">
                </span>
@@ -24,7 +24,7 @@
          <c-box mt="3rem 0px">
             <div v-if="this.$route.name === 'home'" class="banner-wrapper_main">
                <div class="main_vee">
-                  <h1>Welcome to our community</h1>
+                  <h1 v-scrollanimation class="big-text">Welcome to our community</h1>
                   <p>We Aim to help reduce the risk of data using Social Media</p>
                   
                   <router-link class="next-link" to="/sign-up">Join Us</router-link>
@@ -100,12 +100,13 @@
 </template>
 <script>
 
-import { CText } from '@chakra-ui/vue';
+import { CText , CBox } from '@chakra-ui/vue';
 
 export default {
    name:'BaseBanner',
    components: {
       CText,
+      CBox
    },
    data(){
       return {
@@ -208,6 +209,7 @@ export default {
       margin:0px auto;
       display: flex;
       height: 400px;
+      max-width: 1440px;
    }
 
    .next-link{
@@ -316,4 +318,17 @@ export default {
    .add-padding {
       padding: 2rem 0px;
    }
+
+   .big-text {
+      &.before-enter{
+         opacity: 0;
+         transform: translateY(12px);
+         transition: 1s ease-in-out all; 
+      }
+      &.enter{
+         opacity: 1;
+         transform: translateY(0px);
+      }
+   }
+
 </style>

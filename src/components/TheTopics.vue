@@ -6,6 +6,7 @@
       gap="4"
       mt="2rem"
       mb="6rem"
+      max-width="1440px"
       >
          <c-grid-item :display="{ base:'none' , xl:'block' }">
             <Basefilter/>

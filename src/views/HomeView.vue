@@ -47,19 +47,21 @@
             </div>
          </div>
       </div>
-      <section class="about-section">
-         <div class="about-text-input">
-            <h1>About Us</h1>
-            <p>
-               Lorem ipsum dolor sit amet consectetur. Erat mollis sapien aliquet a bibendum sem augue quisque aliquam. Tristique maecenas diam scelerisque non. Pellentesque sollicitudin integer pharetra donec faucibus risus. Imperdiet blandit arcu malesuada felis dignissim egestas nisi. Suscipit diam pellentesque consectetur quis. Lectus habitant quam lacus sociis malesuada sit. Massa turpis vitae et amet a convallis posuere. Feugiat venenatis dignissim pharetra euismod. Nisi dui id ultricies pharetra. Euismod egestas arcu enim donec sed at vestibulum enim adipiscing. Cras tellus sed aliquam at in mattis aliquet. Lobortis tellus scelerisque magnis elit vitae.
-               Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. 
-            </p>
-            <div v-scrollanimation class="btn">Learn More</div>
-         </div>
-         <div class="about__img">
-            <img src="../assets/about.svg" onerror="this.style.display='none'">
-         </div>
-      </section>
+      <div class="about">
+         <section class="about-section">
+            <div class="about-text-input">
+               <h1>About Us</h1>
+               <p>
+                  Lorem ipsum dolor sit amet consectetur. Erat mollis sapien aliquet a bibendum sem augue quisque aliquam. Tristique maecenas diam scelerisque non. Pellentesque sollicitudin integer pharetra donec faucibus risus. Imperdiet blandit arcu malesuada felis dignissim egestas nisi. Suscipit diam pellentesque consectetur quis. Lectus habitant quam lacus sociis malesuada sit. Massa turpis vitae et amet a convallis posuere. Feugiat venenatis dignissim pharetra euismod. Nisi dui id ultricies pharetra. Euismod egestas arcu enim donec sed at vestibulum enim adipiscing. Cras tellus sed aliquam at in mattis aliquet. Lobortis tellus scelerisque magnis elit vitae.
+                  Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. 
+               </p>
+               <div v-scrollanimation class="btn">Learn More</div>
+            </div>
+            <div class="about__img">
+               <img src="../assets/about.svg" onerror="this.style.display='none'">
+            </div>
+         </section>
+      </div>
    </div>
 </template>
 
@@ -103,6 +105,7 @@ export default {
       width: 80%;
       margin: 0px auto;
       margin-top: 4rem;
+      max-width: 1440px;
 
       &__child{
          display: flex;
@@ -140,12 +143,17 @@ export default {
       }
    }
 
-   .about-section {
+   .about {
       background: #006BBB;
       margin-top: 4rem;
+   }
+
+   .about-section {
       overflow: hidden;
       position: relative;
-      height: 100vh;
+      height: 650px;
+      max-width: 1440px;
+      margin: 0px auto;
 
       @media (max-width: 768px) {
          height: 120vh;
@@ -159,7 +167,7 @@ export default {
 
          
          @media (max-width: 768px) {
-            bottom: -55%;
+            bottom: -38%;
          }
 
          @media (max-width: 350px) {

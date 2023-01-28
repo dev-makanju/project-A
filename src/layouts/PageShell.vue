@@ -48,9 +48,5 @@
       min-height: 100vh;
    }
 
-   .main_width{
-      max-width: 1440px;
-      margin: 0px auto;
-   }
 
 </style>
