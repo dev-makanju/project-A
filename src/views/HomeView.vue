@@ -6,7 +6,7 @@
                <img src="../assets/group3.svg" onerror="this.style.display='none'">
             </div>
             <div v-scrollanimation class="text__holder">
-               <h2>Learning from the Best</h2>
+               <h2 class="orange">Learning from the Best</h2>
                <p>
                   Lorem ipsum dolor sit amet consectetur. Erat mollis sapien aliquet a bibendum sem augue quisque aliquam. Tristique maecenas diam scelerisque non. Pellentesque sollicitudin integer pharetra donec faucibus risus. Imperdiet blandit arcu malesuada felis dignissim egestas nisi. Suscipit diam pellentesque consectetur quis. Lectus habitant quam lacus sociis malesuada sit. Massa turpis vitae et amet a convallis posuere. Feugiat venenatis dignissim pharetra euismod. Nisi dui id ultricies pharetra. Euismod egestas arcu enim donec sed at vestibulum enim adipiscing. Cras tellus sed aliquam at in mattis aliquet. Lobortis tellus scelerisque magnis elit vitae.
                </p>
@@ -14,7 +14,7 @@
          </div>
          <div class="home__child">
             <div v-scrollanimation class="text__holder">
-               <h2>Favorite Topic</h2>
+               <h2 class="blue">Favorite Topic</h2>
                <p>
                   Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. In malesuada laoreet id porttitor augue amet nec praesent. Aliquam nunc dui mollis volutpat orci a urna elementum. Vitae malesuada placerat fermentum pellentesque. Ultrices cras faucibus gravida et quis augue vitae tortor auctor. Eget sit sit eu a enim curabitur.
                </p>
@@ -28,7 +28,7 @@
                <img src="../assets/group2.svg" onerror="this.style.display='none'">
             </div>
             <div v-scrollanimation class="text__holder">
-               <h2>Group Discussion</h2>
+               <h2 class="blue">Group Discussion</h2>
                <p>
                   Lorem ipsum dolor sit amet consectetur. Erat mollis sapien aliquet a bibendum sem augue quisque aliquam. Tristique maecenas diam scelerisque non. Pellentesque sollicitudin integer pharetra donec faucibus risus. Imperdiet blandit arcu malesuada felis dignissim egestas nisi. Suscipit diam pellentesque consectetur quis. Lectus habitant quam lacus sociis malesuada sit. Massa turpis vitae et amet a convallis posuere. Feugiat venenatis dignissim pharetra euismod. Nisi dui id ultricies pharetra. Euismod egestas arcu enim donec sed at vestibulum enim adipiscing. Cras tellus sed aliquam at in mattis aliquet. Lobortis tellus scelerisque magnis elit vitae.
                </p>
@@ -37,7 +37,7 @@
 
          <div class="home__child">
             <div v-scrollanimation class="text__holder">
-               <h2>Chat Explore</h2>
+               <h2 class="orange">Chat Explore</h2>
                <p>
                   Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. In malesuada laoreet id porttitor augue amet nec praesent. Aliquam nunc dui mollis volutpat orci a urna elementum. Vitae malesuada placerat fermentum pellentesque. Ultrices cras faucibus gravida et quis augue vitae tortor auctor. Eget sit sit eu a enim curabitur.
                </p>
@@ -83,7 +83,9 @@ export default {
       }
 
       & p {
-         font-size: 20px;
+         font-size: 16px;
+         color: #000000cc;
+         word-spacing: .3px;
       }
 
       &.before-enter{
@@ -203,5 +205,13 @@ export default {
          opacity: 1;
          transform: scale(1) rotateZ(0deg);;
       }
+   }
+
+   .orange {
+      color: #FFC872;
+   }
+
+   .blue {
+      color: #006BBB;
    }
 </style>

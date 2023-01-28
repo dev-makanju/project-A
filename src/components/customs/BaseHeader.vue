@@ -210,16 +210,16 @@
    }
 
    .btn__lin__nav {
-      padding: 5px 1rem;
-      color: blue;
+      padding: 10px 2rem;
+      color: #006BBB;
       text-decoration: none;
       font-weight: 400;
       letter-spacing: .5px;
-      border-radius: 5px;
+      border-radius: 17px;
       box-shadow: 0px 2px 5px rgba(0 , 0 , 0 , .1);
 
       &.active {
-         background: blue;
+         background: #006BBB;
          color: #fff;
       }
    }

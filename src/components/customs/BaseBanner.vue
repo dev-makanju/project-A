@@ -1,6 +1,6 @@
 <template>
    <div>
-      <div class="main-banner">
+      <div :class="['main-banner', this.$route.name === 'home' && 'add-padding']">
          <div v-if="this.$route.name !== 'home'" class="banner-container">
             <div class="banner-wrapper">
                <h1>Welcome</h1>
@@ -21,22 +21,23 @@
                </span>
             </div>
          </div>
-         <div v-if="this.$route.name === 'home'" class="banner-wrapper_main">
-            <div class="main_vee">
-               <h1>Welcome to our community</h1>
-               <p>We Aim to help reduce the risk of data using Social Media</p>
-               
-               <router-link class="next-link" to="/sign-up">Join Us</router-link>
+         <c-box mt="3rem 0px">
+            <div v-if="this.$route.name === 'home'" class="banner-wrapper_main">
+               <div class="main_vee">
+                  <h1>Welcome to our community</h1>
+                  <p>We Aim to help reduce the risk of data using Social Media</p>
+                  
+                  <router-link class="next-link" to="/sign-up">Join Us</router-link>
 
-               <c-text>and make a difference</c-text>
+                  <c-text font-size="1rem 0px" color="#fff">and make a difference</c-text>
+               </div>
+               <div class="desctop main_vee border">
+                  <div class="img-banner">
+                     <img src="../../assets/NameLogo.svg">
+                  </div>
+               </div>
             </div>
-            <div class="desctop main_vee">
-               <span class="small-image-holder">
-                  <img src="../../assets/NameLogo.svg">
-               </span>
-            </div>
-         </div>
-         
+         </c-box>      
 
          <div class="banner-social-share">
             <ul>
@@ -99,8 +100,13 @@
 </template>
 <script>
 
+import { CText } from '@chakra-ui/vue';
+
 export default {
    name:'BaseBanner',
+   components: {
+      CText,
+   },
    data(){
       return {
          isForum: false,
@@ -142,6 +148,25 @@ export default {
 </script>
 
 <style lang="scss">
+   .border {
+      border-radius: 50% 0px 0px 50%;
+      background: #FFC872; 
+      padding: 0px 0px 0px 20px;
+      
+      & .img-banner {
+         background: #fff;   
+         height: 100%;
+         border-radius: 50% 0px 0px 50%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+
+      img{
+         height: 150px;
+      }
+   }
+
    .main-banner {
       position: relative;
    }
@@ -149,18 +174,29 @@ export default {
    .main_vee{
       flex: 1;
       height: 100%;
-      border: 1px solid red;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 
-      h1{
+      h1 {
+         font-size: 30px;
+         color: #FFFFFF;
 
+         @media (max-width: 450px) {
+            text-align: center;
+         }
       }
 
-      p{
-
+      p {
+         color: #FFFFFF;
+         opacity: .6;
+         font-size: 14px;
+         padding: 1.5rem 0px;
+      
+         @media (max-width: 450px) {
+            text-align: center;
+         }
       }
    }
 
@@ -275,5 +311,9 @@ export default {
       @media (min-width: 994px) {
          display: block;
       }
+   }
+
+   .add-padding {
+      padding: 2rem 0px;
    }
 </style>
