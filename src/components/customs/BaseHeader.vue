@@ -11,12 +11,12 @@
                <c-box>
                   <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
                </c-box>
-               <c-heading color="white" fontSize="20px">
+               <c-heading :display="{base:'none' ,sm: 'block'}" color="white" fontSize="20px">
                   ProtektMe
                </c-heading>
             </c-box>
          </c-box>
-         <template v-if="!isIndexPage">
+         <c-box display="flex" align-items="center" gap="1rem" v-if="!isIndexPage">
             <c-box :display="{base: 'none' , lg: 'flex' }" v-if="isLoggedIn">
             <c-box display='flex' gap="10px" align-items="center">
                <ul class="nav-link">
@@ -32,26 +32,22 @@
                </ul>
             </c-box>
             </c-box>
-            <c-box :display="{base: 'none' , lg: 'flex' }" gap="1rem">
-               <c-box>   
+            <c-box  :display="{lg: 'flex' }" :gap="{base:'10px' , sm:'1rem'}">
+               <c-box :display="{base: 'none' , lg: 'flex' }">   
                   <c-input-group>
                      <c-input-left-element><c-icon name="search" color="gray.300" /></c-input-left-element>
                      <c-input type="text" placeholder="search..."/>
                   </c-input-group>
                </c-box>
                <c-box display='flex' gap="10px" align-items="center" v-if="isLoggedIn">
-                  <c-text color="white" fontSize="14px" font-weight="400">
+                  <c-text :display="{base:'none' ,sm: 'block'}" color="white" fontSize="14px" font-weight="400">
                      Timothy A.
                   </c-text>
                   <c-icon name="chevron-down" color="#ffffff" cursor="pointer"/>
                   <c-box>
-                     <c-image
-                        border-radius="50%" 
-                        objectFit="cover"
-                        :src="require('../../assets/icons/logoIcon.png')"
-                        fallback-src="https://via.placeholder.com/40"  
-                        alt="logo" 
-                     />
+                     <div class="img-holder">
+                        <img src="" onerror="this.style.display='none'">
+                     </div>
                   </c-box>
                </c-box>
             </c-box>
@@ -59,9 +55,9 @@
             <c-box :display="{base: 'flex' , lg: 'none' }">
                <div>
                   <c-box @click="isOpen=true" cursor="pointer" display="flex" gap="3px" flex-direction="column">
-                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
-                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
-                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#006BBB'></c-box>
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#fff'></c-box>
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#fff'></c-box>
+                     <c-box w="35px" h="5px" border-radius="2px" bgColor='#fff'></c-box>
                   </c-box>
                   <c-drawer :placement="placement" :on-close="close" :isOpen="isOpen">
                      <c-drawer-overlay :display="{base: 'flex' , lg: 'none' }"/>
@@ -82,7 +78,7 @@
                   </c-drawer>
                </div>
             </c-box>
-         </template>
+         </c-box>
          <template v-if="isIndexPage">
             <c-box>   
                <c-input-group :display="{base:'none' , lg:'flex'}">
@@ -105,7 +101,6 @@
    import { 
       CIcon, 
       CHeading, 
-      CImage, 
       CFlex, 
       CBox, 
       CText, 
@@ -129,7 +124,6 @@
          CBox,
          CHeading,
          CText,
-         CImage,
          CIcon,
          CInputGroup,
          CInputLeftElement,
@@ -181,6 +175,20 @@
 </script>
 
 <style lang="scss" scoped>
+   .img-holder{
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: #eee;
+
+      & img {
+         object-fit: cover;
+         width: 45px;
+         height: 45px;
+         border-radius: 50%;
+      }
+   }
+
    .nav-link {
       display: flex;
 

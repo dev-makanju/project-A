@@ -103,6 +103,7 @@ export default {
       display: flex;
       width: 80%;
       margin: auto;
+      overflow: hidden;
       flex-direction: row;
       justify-content: space-between;
       gap: 3rem;
@@ -145,7 +146,7 @@ export default {
    .desctop {
       display: none;
 
-      @media (min-width: 600px) {
+      @media (min-width: 994px) {
          display: block;
       }
    }
