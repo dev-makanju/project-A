@@ -1,6 +1,6 @@
 <template>
    <c-box>
-      <c-heading color="rgba(0, 0, 0, 0.8)" font-size="30px" padding=".5rem 0px">Discussion</c-heading>
+      <c-heading color="rgba(0, 0, 0, 0.8)" font-size="30px" padding=".5rem 0px">{{ title }}</c-heading>
       <c-box v-for="i in 5"  :key="i" padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
          <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
             <c-box>
@@ -56,6 +56,11 @@ import BaseShare from '@/components/customs/BaseShare.vue';
 
 export default {
    name: 'BaseDiscussion',
+   props:{
+      title: {
+         type: String,
+      }
+   },
    components: {
       BaseShare,
       BaseComment,

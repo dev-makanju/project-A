@@ -21,7 +21,7 @@
             <c-box display='flex' gap="10px" align-items="center">
                <ul class="nav-link">
                   <li>
-                     <router-link class="link" :to="{name:'/'}">Home</router-link>
+                     <router-link class="link" :to="{name:'forum'}">Home</router-link>
                   </li>
                   <li>
                      <router-link class="link" :to="{name:'topics'}">Topic</router-link>
@@ -69,7 +69,7 @@
                         <c-drawer-header borderBottomWidth="1px"></c-drawer-header>
                            <c-drawer-body display="flex" flex-direction="column">
                               <c-breadcrumb-item padding="1rem 0px">
-                                 <c-breadcrumb-link as="router-link" class="link" @click.prevent="closeNav" color="#006BBB" to="/">Home</c-breadcrumb-link>
+                                 <c-breadcrumb-link as="router-link" class="link" @click.prevent="closeNav" color="#006BBB" to="/forum">Home</c-breadcrumb-link>
                               </c-breadcrumb-item>
                               <c-breadcrumb-item padding="1rem 0px">
                                  <c-breadcrumb-link as="router-link" class="link" @click.prevent="closeNav" color="#006BBB" to="/topics">Topis</c-breadcrumb-link>
