@@ -12,7 +12,7 @@
          <c-box v-for="i in 4" :key="i" display="flex" padding="10px 10px 0px 10px" gap=".4rem">
             <c-box>
                <c-box padding="10px" h="50px" w="50px" border="1px solid #eee" border-radius="50%" bgColor="#eee">
-                  <img class="forum__thumbnail" src="" onerror="this.style.display='none'">
+                  
                </c-box>
             </c-box>
             <c-box display="flex" justify-content="space-between" w="full" border-bottom="1px solid #eee" gap=".4rem" pb="10px">
@@ -31,8 +31,15 @@
       <c-box v-if="forumData.loading === false">
          <c-box v-for="forum in forumData.data" :key="forum._id" display="flex" padding="10px 10px 0px 10px" gap=".4rem">
             <c-box>
-               <c-box padding="10px" h="50px" w="50px" border="1px solid #eee" border-radius="50%" bgColor="#eee">
-                  <img class="forum__thumbnail" src="" onerror="this.style.display='none'">
+               <c-box 
+                  padding="10px" display="flex" align-items="center" 
+                  justify-content="center" 
+                  h="50px" 
+                  w="50px" 
+                  border="1px solid #eee" 
+                  border-radius="50%" 
+                  :bgColor="`${returnBgColor()}`">
+                   <c-text font-size="20px" font-weight="bold" color="#fff">{{ returnFirstLetter(forum.name) }}</c-text>
                </c-box>
             </c-box>
             <c-box display="flex" justify-content="space-between" w="full" border-bottom="1px solid #eee" gap=".4rem" pb="10px">
@@ -69,6 +76,16 @@
          CHeading,
          CText,
       },
+      methods: {
+         returnFirstLetter(value){
+            return value.charAt(0);
+         },
+         returnBgColor(){
+            const randomColor = Math.floor(Math.random()*16777215).toString(16);
+            console.log(randomColor)
+            return "#"+randomColor;
+         }
+      }
    }
 </script>
 

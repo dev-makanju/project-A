@@ -70,6 +70,7 @@
 <script>
 
 import { 
+   CText,
    CBox, 
    CButton, 
    CFlex, 
@@ -84,6 +85,7 @@ export default {
       }
    },
    components: {
+      CText,
       CBox, 
       CButton, 
       CFlex, 
