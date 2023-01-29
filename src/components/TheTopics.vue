@@ -31,12 +31,12 @@
                   </c-menu>
             </c-box>
             <c-box :display="{ base:'block' , md:'none' }">
-               <BaseForum/>
+               <BaseForum :forumData="forumData"/>
             </c-box>
-            <TopicPost/>
+            <TopicPost :title="'Topics'"/>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , md:'block' }">
-            <BaseForum/>
+            <BaseForum :forumData="forumData"/>
          </c-grid-item>
    </c-grid>
 </template>
@@ -47,6 +47,7 @@
    import BaseSort from '@/components/customs/BaseSort.vue';
    import BaseForum from '@/components/customs/BaseForum.vue';
    import TopicPost from '@/components/customs/BasePost.vue';
+   import { mapActions } from 'vuex'
 
    export default {
       name:'the-topics',
@@ -61,6 +62,37 @@
          CMenu,
          CMenuButton,
          CMenuList,
+      },
+      data(){
+         return {
+            forumData: {
+               loading: false,
+               data: [],
+            },
+         }
+      },
+      mounted(){
+         if(this.$store.state.forum.length !== 0){
+            this.forumData.data = this.$store.state.forum;
+            return;
+         }else{
+            this.getForum();
+         }
+      },
+      methods: {
+         ...mapActions([ 'getAllForumAction']), 
+         getForum(){
+            this.forumData.loading = true;
+            this.getAllForumAction().then(res => {
+               if(res.status){
+                  this.forumData.loading = false;
+                  this.forumData.data = this.$store.state.forum;
+               }
+            }).catch(err => {
+               this.forumData.loading = false;
+               err;
+            })
+         },
       }
    }
 </script>

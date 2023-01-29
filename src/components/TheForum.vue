@@ -69,7 +69,13 @@
          }
       },
       mounted(){
-         this.getForum();
+         if(this.$store.state.forum.length !== 0){
+            this.forumData.data = this.$store.state.forum;
+            this.forumCard.data = this.$store.state.forum.slice(0 , 4);
+            return;
+         }else{
+            this.getForum();
+         }
          this.getHotTopics();
          this.getPopularDiscussion();
       },

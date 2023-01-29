@@ -24,19 +24,19 @@
                   <c-box>
                      <Basefilter/>
                      <c-box mt="2rem">
-                        <BaseSort/>
+                        <BaseSort />
                      </c-box>
                   </c-box>
                </c-menu-list>
             </c-menu>
          </c-box>
          <c-box :display="{ base:'block' , md:'none' }">
-            <BaseForum/>
+            <BaseForum :forumData="forumData"/>
          </c-box>
          <BaseDiscussion :title="'Discussion'"/>
       </c-grid-item>
       <c-grid-item :display="{ base:'none' , md:'block' }">
-         <BaseForum/>
+         <BaseForum :forumData="forumData"/>
       </c-grid-item>
 </c-grid>
 </template>
@@ -48,6 +48,7 @@ import Basefilter from '@/components/customs/BaseFlter.vue';
 import BaseSort from '@/components/customs/BaseSort.vue';
 import BaseForum from '@/components/customs/BaseForum.vue';
 import BaseDiscussion from '@/components/customs/BaseDiscussion.vue';
+import { mapActions } from 'vuex'
 
 export default {
    name:'TheDiscussion',   
@@ -62,6 +63,37 @@ export default {
       CMenu, 
       CMenuButton,
       CMenuList
+   },
+   data(){
+      return {
+         forumData: {
+            loading: false,
+            data: [],
+         },
+      }
+   },
+   mounted(){
+      if(this.$store.state.forum.length !== 0){
+         this.forumData.data = this.$store.state.forum;
+         return;
+      }else{
+         this.getForum();
+      }
+   },
+   methods: {
+      ...mapActions(['getAllForumAction']), 
+      getForum(){
+         this.forumData.loading = true;
+         this.getAllForumAction().then(res => {
+            if(res.status){
+               this.forumData.loading = false;
+               this.forumData.data = this.$store.state.forum;
+            }
+         }).catch(err => {
+            this.forumData.loading = false;
+            err;
+         })
+      },
    }
 }
 
