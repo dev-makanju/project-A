@@ -18,7 +18,9 @@ const mutations = {
    USER_DELETED(state){
       state.isDeletingUser = 'deleted'
    },
-
+   LOGGED_OUT(state){
+      state.token = ''
+   },
    USER_DATA( state , payload){
       state.token = payload.token
    },
@@ -93,9 +95,9 @@ const actions = {
    },
    //LOG USER OUT
    logout({commit}){
-      localStorage.removeItem('gobtoken');
+      localStorage.removeItem('mastertoken');
       sessionStorage.clear();
-      router.push('/');
+      router.push({name:'home'});
       commit('LOGGED_OUT');
       location.reload();
    },

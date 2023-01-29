@@ -7,7 +7,7 @@
                :key="i" 
                flex-direction="column" 
                :flex="{ md:'1 1 40%' , xl:'1 1 40%'}" 
-               max-width="300px" 
+               width="300px" 
                height="300px" 
                border-radius="5px" 
                box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" 
@@ -36,8 +36,18 @@
                </c-box>
             </c-flex>
          </template>
-         <template v-if="forumData.loading === false">  
-               <c-flex v-for="forum in forumData.data" :key="forum._id" flex-direction="column" :flex="{ md:'1 1 40%' , xl:'1 1 40%'}" max-width="300px" height="300px" border-radius="5px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" overflow="hidden">
+         <template v-else>  
+               <c-flex 
+                  v-for="forum in forumData.data" 
+                  :key="forum._id" 
+                  flex-direction="column" 
+                  :flex="{ md:'1 1 40%' , xl:'1 1 40%'}" 
+                  max-width="300px" 
+                  height="300px" 
+                  border-radius="5px" 
+                  box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" 
+                  overflow="hidden"
+               >
                   <div class="img-hdr">
                      <img src="https://cdn.pixabay.com/photo/2023/01/07/07/16/houses-7702757_960_720.jpg" 
                      class="image-holder" onerror="this.style.display='none'">

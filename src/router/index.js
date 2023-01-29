@@ -19,7 +19,8 @@ const routes = [
     name: 'sign-up',
     component: SignUp,
     meta: {
-      title:'Sign Up'
+      title:'Sign Up',
+      requiresGuest: true,
     }
   },
   {
@@ -27,7 +28,8 @@ const routes = [
     name:'sign-in',
     component: SignIn,
     meta: {
-      title:'Sign In'
+      title:'Sign In',
+      requiresGuest: true,
     }
   },
   {
@@ -39,7 +41,7 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView,
-        requiresAuth: false,
+        requiresGuest: true,
       },
       {
         path:'forum',
@@ -47,7 +49,7 @@ const routes = [
         component: ForumView,
         meta: {
           title: 'Forum',
-          requiresAuth: false,
+          requiresAuth: true,
         }
       },
       {
@@ -56,7 +58,7 @@ const routes = [
         component: DiscussionView,
         meta: {
           title: 'Discussion',
-          requiresAuth: false,
+          requiresAuth: true,
         }
       },
       {
@@ -65,7 +67,7 @@ const routes = [
         component: TopicView,
         meta: {
           title: 'Topic',
-          requiresAuth: false,
+          requiresAuth: true,
         }
       },
     ]
@@ -86,12 +88,27 @@ const router = new VueRouter({
   routes
 })
 
+
+router.beforeEach((to , from , next) => {
+    const user = store.getters.isLoggedIn;
+    if(to.matched.some(res => res.meta.requiresGuest)){
+      if(user){
+        return next({ name:'forum' });
+      }
+      next();
+    }else{
+      return next();
+    }
+});
+
+
 router.beforeEach((to , from , next) => {
     const user = store.getters.isLoggedIn;
     if(to.matched.some(res => res.meta.requiresAuth)){
       if(user){
         return next();
-      }return next({name:'sign-in'});
+      }
+      return next({ name:'sign-in' });
     }else{
       return next();
     }

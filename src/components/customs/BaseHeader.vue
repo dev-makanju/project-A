@@ -41,13 +41,9 @@
                   </c-input-group>
                </c-box>
                <c-box display='flex' gap="10px" align-items="center" v-if="isLoggedIn">
-                  <c-text :display="{base:'none' ,sm: 'block'}" color="white" fontSize="14px" font-weight="400">
-                     Timothy A.
-                  </c-text>
-                  <c-icon name="chevron-down" color="#ffffff" cursor="pointer"/>
                   <c-box>
                      <div class="img-holder">
-                        <img src="" onerror="this.style.display='none'">
+                        <c-text font-size="22px" color="#fff" font-weight="600">F</c-text>
                      </div>
                   </c-box>
                </c-box>
@@ -180,7 +176,10 @@
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      background-color: #eee;
+      background-color: #390d0d;
+      display: flex;
+      justify-content: center;
+      align-items:center;
 
       & img {
          object-fit: cover;
@@ -193,20 +192,33 @@
    .nav-link {
       display: flex;
 
-
       & li {
          list-style-type: none;
-         padding: 7px 20px;
-         
-         &:hover{
-            border-bottom: 1px solid #ffffff;
-         }
       }
+   }
+
+   .width {
+      width: 100px;
    }
 
    .link {
       color: white;
       text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: .7rem 0px;
+      display: inline-block;
+      width: 80px;
+      text-align: center;
+      
+      &:hover{
+         border-bottom: 1px solid #ffffff;
+      }
+
+      &.router-link-active,
+      &.router-link-exact-active {
+         border-bottom: 1px solid #ffffff;
+      }
    }
 
    .btn__lin__nav {
