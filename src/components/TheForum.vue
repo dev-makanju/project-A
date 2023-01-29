@@ -13,12 +13,12 @@
          </c-grid-item>
          <c-grid-item>
             <c-box :display="{ base:'block' , lg:'none' }">
-               <BaseForum/>
+               <BaseForum :forumData="forumData"/>
             </c-box>
             <c-box>
                <c-heading font-size="30px" mt="1rem" mb="1rem" color="rgba(0, 0, 0, 0.8)">Top Forum</c-heading>
                <c-box>
-                  <BaseCard/>
+                  <BaseCard :forumData="forumCard"/>
                </c-box>
             </c-box>
             <TopicPost :title="'Hot Topics'"/>
@@ -29,7 +29,7 @@
             </c-box>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , lg:'block' }">
-            <BaseForum/>
+            <BaseForum :forumData="forumData"/>
          </c-grid-item>
    </c-grid>
 </template>
@@ -40,6 +40,8 @@
    import TopicPost from '@/components/customs/BasePost.vue';
    import BaseCard from '@/components/customs/BaseCard.vue';
    import BaseDiscussion from '@/components/customs/BaseDiscussion.vue';
+   import { mapActions } from 'vuex'
+
 
    export default {
       name:'the-topics',
@@ -56,7 +58,56 @@
       },
       data(){
          return {
-            forumData: {},
+            forumData: {
+               loading: false,
+               data: [],
+            },
+            forumCard: {
+               loading: false,
+               data: [],
+            }
+         }
+      },
+      mounted(){
+         this.getForum();
+         this.getHotTopics();
+         this.getPopularDiscussion();
+      },
+      methods: {
+         ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction']),
+         getForum(){
+            this.forumData.loading = true;
+            this.forumCard.loading = true;
+            this.getAllForumAction().then(res => {
+               if(res.status){
+                  this.forumData.loading = false;
+                  this.forumCard.loading = false;
+                  this.forumData.data = this.$store.state.forum;
+                  this.forumCard.data = this.$store.state.forum.slice(0 , 4)
+               }
+            }).catch(err => {
+               this.forumData.loading = false;
+               this.forumCard.loading = false;
+               err;
+            })
+         },
+         getHotTopics(){
+            this.getAllTopicAction().then(res => {
+               if(res.status){
+                  console.log(res)
+               }
+            }).catch(err => {
+               err;
+            })
+         },
+         getPopularDiscussion(){
+            this.getAllDiscussAction().then(res => {
+               if(res.status){
+                  console.log(res)
+               }
+            }).catch(err => {
+               err;
+            })
          }
       }
    }

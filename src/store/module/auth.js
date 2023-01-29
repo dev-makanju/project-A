@@ -3,9 +3,8 @@ import eventService from '../../events/eventService';
 import router from '../../router'
 
 const state = {
-   token: localStorage.getItem('gobtoken') || '',
+   token: localStorage.getItem('mastertoken') || '',
    user:{},
-   role:'',
    status:'',
 }
 
@@ -16,44 +15,30 @@ const getters = {
 }
 
 const mutations = {
-   STATUS(state){
-      state.status = 'loading';
-   },
-
    USER_DELETED(state){
       state.isDeletingUser = 'deleted'
    },
 
    USER_DATA( state , payload){
       state.token = payload.token
-      state.role = payload.userRole
-      state.user = payload.user
-   },
-   USER_STATUS(state){
-      state.status = 'loaded'
    },
 }
 
 const actions = {
    //USER LOGGED IN
    async userLogin({commit} , data){
-      try{ 
-         commit('STATUS') 
+      console.log('called')
+      try { 
          const response = await eventService.loginEvent(data)
-         console.log(response);
-         if(response.status){
+         console.log(response.status , response);
+         if(response.status === 200){
             const token = response.data.token;
             localStorage.setItem("mastertoken" , token);
             axios.defaults.headers.common['Authorization'] = token;
-            const user = response.data.data
-            const role = response.data.data.role
             const data = {
-               token: token,
-               userRole: role,
-               user: user 
+               token: token, 
             }  
-            commit("USER_DATA", data);
-            commit("USER_STATUS");
+            commit("USER_DATA" , data);
          }
          return response;
       }catch(err){

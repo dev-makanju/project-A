@@ -99,9 +99,9 @@ export default {
             this.loading = true;
             this.userLogin(input).then( res => {
                console.log(res)
-               if(res.status === 200){
+               if(res.status){
                   this.loading = false;
-                  this.$router.push('/topics');
+                  this.$router.push('/forum');
                }else {
                   this.toastTitle = 'Error!'
                   this.statusInfo = 'error';
