@@ -199,6 +199,7 @@ export default {
       }else{
          this.getForum();
       }
+      
       this.fetchSingleAction();
    },
    methods: {
@@ -234,6 +235,11 @@ export default {
       },
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); //=> "Friday 2:00pm 1 Feb 2013"
+      }
+   },
+   watch:{
+      $route(){
+         this.fetchSingleAction()
       }
    }
 }

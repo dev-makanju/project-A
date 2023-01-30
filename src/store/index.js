@@ -71,9 +71,9 @@ export default new Vuex.Store({
     },
     async getAllTopicAction(){
       try{
-        const response = await eventService.getAllTopic();
+        const response = await eventService.getAllTopics();
         if(response.status){
-          //  
+          //stay focused  
         }
         return response;
       }catch(err){
@@ -117,7 +117,7 @@ export default new Vuex.Store({
       try{
         const response = await eventService.replyOnTopic(data);
         if(response.status){
-          console.log(response);
+          //
         } 
         return response;
       }catch(err){
@@ -127,7 +127,6 @@ export default new Vuex.Store({
     async followAforum({commit} , data){
       try{
         const response = await eventService.followForum(data);
-        console.log(response)
         if(response.status){
           commit('SET_FOLLOW')
         } 

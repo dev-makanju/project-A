@@ -1,18 +1,18 @@
 <template>
    <c-box>
       <c-heading color="rgba(0, 0, 0, 0.8)" font-size="30px" padding=".5rem 0px">{{ title }}</c-heading>
-      <c-box v-for="i in 5"  :key="i" padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
+      <c-box v-for="data in topic.data"  :key="data._id" padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
          <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
             <c-box>
-               <c-box padding="10px" h="50px" w="50px" border="1px solid #eee" border-radius="50%" bgColor="#eee">
-                  <img class="forum__thumbnail" src="" onerror="this.style.display='none'">
+               <c-box padding="10px" h="50px" w="50px" display="flex" align-items="center" justify-content="center" border="1px solid #eee" border-radius="50%" bgColor="#390d0d">
+                  <c-text font-size="20px" font-weight="bold" color="#fff">{{ returnFirstLetter(data.uploader.firstName) }}</c-text>
                </c-box>
             </c-box>
             <c-box display="flex" gap=".4rem" pb="10px" w="full" justify-content="space-between">
                <c-box>
-                  <c-heading color="#001027" font-size="16px">Reece Janet</c-heading>
-                  <c-text font-size="12px" color="#001027" opacity=".7">Psychologist, Politician & Public Speaker</c-text>
-                  <c-text font-size="12px" color="#001027" opacity=".7">July 15, 2022 / 09:08 AM</c-text>
+                  <c-heading color="#001027" font-size="16px">{{ data.uploader.firstName }} {{ data.uploader.lastName }}</c-heading>
+                  <c-text font-size="12px" color="#001027" opacity=".7">{{ data.uploader.occupation }}</c-text>
+                  <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime(data.createdAt) }}</c-text>
                </c-box>
                <c-box display="flex" gap=".2rem">
                   <c-box h="6px" w="6px" bgColor="#1667DF" border-radius="50%"></c-box>
@@ -22,9 +22,9 @@
             </c-box>
          </c-box>
          <c-box padding="12px">
-            <c-text font-size="16px" font-weight="600" color="#555555">How does the flow of people, goods and culture impact places?</c-text>
+            <c-text font-size="16px" font-weight="600" color="#555555">{{ data.topic }}</c-text>
          </c-box>
-         <BaseShare/>
+         <BaseShare :answer="data.answer" :pin="data.pins"/>
          <c-box mt="1rem">
             <!-- content editable div -->
             <CustomComment/>
@@ -32,7 +32,7 @@
          <c-box padding="12px">
             <c-box>
                <!-- show comment -->
-               <BaseComment/>
+               <BaseComment :answer="data.answer"/>
             </c-box>
          </c-box>
       </c-box>
@@ -44,12 +44,16 @@ import { CHeading , CBox , CText } from '@chakra-ui/vue';
 import CustomComment from '@/components/CustomComment.vue';
 import BaseComment from '@/components/customs/BaseComment.vue';
 import BaseShare from '@/components/customs/BaseShare.vue';
+import Moment from "moment";
 
 export default {
    name: 'BasePost',
    props:{
       title: {
          type: String,
+      },
+      topic: {
+         type: Object
       }
    },
    components: {
@@ -59,6 +63,14 @@ export default {
       CBox,
       CText,
       CustomComment,
+   },
+   methods: {
+      returnFirstLetter(value){
+         return value.charAt(0);
+      },
+      formatTime(value){
+         return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
+      }
    }
 }
 

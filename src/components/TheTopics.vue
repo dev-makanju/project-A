@@ -33,7 +33,12 @@
             <c-box :display="{ base:'block' , md:'none' }">
                <BaseForum :forumData="forumData"/>
             </c-box>
-            <TopicPost :title="'Topics'"/>
+            <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="topics.loading" is-inline :spacing="4">
+               <c-spinner size="lg" />
+            </c-stack>
+            <c-box v-else>
+               <TopicPost :title="'Topics'" :topic="topics"/>
+            </c-box>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , md:'block' }">
             <BaseForum :forumData="forumData"/>
@@ -42,7 +47,7 @@
 </template>
 <script>
 
-   import { CGrid, CGridItem , CBox , CMenu , CMenuButton , CMenuList } from '@chakra-ui/vue';
+   import { CStack ,CSpinner , CGrid, CGridItem , CBox , CMenu , CMenuButton , CMenuList } from '@chakra-ui/vue';
    import Basefilter from '@/components/customs/BaseFlter.vue';
    import BaseSort from '@/components/customs/BaseSort.vue';
    import BaseForum from '@/components/customs/BaseForum.vue';
@@ -53,6 +58,8 @@
       name:'the-topics',
       components: {
          CGrid, 
+         CStack,
+         CSpinner,
          CGridItem,
          Basefilter,
          CBox,
@@ -69,6 +76,10 @@
                loading: false,
                data: [],
             },
+            topics: {
+               loading: false,
+               data: [],
+            }
          }
       },
       mounted(){
@@ -78,9 +89,10 @@
          }else{
             this.getForum();
          }
+         this.fetchAllTopics();
       },
       methods: {
-         ...mapActions([ 'getAllForumAction']), 
+         ...mapActions([ 'getAllForumAction','getAllTopicAction']), 
          getForum(){
             this.forumData.loading = true;
             this.getAllForumAction().then(res => {
@@ -93,6 +105,18 @@
                err;
             })
          },
+         fetchAllTopics(){
+            this.topics.loading = true;
+            this.getAllTopicAction().then(res => {
+               if(res.status){
+                  this.topics.loading = false;
+                  this.topics.data = res.data.topics;
+               }
+            }).catch(err => {
+               this.topics.loading = false;
+               err;
+            })
+         }
       }
    }
 </script>

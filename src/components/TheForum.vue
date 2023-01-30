@@ -21,7 +21,7 @@
                   <BaseCard :forumData="forumCard"/>
                </c-box>
             </c-box>
-            <TopicPost :title="'Hot Topics'"/>
+            <TopicPost :title="'Hot Topics'" :topic="topics"/>
             <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
             <c-box mt="2rem">
                <BaseDiscussion :title="'Popular Discussion'"/>
@@ -64,6 +64,10 @@
             forumCard: {
                loading: false,
                data: [],
+            },
+            topics: {
+               loading: false,
+               data: [],
             }
          }
       },
@@ -77,9 +81,10 @@
          }
          this.getHotTopics();
          this.getPopularDiscussion();
+         this.fetchAllTopics();
       },
       methods: {
-         ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction']),
+         ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction' , 'getAllTopicAction']),
          getForum(){
             this.forumData.loading = true;
             this.forumCard.loading = true;
@@ -99,7 +104,7 @@
          getHotTopics(){
             this.getAllTopicAction().then(res => {
                if(res.status){
-                  console.log(res)
+                  //
                }
             }).catch(err => {
                err;
@@ -108,9 +113,21 @@
          getPopularDiscussion(){
             this.getAllDiscussAction().then(res => {
                if(res.status){
-                  console.log(res)
+                  //
                }
             }).catch(err => {
+               err;
+            })
+         },
+         fetchAllTopics(){
+            this.topics.loading = true;
+            this.getAllTopicAction().then(res => {
+               if(res.status){
+                  this.topics.loading = false;
+                  this.topics.data = res.data.topics.slice(0 , 4);
+               }
+            }).catch(err => {
+               this.topics.loading = false;
                err;
             })
          }

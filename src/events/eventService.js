@@ -69,5 +69,8 @@ export default {
    },
    followForum(data){
       return apiClient.patch('forum/enroll-a-forum' ,data);
+   },
+   getAllTopics(){
+      return apiClient.get('topic/get-topics-by-pins');
    }
 }
