@@ -42,7 +42,6 @@
    import BaseDiscussion from '@/components/customs/BaseDiscussion.vue';
    import { mapActions } from 'vuex'
 
-
    export default {
       name:'the-topics',
       components: {
@@ -68,7 +67,7 @@
             }
          }
       },
-      mounted(){
+      created(){
          if(this.$store.state.forum.length !== 0){
             this.forumData.data = this.$store.state.forum;
             this.forumCard.data = this.$store.state.forum.slice(0 , 4);

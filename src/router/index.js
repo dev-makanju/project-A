@@ -7,6 +7,7 @@ import ForumView from '@/views/ForumView';
 import DiscussionView from '@/views/DiscussionView';
 import TopicView from '@/views/TopicView';
 import NotFound from '../views/NotFound.vue';
+import SingleForumPage from '../views/SingleForum.vue';
 import PageShell from '@/layouts/PageShell';
 import store from '../store'
 
@@ -47,6 +48,15 @@ const routes = [
         path:'forum',
         name:'forum',
         component: ForumView,
+        meta: {
+          title: 'Forum',
+          requiresAuth: true,
+        }
+      },
+      {
+        path:'forum/:id',
+        name:'single-forum',
+        component: SingleForumPage,
         meta: {
           title: 'Forum',
           requiresAuth: true,

@@ -66,5 +66,8 @@ export default {
    },
    replyOnTopic(data){
       return apiClient.post(`topic/reply-a-topic/${data}`);
+   },
+   followForum(data){
+      return apiClient.patch('forum/enroll-a-forum' ,data);
    }
 }

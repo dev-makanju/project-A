@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     forum: [],
     topis: {},
-    discuss: {},    
+    discuss: {},   
+    isFollowing: false, 
   },
   getters: {
   },
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     SET_ALL_FORUM(state , payload){
       state.forum = payload.forums.slice(0 , 5)
     },
+    SET_FOLLOW(state){
+      state.isFollowing = true;
+    }
   },
   actions: {
     async createAForum(data){
@@ -42,11 +46,12 @@ export default new Vuex.Store({
         return err.response;
       }
     },
-    async getSingleForumAction(data){
+    async getSingleForumAction({commit} ,data){
       try{
         const response = await eventService.getSingleForum(data); 
         if(response.status){
           console.log(response)
+          commit('SET_FOLLOW')
         }
         return response;
       }catch(err){
@@ -113,6 +118,18 @@ export default new Vuex.Store({
         const response = await eventService.replyOnTopic(data);
         if(response.status){
           console.log(response);
+        } 
+        return response;
+      }catch(err){
+        return err.response;
+      }
+    },
+    async followAforum({commit} , data){
+      try{
+        const response = await eventService.followForum(data);
+        console.log(response)
+        if(response.status){
+          commit('SET_FOLLOW')
         } 
         return response;
       }catch(err){

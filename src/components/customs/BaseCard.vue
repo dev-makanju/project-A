@@ -65,8 +65,20 @@
                         Explore the definition, and examples of interpersonal conflict, and the primary types.
                      </c-text>
                      <c-box mt="1rem" position="absolute" bottom="12px">
-                        <c-flex font-size="10px" color="blue">
-                           {{ forum.enrolled.length }} Enrolled | {{ forum.followers.length }} Members | {{ forum.topics.length }} Active daily Post</c-flex>
+                        <c-button 
+                           variant-color="blue" 
+                           mb=".5rem" 
+                           border="none" 
+                           border-radius="7px" 
+                           cursor="pointer" 
+                           font-size="14px"
+                           @click="follow(forum.name , forum._id)"
+                           :is-loading="forum._id === selected"
+                        >
+                           follow
+                        </c-button>
+                           <c-flex font-size="10px" color="blue">
+                           {{ findLength(forum.enrolled) }} Enrolled | {{ findLength(forum.followers) }} Members | {{ findLength(forum.topics) }} Active daily Post</c-flex>
                      </c-box>
                   </c-box>
                </c-flex>
@@ -86,6 +98,7 @@ import {
    CFlex, 
    CHeading, 
 } from '@chakra-ui/vue';
+import { mapActions } from 'vuex'
 
 export default {
    name:'base-card',
@@ -100,6 +113,57 @@ export default {
       CButton, 
       CFlex, 
       CHeading,
+   },
+   data(){
+      return {
+         title: '',
+         description: '',
+         status: '',
+         selected: '',
+      }
+   },
+   methods: {
+      ...mapActions(['followAforum']),
+      findLength(value){
+         return value.length;
+      },
+      showToast(){
+         this.$toast({
+            title: this.title,
+            description: this.description,
+            status: this.status,
+            duration: 10000,
+            position:'top',
+            variant: 'subtle',
+         })
+      },
+      follow(name , id){
+         this.selected = id
+         let data = {
+            forum_name: name,
+         }
+         this.followAforum(data).then(res => {
+            this.selected = ''
+            if(res.status === 200){
+               this.title = 'Success'
+               this.description = `You have succefully followed ${name} forum`
+               this.status = 'success'
+               this.showToast()
+               return; 
+            }
+            this.title = 'Failed!'
+            this.description = res.data.message
+            this.status = 'error'
+            this.showToast()
+         }).catch(err => {
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = 'Oops!, something went wrong'
+            this.status = 'error'
+            this.showToast()
+            err;
+         });
+      }
    }
 }
 </script>
