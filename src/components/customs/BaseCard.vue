@@ -78,7 +78,7 @@
                            follow
                         </c-button>
                            <c-flex font-size="10px" color="blue">
-                           {{ findLength(forum.enrolled) }} Enrolled | {{ findLength(forum.followers) }} Members | {{ findLength(forum.topics) }} Active daily Post</c-flex>
+                           {{ forum?.enrolled?.length }} Enrolled | {{ forum?.followers?.length }} Members | {{ forum?.topics?.length }} Active daily Post</c-flex>
                      </c-box>
                   </c-box>
                </c-flex>
