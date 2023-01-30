@@ -24,7 +24,7 @@
                   <c-box>
                      <Basefilter/>
                      <c-box mt="2rem">
-                        <BaseSort />
+                        <BaseSort/>
                      </c-box>
                   </c-box>
                </c-menu-list>
@@ -33,7 +33,14 @@
          <c-box :display="{ base:'block' , md:'none' }">
             <BaseForum :forumData="forumData"/>
          </c-box>
-         <BaseDiscussion :title="'Discussion'"/>
+         <c-box v-if="!discussion.loading">
+            <BaseDiscussion :title="'Discussion'" :discussion="discussion.data"/>
+         </c-box>
+         <c-box v-else>
+            <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" is-inline :spacing="4">
+               <c-spinner size="lg" />
+            </c-stack>
+         </c-box>
       </c-grid-item>
       <c-grid-item :display="{ base:'none' , md:'block' }">
          <BaseForum :forumData="forumData"/>
@@ -43,7 +50,7 @@
 
 <script>
 
-import { CGrid, CGridItem , CBox , CMenu , CMenuButton , CMenuList} from '@chakra-ui/vue';
+import { CStack , CSpinner , CGrid, CGridItem , CBox , CMenu , CMenuButton , CMenuList} from '@chakra-ui/vue';
 import Basefilter from '@/components/customs/BaseFlter.vue';
 import BaseSort from '@/components/customs/BaseSort.vue';
 import BaseForum from '@/components/customs/BaseForum.vue';
@@ -62,7 +69,9 @@ export default {
       BaseDiscussion,
       CMenu, 
       CMenuButton,
-      CMenuList
+      CMenuList,
+      CStack, 
+      CSpinner
    },
    data(){
       return {
@@ -70,18 +79,32 @@ export default {
             loading: false,
             data: [],
          },
+         discussion:{
+            loading: false,
+            data: [],
+         }
       }
    },
-   mounted(){
+   created(){
       if(this.$store.state.forum.length !== 0){
          this.forumData.data = this.$store.state.forum;
          return;
       }else{
          this.getForum();
       }
+
+      console.log('dicuss page',this.$store.state.discussions)
+
+      if(this.$store.state.discussions.length !== 0){
+         this.discussion.data = this.$store.state.discussions;
+         console.log(this.discussion.data)
+         return;
+      }else{
+         this.getPopularDiscussion();
+      }
    },
    methods: {
-      ...mapActions(['getAllForumAction']), 
+      ...mapActions(['getAllForumAction' , 'getAllDiscussAction']), 
       getForum(){
          this.forumData.loading = true;
          this.getAllForumAction().then(res => {
@@ -93,6 +116,18 @@ export default {
             this.forumData.loading = false;
             err;
          })
+      },
+      getPopularDiscussion(){
+         this.discussion.loading = true;
+         this.getAllDiscussAction().then(res => {
+            if(res.status){
+               this.discussion.loading = false;
+               this.discussion.data = res.data.discussioms;
+            }
+         }).catch(err => {
+            this.discussion.loading = false;
+            err;
+         });
       },
    }
 }

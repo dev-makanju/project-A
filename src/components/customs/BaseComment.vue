@@ -1,7 +1,7 @@
 <template>
     <!-- show comment -->
       <div>       
-         <div v-show="answer.length !== 0">
+         <div v-show="answer?.length !== 0">
             <c-box v-for="data in answer" :key="data._id" display="flex" padding="10px 10px 0px 10px" gap="1rem">
                <c-box>
                   <c-box padding="10px" h="50px" w="50px" display="flex" align-items="center" justify-content="center" border="1px solid #eee" border-radius="50%" bgColor="#390d0d">

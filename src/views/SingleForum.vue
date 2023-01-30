@@ -85,7 +85,7 @@
                      <c-text font-size="12px" color="#001027" opacity=".7">created on: {{ formatTime( forum.createdAt ) }}</c-text>
 
                      <c-text font-size="12px" color="blue" mt="1rem">
-                           {{ forum.enrolled.length }} Enrolled | {{ forum.followers.length}} Members | {{ forum.topics.length }} Active daily Post
+                           {{ forum.enrolled?.length }} Enrolled | {{ forum.followers?.length}} Members | {{ forum.topics?.length }} Active daily Post
                      </c-text>
 
                      <c-box m="1rem 0px">
@@ -124,7 +124,7 @@
                         <c-tab-panels>
                            <c-tab-panel>
                               <c-box mt="2rem">     
-                                 <TopicPost :title="'Topics'"/>
+                                 <TopicPost :title="'Topics'" :topic="topics"/>
                                  <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
@@ -188,6 +188,12 @@ export default {
             loading: false,
             data: [],
          },
+         topics: {
+            loading: false,
+            data: [],
+         },
+         forum_topic: {},
+         forum_discuss: {},
          forum:{},
          forumLoading: false,
       }
@@ -199,11 +205,11 @@ export default {
       }else{
          this.getForum();
       }
-      
+
       this.fetchSingleAction();
    },
    methods: {
-      ...mapActions([ 'getAllForumAction','getSingleForumAction']),
+      ...mapActions([ 'getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum']),
       returnFirstLetter(value){
          return value.charAt(0);
       },
@@ -221,15 +227,53 @@ export default {
       },
       fetchSingleAction(){
          const id = this.$route.params.id
+         console.log(id)
          this.forumLoading = true;
          this.getSingleForumAction(id).then(res => {
             if(res.status){
                this.forumLoading = false;
                this.forum = res.data.forum;
-               console.log(this.forum)
+               // fetch topic by topic
+               if(this.$store.state.forum_topic.data.length !== 0){
+                  this.forum_topic = this.$store.state.forum_topic.data;
+               }else{
+                  this.fetchTopicByForum(this.forum.name)
+               }
+               // fetch dicussion under topic
+               if(this.$store.state.forum_discuss.data.length !== 0){
+                  this.forum_discuss = this.$store.state.forum_discuss.data;
+               }else{
+                  this.fetchDiscussByForum(this.forum.name)
+               }
             }
          }).catch(err => {
             this.forumLoading = false;
+            err;
+         })
+      },
+      fetchTopicByForum(name){
+         const data = {
+            forum_name: name
+         }
+         this.getTopicByForum(data).then(res => {
+            if(res.status){
+               console.log(data)
+               console.log(res)
+            }
+         }).catch(err => {
+            err;
+         })
+      },
+      fetchDiscussByForum(name){
+         const data = {
+            forum_name: name
+         }
+         this.getDiscussionByForum(data).then(res => {
+            if(res.status){
+               console.log(data)
+               console.log(res)
+            }
+         }).catch(err => {
             err;
          })
       },

@@ -11,7 +11,16 @@ export default new Vuex.Store({
     forum: [],
     topis: {},
     discuss: {},   
-    isFollowing: false, 
+    isFollowing: false,
+    forum_topic: {
+      loading: false,
+      data: []
+    },
+    forum_discuss: {
+      loading: false,
+      data: []
+    },
+    discussions: []
   },
   getters: {
   },
@@ -21,6 +30,15 @@ export default new Vuex.Store({
     },
     SET_FOLLOW(state){
       state.isFollowing = true;
+    },
+    SET_FORUM_TOPIC(state , payload){
+      state.forum_topic.loading = payload;
+    },
+    SET_FORUM_DISCUSS(state , payload){
+      state.forum_discuss.loading = payload;
+    },
+    GET_ALL_DICUSSION(state , payload){
+      state.discussions = payload;
     }
   },
   actions: {
@@ -50,7 +68,6 @@ export default new Vuex.Store({
       try{
         const response = await eventService.getSingleForum(data); 
         if(response.status){
-          console.log(response)
           commit('SET_FOLLOW')
         }
         return response;
@@ -95,18 +112,18 @@ export default new Vuex.Store({
       try{
         const response = await eventService.createDiscuss(data);
         if(response.status){
-          console.log(response)
+          console.log(response);
         }
         return response;
       }catch(err){
         return err.response;
       }
     },
-    async getAllDiscussAction(){
+    async getAllDiscussAction({commit}){
       try{
-        const response = await eventService.getDiscussion();
+        const response = await eventService.getPopularDiscussion();
         if(response.status){
-           console.log(response);
+          commit('GET_ALL_DICUSSION' , response.data.discussioms);
         }
         return response;
       }catch(err){
@@ -134,7 +151,35 @@ export default new Vuex.Store({
       }catch(err){
         return err.response;
       }
-    }
+    },
+    async getTopicByForum({commit} , data){
+      try{
+        commit('SET_FORUM_TOPIC' , true)
+        const response = await eventService.getAllTopicOnForum(data);
+        if(response.status){
+          commit('SET_FORUM_TOPIC' , false)
+          console.log(response)
+        }
+        return response;
+      }catch(err){
+        commit('SET_FORUM_TOPIC' , false)
+        return err.response;
+      }
+    },
+    async getDiscussionByForum({commit} ,data){
+      try{
+        commit('SET_FORUM_DISCUSS' , true)
+        const response = await eventService.getDiscussionOnForum(data);
+        if(response.status){
+          commit('SET_FORUM_DISCUSS' , false)
+          console.log(response)
+        }
+        return response;
+      }catch(err){
+        commit('SET_FORUM_DISCUSS' , false)
+        return err.response;
+      }
+    },
   },
   modules: {
     auth,

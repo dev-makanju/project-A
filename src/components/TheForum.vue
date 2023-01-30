@@ -21,11 +21,48 @@
                   <BaseCard :forumData="forumCard"/>
                </c-box>
             </c-box>
-            <TopicPost :title="'Hot Topics'" :topic="topics"/>
-            <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
+            <c-box v-if="!topics.loading">
+               <TopicPost :title="'Hot Topics'" :topic="topics"/>
+            </c-box>
+            <c-box v-else>
+               <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="topics.loading" is-inline :spacing="4">
+                  <c-spinner size="lg" />
+               </c-stack>
+            </c-box>
+            <p @click="redirect('topics')" >
+               <c-text 
+                  v-if="topics.data.length !== 0"
+                  text-align="center" 
+                  font-size="12px" 
+                  mt="1rem" 
+                  color="blue" 
+                  font-style="italic" 
+                  cursor="pointer"
+               >
+                  view more...
+               </c-text>
+            </p>
             <c-box mt="2rem">
-               <BaseDiscussion :title="'Popular Discussion'"/>
-               <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
+               <c-box v-if="!discussion.loading">   
+                  <BaseDiscussion :title="'Popular Discussion'" :discussion="discussion.data"/>
+                  <p @click.prevent="redirect('discussion')">
+                      <c-text 
+                        v-if="discussion.data.length !== 0" 
+                        text-align="center" 
+                        font-size="12px" 
+                        mt="1rem" 
+                        color="blue" 
+                        font-style="italic"
+                        cursor="pointer">
+                           view more...
+                        </c-text>
+                  </p>
+               </c-box>
+               <c-box v-else>   
+                  <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="topics.loading" is-inline :spacing="4">
+                     <c-spinner size="lg" />
+                  </c-stack>
+               </c-box>
             </c-box>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , lg:'block' }">
@@ -35,7 +72,7 @@
 </template>
 <script>
 
-   import { CGrid, CGridItem , CBox , CHeading , CText } from '@chakra-ui/vue';
+   import { CGrid, CStack , CSpinner , CGridItem , CBox , CHeading , CText } from '@chakra-ui/vue';
    import BaseForum from '@/components/customs/BaseForum.vue';
    import TopicPost from '@/components/customs/BasePost.vue';
    import BaseCard from '@/components/customs/BaseCard.vue';
@@ -51,6 +88,8 @@
          CGrid, 
          CGridItem,
          CBox,
+         CStack, 
+         CSpinner,
          BaseForum,
          TopicPost,
          CHeading,
@@ -68,6 +107,10 @@
             topics: {
                loading: false,
                data: [],
+            },
+            discussion:{
+               loading: false,
+               data: [],
             }
          }
       },
@@ -79,12 +122,23 @@
          }else{
             this.getForum();
          }
-         this.getHotTopics();
-         this.getPopularDiscussion();
+
+         if(this.$store.state.discussions.length !== 0){
+            this.discussion.data = this.$store.state.discussions.slice(0 , 4);
+            console.log(this.discussion.data)
+            return;
+         }else{
+            this.getPopularDiscussion();
+         }
+         
          this.fetchAllTopics();
       },
       methods: {
          ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction' , 'getAllTopicAction']),
+         redirect(value){
+            console.log(value)
+            this.$router.push({ name: value})
+         },
          getForum(){
             this.forumData.loading = true;
             this.forumCard.loading = true;
@@ -101,23 +155,17 @@
                err;
             })
          },
-         getHotTopics(){
-            this.getAllTopicAction().then(res => {
-               if(res.status){
-                  //
-               }
-            }).catch(err => {
-               err;
-            })
-         },
          getPopularDiscussion(){
+            this.discussion.loading = true;
             this.getAllDiscussAction().then(res => {
                if(res.status){
-                  //
+                  this.discussion.loading = false
+                  this.discussion.data = res.data.discussioms.slice(0 , 4);
                }
             }).catch(err => {
+               this.discussion.loading = false;
                err;
-            })
+            });
          },
          fetchAllTopics(){
             this.topics.loading = true;

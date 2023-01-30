@@ -37,14 +37,18 @@ export default {
    getSingleForum(data){
       return apiClient.get(`forum/get-forum/${data}`);
    },
+   getPopularDiscussion(){
+      return apiClient.get('discussion/discussion-by-retweet');
+   },
    getAllForum(){
       return apiClient.get('forum/get-all-forums');
    },
    createDiscuss(){
       return apiClient.post('discussion/create');
    },
-   getDiscussion(){
-      return apiClient.get('topic/discussion/on-forum/');
+   getDiscussionOnForum(data){
+      console.log(data)
+      return apiClient.get('topic/discussion/on-forum/' , data);
    },
    discussComment(data){
       return apiClient.post(`discussion/add-comment/${data}`);
@@ -61,8 +65,9 @@ export default {
    answerSingleTopic(data){
       return apiClient.post(`topic/answer-a-topic/${data}`);
    },
-   getAllTopic(){
-      return apiClient.get('topic/topics-on-forum');
+   getAllTopicOnForum(data){
+      console.log(data)
+      return apiClient.get('topic/topics-on-forum' , data);
    },
    replyOnTopic(data){
       return apiClient.post(`topic/reply-a-topic/${data}`);

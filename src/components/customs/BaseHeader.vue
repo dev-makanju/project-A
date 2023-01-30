@@ -90,9 +90,7 @@
                <router-link class="btn__lin__nav active" :to="{name:'sign-in'}">Sign In</router-link>
             </c-box>
             <c-box v-if="this.$store.getters.isLoggedIn" display="flex" gap="10px">
-               <c-box :display="{base:'none' , lg:'flex'}">
-                  <router-link class="btn__lin__nav" :to="{name:'forum'}">Forum</router-link>
-               </c-box>
+               <router-link class="btn__lin__nav" :to="{name:'forum'}">Forum</router-link>
             </c-box>
          </template>
       </c-flex>
