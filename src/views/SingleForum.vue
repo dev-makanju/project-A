@@ -16,48 +16,9 @@
                <BaseForum :forumData="forumData"/>
             </c-box>
             <c-box v-if="forumLoading">
-               <c-box h="40px" w="120px" mt="1rem" mb="1rem" bgColor="#eee"></c-box>
-               <c-box>
-                  <!-- forum -->
-                  <c-box margin="1rem 0px 2rem 0px">
-                     <div class="img-hdr">
-                        <img src="" 
-                        class="image-holder" onerror="this.style.display='none'">
-                     </div>
-                     <c-box w="100%" bg="#eee" mt="1rem" h="100px">
-                     </c-box>
-
-                     <c-box color="blue" mt="1rem" bgColor="#eee" h="30px" w="100%"></c-box>
-
-                     <c-box color="blue" mt="1rem" bgColor="#eee" h="30px" w="100%"></c-box>
-
-                     <c-box m="1rem 0px">
-                        <c-heading color="#001027" font-size="14px">This forum was created by:</c-heading>
-                        <c-box  display="flex" padding="10px 10px 0px 10px" gap=".4rem">
-                           <c-box>
-                              <c-box 
-                                 display="flex" align-items="center" 
-                                 justify-content="center" 
-                                 h="100px" 
-                                 w="100px" 
-                                 border="1px solid #eee" 
-                                 border-radius="5px" 
-                                 bgColor="#eee">
-                                 <c-text font-size="50px" font-weight="bold" color="#fff">Hey</c-text>
-                              </c-box>
-                           </c-box>
-                           <c-box display="flex" justify-content="space-between" w="full" gap=".4rem" pb="10px">
-                              <c-box>
-                                 <c-box color="#001027"  h="30px" w="200"></c-box>
-                                 <c-box  bgColor="#eee" h="30px" w="200px"></c-box>
-                                 <c-box  bgColor="#eee" h="30px" w="200px"></c-box>
-                                 <c-box  bgColor="#eee" h="30px" w="200px" mt="1rem"></c-box>
-                              </c-box>
-                           </c-box>
-                        </c-box>
-                     </c-box>
-                  </c-box>
-               </c-box>
+               <c-stack h="400px" w="100%" display="flex" justify-content="center" align-items="center" is-inline :spacing="4">
+                  <c-spinner size="lg" />
+               </c-stack>
             </c-box>
             <c-box v-else> 
                <c-heading font-size="30px" mt="1rem" mb="1rem" color="rgba(0, 0, 0, 0.8)">{{ forum.name }} Forum</c-heading>
@@ -100,15 +61,15 @@
                                  border="1px solid #eee" 
                                  border-radius="5px" 
                                  bgColor="#e74e3c">
-                                 <c-text font-size="50px" font-weight="bold" color="#fff">{{ returnFirstLetter(forum.createdBy.firstName) }}</c-text>
+                                 <c-text font-size="50px" font-weight="bold" color="#fff">{{ returnFirstLetter(forum.createdBy?.firstName) }}</c-text>
                               </c-box>
                            </c-box>
                            <c-box display="flex" justify-content="space-between" w="full" gap=".4rem" pb="10px">
                               <c-box>
-                                 <c-heading color="#001027" font-size="20px">{{forum.createdBy.firstName}} {{forum.createdBy.lastName}}</c-heading>
-                                 <c-text font-size="12px" color="#001027" opacity=".7">{{ forum.createdBy.occupation }}</c-text>
-                                 <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime( forum.createdBy.createdAt ) }}</c-text>
-                                 <c-text font-size="12px" color="blue" opacity=".7" mt="1rem">{{ forum.createdBy.email }}</c-text>
+                                 <c-heading color="#001027" font-size="20px">{{forum.createdBy?.firstName}} {{forum.createdBy?.lastName}}</c-heading>
+                                 <c-text font-size="12px" color="#001027" opacity=".7">{{ forum?.createdBy?.occupation }}</c-text>
+                                 <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime( forum?.createdBy?.createdAt ) }}</c-text>
+                                 <c-text font-size="12px" color="blue" opacity=".7" mt="1rem">{{ forum?.createdBy?.email }}</c-text>
                               </c-box>
                            </c-box>
                         </c-box>
@@ -123,13 +84,29 @@
                            
                         <c-tab-panels>
                            <c-tab-panel>
-                              <c-box mt="2rem">     
+                              <c-box mt="2rem">  
+                                 <c-box box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" p="1rem" mb="2rem">
+                                    <c-form-control is-required mt="1rem">
+                                       <c-textarea v-model="topicContent"/>
+                                    </c-form-control>
+                                    <c-button @click="postTopic" :is-loading="isLoadingTopic" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Topic</c-button>
+                                 </c-box>   
                                  <TopicPost :title="'Topics'" :topic="topics"/>
                                  <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
                            <c-tab-panel>
                               <c-box mt="2rem">
+                                 <c-box box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" p="1rem" mb="2rem">
+                                    <c-form-control is-required>
+                                       <c-form-label for="fname">Discussion Title</c-form-label>
+                                       <c-input id="fname" v-model="discussTitle"  placeholder="Forum Name" />
+                                    </c-form-control>
+                                    <c-form-control is-required mt="1rem">
+                                       <c-textarea v-model="discussionContent" placeholder="Enter the dicussion content"/>
+                                    </c-form-control>
+                                    <c-button @click="postDisscussion" :is-loading="isLoadingDiscuss" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Discussion</c-button>
+                                 </c-box>
                                  <BaseDiscussion :title="'Discussions'"/>
                                  <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
@@ -157,7 +134,14 @@ import {
    CTabList,
    CTabPanels,
    CTab,
-   CTabPanel
+   CTabPanel,
+   CFormControl,
+   CFormLabel,
+   CInput,
+   CTextarea, 
+   CButton,
+   CStack , 
+   CSpinner , 
 } from '@chakra-ui/vue';
 import BaseForum from '@/components/customs/BaseForum.vue';
 import TopicPost from '@/components/customs/BasePost.vue';
@@ -168,6 +152,8 @@ import Moment from "moment";
 export default {
    name:'single-forum',
    components: {
+      CStack , 
+      CSpinner, 
       CText,
       BaseDiscussion,
       CGrid, 
@@ -180,10 +166,20 @@ export default {
       CTabList,
       CTabPanels,
       CTab,
-      CTabPanel
+      CTabPanel,
+      CFormControl,
+      CFormLabel,
+      CInput,
+      CTextarea, 
+      CButton
    },
    data(){
       return {
+         topicContent: '',
+         discussTitle: '',
+         discussionContent:'',
+         isLoadingDiscuss: false,
+         isLoadingTopic: false,
          forumData: {
             loading: false,
             data: [],
@@ -199,19 +195,107 @@ export default {
       }
    },
    mounted(){
-      if(this.$store.state.forum.length !== 0){
-         this.forumData.data = this.$store.state.forum;
-         return;
-      }else{
-         this.getForum();
-      }
-
-      this.fetchSingleAction();
+      this.$nextTick(function () { 
+         if(this.$store.state.forum.length !== 0){
+            this.forumData.data = this.$store.state.forum;
+         }else{
+            this.getForum();
+         }
+         this.fetchSingleAction();
+      })
    },
    methods: {
-      ...mapActions([ 'getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum']),
+      ...mapActions([ 'getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum' , 'createAtopic', 'createADiscuss']),
       returnFirstLetter(value){
-         return value.charAt(0);
+         return value?.charAt(0);
+      },
+      showToast(){
+         this.$toast({
+            title: this.title,
+            description: this.description,
+            status: this.status,
+            duration: 10000,
+            position:'top',
+            variant: 'subtle',
+         })
+      },
+      postDisscussion(){
+         if(this.discussTitle === '' || this.discussionContent === ""){
+         this.title = 'Oops!!!'
+         this.description = 'input fields cannot be empty!'
+         this.status = 'error'  
+         this.showToast();    
+         }else{
+            let input = {
+               forum_name: this.forum.name,
+               content: this.discussionContent
+            }
+            this.isLoadingDiscuss = true;
+            this.createADiscuss(input).then(res => {
+               if(res.status === 201){
+                  console.log(res)
+                  this.isLoadingDiscuss = false;
+                  this.title = 'Hurray!!!'
+                  this.description = 'Discussion created successfuly!'
+                  this.status = 'success' 
+                  this.showToast();
+                  this.discussTitle = '';
+                  this.discussionContent = ''; 
+               }else{    
+                  this.isLoadingDiscuss = false;
+                  this.title = 'Oops!!!';
+                  this.description = 'Error creating discussion!';
+                  this.status = 'error';  
+                  this.showToast();
+               }
+            }).catch(err => {
+               this.isLoadingDiscuss = false;
+               this.title = 'Oops!!!'
+               this.description = 'An error occured , please try again!'
+               this.status = 'error'; 
+               this.showToast(); 
+               err;
+            });
+         }
+      },
+      postTopic(){
+         if(this.topicContent === ''){
+         this.title = 'Oops!!!'
+         this.description = 'input fields cannot be empty!'
+         this.status = 'error'  
+         this.showToast();    
+         }else{
+            let input = {
+               content: this.topicContent,
+               forum: this.forum.name,
+            }
+            this.isLoadingTopic = true;
+            this.createAtopic(input).then(res => {
+               if(res.status === 201){
+                  console.log(res)
+                  this.isLoadingTopic = false;
+                  this.title = 'Hurray!!!'
+                  this.description = 'Topic created successfuly!'
+                  this.status = 'success' 
+                  this.showToast();
+                  this.discussTitle = ''
+                  this.discussionContent = '' 
+               }else{    
+                  this.isLoadingTopic = false;
+                  this.title = 'Oops!!!';
+                  this.description = 'Error creating topic!';
+                  this.status = 'error';  
+                  this.showToast();
+               }
+            }).catch(err => {
+               this.isLoadingTopic = false;
+               this.title = 'Oops!!!';
+               this.description = 'An error occured , please try again!';
+               this.status = 'error'; 
+               this.showToast(); 
+               err;
+            });
+         }
       },
       getForum(){
          this.forumData.loading = true;
@@ -227,7 +311,6 @@ export default {
       },
       fetchSingleAction(){
          const id = this.$route.params.id
-         console.log(id)
          this.forumLoading = true;
          this.getSingleForumAction(id).then(res => {
             if(res.status){
@@ -257,8 +340,7 @@ export default {
          }
          this.getTopicByForum(data).then(res => {
             if(res.status){
-               console.log(data)
-               console.log(res)
+               //
             }
          }).catch(err => {
             err;
@@ -270,8 +352,7 @@ export default {
          }
          this.getDiscussionByForum(data).then(res => {
             if(res.status){
-               console.log(data)
-               console.log(res)
+               //
             }
          }).catch(err => {
             err;

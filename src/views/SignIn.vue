@@ -86,6 +86,8 @@ export default {
             description: this.messageInfo,
             status: this.statusInfo,
             duration: 10000,
+            position:'top',
+            variant: 'subtle',
          })
       },
       loginUser(){
@@ -98,16 +100,15 @@ export default {
             }
             this.loading = true;
             this.userLogin(input).then( res => {
-               console.log(res)
-               if(res.status){
+               if(res.status === 200){
                   this.loading = false;
+                  console.log(res.data.message , 'error')
                   this.$router.push('/forum');
                }else {
-                  this.toastTitle = 'Error!'
+                  this.toastTitle = 'Oops!!!'
                   this.statusInfo = 'error';
                   this.loading = false;
-                  console.log(res.data.error.message)
-                  this.messageInfo = res.data.error.message
+                  this.messageInfo = res.data.message
                   this.showToast()
                }
             }).catch(err => {

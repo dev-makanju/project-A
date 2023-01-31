@@ -86,22 +86,19 @@ export default {
       }
    },
    created(){
-      if(this.$store.state.forum.length !== 0){
-         this.forumData.data = this.$store.state.forum;
-         return;
-      }else{
-         this.getForum();
-      }
+      this.$nextTick(function () {
+         if(this.$store.state.forum.length !== 0){
+            this.forumData.data = this.$store.state.forum;
+         }else{
+            this.getForum();
+         }
 
-      console.log('dicuss page',this.$store.state.discussions)
-
-      if(this.$store.state.discussions.length !== 0){
-         this.discussion.data = this.$store.state.discussions;
-         console.log(this.discussion.data)
-         return;
-      }else{
-         this.getPopularDiscussion();
-      }
+         if(this.$store.state.discussions.length !== 0){
+            this.discussion.data = this.$store.state.discussions;
+         }else{
+            this.getPopularDiscussion();
+         } 
+      })  
    },
    methods: {
       ...mapActions(['getAllForumAction' , 'getAllDiscussAction']), 

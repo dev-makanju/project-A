@@ -43,12 +43,11 @@ export default {
    getAllForum(){
       return apiClient.get('forum/get-all-forums');
    },
-   createDiscuss(){
-      return apiClient.post('discussion/create');
+   createDiscuss(data){
+      return apiClient.post('discussion/create' , data);
    },
    getDiscussionOnForum(data){
-      console.log(data)
-      return apiClient.get('topic/discussion/on-forum/' , data);
+      return apiClient.get('discussion/on-forum/' , data);
    },
    discussComment(data){
       return apiClient.post(`discussion/add-comment/${data}`);
@@ -57,7 +56,7 @@ export default {
       return apiClient.get(`discussion/${data}`);
    },
    createTopic(data){
-      return apiClient.post(`topic/${data}`);
+      return apiClient.post(`topic/create` , data);
    },
    getSingleTopic(data){
       return apiClient.get(`topic/${data}`);
@@ -66,7 +65,6 @@ export default {
       return apiClient.post(`topic/answer-a-topic/${data}`);
    },
    getAllTopicOnForum(data){
-      console.log(data)
       return apiClient.get('topic/topics-on-forum' , data);
    },
    replyOnTopic(data){

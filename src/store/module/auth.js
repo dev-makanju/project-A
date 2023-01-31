@@ -15,6 +15,9 @@ const getters = {
 }
 
 const mutations = {
+   USER_REGISTERED(){
+      //
+   },
    USER_DELETED(state){
       state.isDeletingUser = 'deleted'
    },
@@ -29,7 +32,6 @@ const mutations = {
 const actions = {
    //USER LOGGED IN
    async userLogin({commit} , data){
-      console.log('called')
       try { 
          const response = await eventService.loginEvent(data)
          console.log(response.status , response);

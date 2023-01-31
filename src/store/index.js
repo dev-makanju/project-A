@@ -25,6 +25,12 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
+    UPDATE_DISCUSS(){
+      //
+    },
+    UPDATE_TOPIC(){
+      //
+    },
     SET_ALL_FORUM(state , payload){
       state.forum = payload.forums.slice(0 , 5)
     },
@@ -42,11 +48,11 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async createAForum(data){
+    async createAForum({commit},data){
       try{
         const response = await eventService.createForum(data)
         if(response.status){
-          console.log(response);
+          commit('SET_FOLLOW');
         }
         return response;
       }catch(err){
@@ -75,11 +81,12 @@ export default new Vuex.Store({
         return err.response;
       }
     },
-    async createAtopic(data){
+    async createAtopic({commit} , data){
       try{
         const response = await eventService.createTopic(data)
         if(response.status){
           console.log(response);
+          commit('UPDATE_TOPIC');
         }
         return response; 
       }catch(err){
@@ -108,11 +115,12 @@ export default new Vuex.Store({
         return err.response;
       }
     },
-    async createADiscuss(data){
+    async createADiscuss({commit},data){
       try{
         const response = await eventService.createDiscuss(data);
         if(response.status){
           console.log(response);
+          commit('UPDATE_DISCUSS')
         }
         return response;
       }catch(err){

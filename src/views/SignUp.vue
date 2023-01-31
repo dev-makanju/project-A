@@ -111,6 +111,8 @@ export default {
             description: this.messageInfo,
             status: this.statusInfo,
             duration: 10000,
+            position:'top',
+            variant: 'subtle',
          })
       },
       registerUser(){
@@ -138,7 +140,7 @@ export default {
                if(res.status === 201){
                   this.loading = false;
                   this.statusInfo = 'success';
-                  this.toastTitle = 'Account created!'
+                  this.toastTitle = 'Hurray!!'
                   console.log(res.data)
                   this.messageInfo = res.data.message
                   this.showToast()

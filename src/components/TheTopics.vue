@@ -83,13 +83,14 @@
          }
       },
       mounted(){
-         if(this.$store.state.forum.length !== 0){
-            this.forumData.data = this.$store.state.forum;
-            return;
-         }else{
-            this.getForum();
-         }
-         this.fetchAllTopics();
+         this.$nextTick(function () { 
+            if(this.$store.state.forum.length !== 0){
+               this.forumData.data = this.$store.state.forum;
+            }else{
+               this.getForum();
+            }
+            this.fetchAllTopics();
+         })
       },
       methods: {
          ...mapActions([ 'getAllForumAction','getAllTopicAction']), 
