@@ -47,6 +47,9 @@ export default {
    getDiscussionOnForum(data){
       return apiClient.get('discussion/on-forum/' , data);
    },
+   getUser(){
+      return apiClient.get('user/me');
+   },
    discussComment(data){
       return apiClient.post(`discussion/add-comment/${data}`);
    },

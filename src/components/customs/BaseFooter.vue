@@ -156,7 +156,7 @@
          CBox,
          CText,
          CHeading,
-         CLink,
+         CLink,   
       }
    }
 </script>
@@ -169,5 +169,11 @@
          padding: 10px;
          min-width: 120px;
       }
+   }
+
+   .report {
+      color: blue;
+      font-weight:400;
+      cursor:'pointer';
    }
 </style>

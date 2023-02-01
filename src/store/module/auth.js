@@ -6,6 +6,10 @@ const state = {
    token: localStorage.getItem('mastertoken') || '',
    user:{},
    status:'',
+   firstname: '',
+   lastname: '',
+   occupation: '',
+   email: '',
 }
 
 const getters = {
@@ -15,7 +19,13 @@ const getters = {
 }
 
 const mutations = {
+   STATUS(){
+      //
+   },
    USER_REGISTERED(){
+      //
+   },
+   USER_STATUS(){
       //
    },
    USER_DELETED(state){
@@ -25,7 +35,11 @@ const mutations = {
       state.token = ''
    },
    USER_DATA( state , payload){
-      state.token = payload.token
+      state.user = payload;
+      state.firstname = payload.firstName;
+      state.lastname = payload.lastName;
+      state.email = payload.email;
+      state.occupation = payload.occupation;
    },
 }
 
@@ -34,7 +48,6 @@ const actions = {
    async userLogin({commit} , data){
       try { 
          const response = await eventService.loginEvent(data)
-         console.log(response.status , response);
          if(response.status === 200){
             const token = response.data.token;
             localStorage.setItem("mastertoken" , token);
@@ -65,17 +78,10 @@ const actions = {
    async getUserInfo({commit}){
       try{
          commit("STATUS");
-         const response = await eventService.getUserEvent();
+         const response = await eventService.getUser();
          if(response.status){   
-            const token = localStorage.getItem("mastertoken");
-            const user = response.data.data
-            const role = response.data.data.role
-            const data = {
-               token: token,
-               userRole: role,
-               user: user 
-            }  
-            commit("USER_DATA", data);
+            const user = response.data.data.user
+            commit("USER_DATA", user);
             commit('USER_STATUS');
          }
          return response;
@@ -88,7 +94,6 @@ const actions = {
          const response = await eventService.getUserByIdEvent(data)
          if(response.status){
             commit('RAW');
-            console.log(response)
          }
          return response
       }catch(err){

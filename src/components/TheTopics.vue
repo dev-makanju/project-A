@@ -123,9 +123,9 @@
                createdAt: new Date().toLocaleString(),
                content: data.input.answer,
                replied_by: {
-                  firstName: "Oluwafemi",
-                  lastName: "Abbey",
-                  occupation: 'Software Engineer',
+                  firstName: this.$store.state.auth.firstname,
+                  lastName: this.$store.state.auth.lastname,
+                  occupation: this.$store.state.auth.occupation,
                }
             }
 

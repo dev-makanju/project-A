@@ -43,7 +43,9 @@
                <c-box display='flex' gap="10px" align-items="center" v-if="isLoggedIn">
                   <c-box>
                      <div class="img-holder">
-                        <c-text font-size="22px" color="#fff" font-weight="600">F</c-text>
+                        <c-text font-size="22px" color="#fff" font-weight="600">
+                           {{ $store.state.auth.firstname.charAt(0) }}
+                        </c-text>
                      </div>
                   </c-box>
                </c-box>
@@ -115,6 +117,7 @@
       CBreadcrumbItem,
       CBreadcrumbLink,
    } from "@chakra-ui/vue";
+   import { mapGetters } from 'vuex'
 
    export default {
       name:'BaseHeader',
@@ -144,15 +147,15 @@
          }
       },
       mounted(){
-         this.isLandingPage()
+
       },
       methods: {
+         ...mapGetters(['user']),
          setPlacement(value) {
             this.placement = value
          },
          close () {
-            this.isOpen = false
-            console.log('hello')
+            this.isOpen = false;
          },
          closeNav(){
             this.isOpen = false

@@ -117,9 +117,9 @@ export default {
       onReplied(data){
          const newComment = {
          createdAt: new Date().toLocaleString(),
-         firstName: "Oluwafemi",
-         lastName: "Abbey",
-         occupation: 'Software Engineer',
+         firstName: this.$store.state.auth.firstname,
+         lastName: this.$store.state.auth.lastname,
+         occupation: this.$store.state.auth.occupation,
          content: data.input.comment,
       }
       console.log(newComment)

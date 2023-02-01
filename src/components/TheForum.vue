@@ -270,9 +270,9 @@
          onReply(data){
             const newComment = {
                createdAt: new Date().toLocaleString(),
-               firstName: "Oluwafemi",
-               lastName: "Abbey",
-               occupation: 'Software Engineer',
+               firstName: this.$store.state.auth.firstname,
+               lastName: this.$store.state.auth.lastname,
+               occupation: this.$store.state.auth.occupation,
                content: data.input.comment,
             }
 
@@ -287,13 +287,11 @@
                createdAt: new Date().toLocaleString(),
                content: data.input.answer,
                replied_by:{
-                  firstName: "Oluwafemi",
-                  lastName: "Abbey",
-                  occupation: 'Software Engineer',
+                  firstName: this.$store.state.auth.firstname,
+                  lastName: this.$store.state.auth.lastname,
+                  occupation: this.$store.state.auth.occupation,
                }
             }
-            console.log(data)
-
             this.topics.data.forEach(item => {
                if(item._id === data.id){
                   item.answer.unshift(newComment);

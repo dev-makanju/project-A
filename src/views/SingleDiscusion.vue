@@ -13,7 +13,8 @@
             <c-box :display="{ base:'block' , md:'none' }">
                <BaseForum :forumData="forumData"/>
             </c-box>
-            <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="loading" is-inline :spacing="4">
+            <div id="scroll-track">
+                  <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="loading" is-inline :spacing="4">
                <c-spinner size="lg" />
             </c-stack>
             <c-box v-else>
@@ -47,7 +48,13 @@
                         <img class="discussion-image" src="https://cdn.pixabay.com/photo/2017/08/30/07/56/clock-2696234_960_720.jpg" onerror="this.style.display='none'">
                      </c-box>
                   </c-box>
-                  <BaseShare :buttonText="'replies'" :answer="data.replies" :pin="data.retweet"/>
+                  <BaseShare 
+                        :buttonText="'replies'" 
+                        :answer="data.replies" 
+                        :pin="data.retweet"  
+                        :url="`${getBaseUrl()}${$route.fullPath}`" 
+                        :title="`${data.uploader?.firstName}  ${data.uploader?.lastName}  ` + 'created a topic on protektMe'"
+                        :description="data.topic"/>
                   <c-box mt="1rem">
                      <!-- content editable div -->
                      <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
@@ -60,6 +67,7 @@
                   </c-box>
                </c-box>
             </c-box>
+            </div>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , md:'block' }">
             <BaseForum :forumData="forumData"/>
@@ -113,6 +121,7 @@
                this.getForum();
             }
             this.fetchSingleDiscuss()
+            this.scrollToView()
          })
       },
       methods: {
