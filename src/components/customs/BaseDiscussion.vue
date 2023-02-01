@@ -1,7 +1,7 @@
 <template>
    <c-box>
       <c-heading color="rgba(0, 0, 0, 0.8)" font-size="30px" padding=".5rem 0px">{{ title }}</c-heading>
-      <c-box v-for="data in discussion"  :key="data._id" padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
+      <c-box v-for="data in discussion"  :key="data._id" padding="20px" overflow="hidden" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
          <router-link class="nav-link" :to="{name: 'single-discuss' , params:{id:data._id}}">
              <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
                <c-box>
@@ -40,27 +40,14 @@
             :title="`${data.uploader?.firstName}  ${data.uploader?.lastName}  ` + 'created a topic on protektMe'"
             :description="data.topic"
          />
-         <c-box mt="1rem">
-            <!-- content editable div -->
-            <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
-         </c-box>
-         <c-box padding="12px">
-            <c-box>
-               <!-- show comment -->
-               <BaseComment :answer="data.replies"/>
-            </c-box>
-         </c-box>
       </c-box>
    </c-box>
 </template>
 <script>
 
 import { CHeading , CBox , CText } from '@chakra-ui/vue';
-import CustomComment from '@/components/CustomComment.vue';
-import BaseComment from '@/components/customs/BaseComment.vue';
 import BaseShare from '@/components/customs/BaseShare.vue';
 import Moment from "moment";
-import { mapActions } from 'vuex';
 
 export default {
    name: 'BaseDiscussion',
@@ -74,11 +61,9 @@ export default {
    },
    components: {
       BaseShare,
-      BaseComment,
       CHeading,
       CBox,
       CText,
-      CustomComment,
    },
    data(){
       return {
@@ -89,53 +74,11 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['commentOnDiscussion']), 
-      formatTime(value){
-         return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
-      },
-      showToast(){
-         this.$toast({
-            title: this.titleContent,
-            description: this.description,
-            status: this.status,
-            duration: 10000,
-            position:'top',
-            variant: 'subtle',
-         })
-      },
-      SubmitComment(value , id){
-         let data = {
-            id: id,
-            input: {
-               comment: value
-            }
-         }
-         this.commentOnDiscussion(data).then(res => {
-            if(res.status === 201){
-               this.titleContent = 'Success!!';
-               this.description = 'You added a comment!';
-               this.status = 'success'; 
-               this.successful = true;
-               this.showToast();
-               this.$emit('replied' , data )
-            }else{
-               this.titleContent = 'Failed Comment!!!';
-               this.description = 'An error occured , please try again!';
-               this.successful = true;
-               this.status = 'error'; 
-               this.showToast();
-            }
-         }).catch(err => {
-            this.titleContent = 'Error!!!';
-            this.successful = true;
-            this.description = 'Please try again!';
-            this.status = 'error'; 
-            this.showToast();
-            err;
-         });
-      },
       getBaseUrl(){
          return window.location.origin;
+      },
+      formatTime(value){
+         return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
       },
    }
 }

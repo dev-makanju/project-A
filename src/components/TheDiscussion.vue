@@ -34,7 +34,7 @@
             <BaseForum :forumData="forumData"/>
          </c-box>
          <c-box v-if="!discussion.loading">
-            <BaseDiscussion @replied="onReplied" :title="'Discussion'" :discussion="discussion.data"/>
+            <BaseDiscussion :title="'Discussion'" :discussion="discussion.data"/>
          </c-box>
          <c-box v-else>
             <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" is-inline :spacing="4">
@@ -113,34 +113,6 @@ export default {
             this.forumData.loading = false;
             err;
          })
-      },
-      onReplied(data){
-         const newComment = {
-         createdAt: new Date().toLocaleString(),
-         firstName: this.$store.state.auth.firstname,
-         lastName: this.$store.state.auth.lastname,
-         occupation: this.$store.state.auth.occupation,
-         content: data.input.comment,
-      }
-      console.log(newComment)
-
-      this.discussion.data.forEach(item => {
-         if(item._id === data.id){
-            const newComment = {
-               createdAt: new Date().toLocaleString(),
-               firstName: "Oluwafemi",
-               lastName: "Abbey",
-               occupation: 'Software Engineer',
-               content: data.input.comment,
-            }
-
-            this.discussion.data.forEach(item => {
-               if(item._id === data.id){
-                  item.replies.unshift(newComment);
-               } 
-            });
-         } 
-      });
       },
       getPopularDiscussion(){
          this.discussion.loading = true;

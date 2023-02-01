@@ -31,28 +31,16 @@
             :title="`${data.uploader?.firstName}  ${data.uploader?.lastName}  ` + 'created a topic on protektMe'"
             :description="data.topic" 
             :answer="data.answer" 
-            :pin="data.pins"/>
-         <c-box mt="1rem">
-            <!-- content editable div -->
-            <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment"/>
-         </c-box>
-         <c-box padding="12px">
-            <c-box>
-               <!-- show comment -->
-               <BaseComment :answer="data.answer"/>
-            </c-box>
-         </c-box>
+            :pin="data.pins"
+         />
       </c-box>
    </c-box>
 </template>
 <script>
 
 import { CHeading , CBox , CText } from '@chakra-ui/vue';
-import CustomComment from '@/components/CustomComment.vue';
-import BaseComment from '@/components/customs/BaseComment.vue';
 import BaseShare from '@/components/customs/BaseShare.vue';
 import Moment from "moment";
-import { mapActions } from 'vuex'
 
 export default {
    name: 'BasePost',
@@ -66,11 +54,9 @@ export default {
    },
    components: {
       BaseShare,
-      BaseComment,
       CHeading,
       CBox,
       CText,
-      CustomComment,
    },
    data(){
       return {
@@ -81,7 +67,6 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['commentOnTopic']),
       returnFirstLetter(value){
          return value.charAt(0);
       },
@@ -91,47 +76,6 @@ export default {
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
       },
-      showToast(){
-         this.$toast({
-            title: this.titleContent,
-            description: this.description,
-            status: this.status,
-            duration: 10000,
-            position:'top',
-            variant: 'subtle',
-         })
-      },
-      SubmitComment(value , id){
-         let data = {
-            id: id,
-            input: {
-               answer: value
-            }
-         }
-         this.commentOnTopic(data).then(res => {
-            if(res.status === 201){
-               this.titleContent = 'Success!!';
-               this.description = 'You added a comment!';
-               this.status = 'success'; 
-               this.successful = true;
-               this.showToast();
-               this.$emit('replied' , data )
-            }else{
-               this.titleContent = 'Failed Comment!!!';
-               this.description = 'An error occured , please try again!';
-               this.successful = true;
-               this.status = 'error'; 
-               this.showToast();
-            }
-         }).catch(err => {
-            this.titleContent = 'Error!!!';
-            this.successful = true;
-            this.description = 'Please try again!';
-            this.status = 'error'; 
-            this.showToast();
-            err;
-         });
-      }
    }
 }
 
