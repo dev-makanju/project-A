@@ -361,7 +361,7 @@ export default {
             forum_name: name
          }
          this.getTopicByForum(data).then(res => {
-            console.log(res , 'topic')
+            console.log(res)
             if(res.status){
                //
             }
@@ -374,7 +374,7 @@ export default {
             forum_name: name
          }
          this.getDiscussionByForum(data).then(res => {
-            console.log(res , 'dicuss')
+            console.log(res)
             if(res.status){
                //
             }

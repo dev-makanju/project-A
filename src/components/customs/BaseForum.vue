@@ -60,7 +60,9 @@
          </c-box>
       </c-box>    
       <c-box padding="5px" border-top="1px solid #eee">
-         <c-heading opacity=".5" font-size="14px" padding="10px" text-align="center" text-decoration="underline">View All</c-heading> 
+         <router-link class="nav-link" :to="{ name: 'all-forum'}">
+            <c-heading opacity=".5" font-size="14px" padding="10px" text-align="center" text-decoration="underline">View All</c-heading> 
+         </router-link>
       </c-box>    
    </c-box>
 </template>

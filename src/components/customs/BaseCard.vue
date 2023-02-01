@@ -103,7 +103,9 @@
          </template>
       </c-flex>
       <c-box display="flex" justify-content="center" mt="2rem" mb="2rem">
-         <c-button variant-color="blue" size="md" border="none">see more</c-button>
+         <router-link class="nav-link" :to="{name:'all-forum'}">
+            <c-button variant-color="blue" size="md" border="none">see more</c-button>
+         </router-link>
       </c-box>
    </div>
 </template>

@@ -174,7 +174,6 @@
             }
          },
          redirect(value){
-            console.log(value)
             this.$router.push({ name: value})
          },
          showToast(){

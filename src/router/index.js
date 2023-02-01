@@ -12,6 +12,8 @@ import PageShell from '@/layouts/PageShell';
 import store from '../store';
 import SingleTopic from '../views/SingleTopic.vue';
 import SingleDiscuss from '../views/SingleDiscusion.vue';
+import AllForum from '../views/AllForum.vue';
+
 
 Vue.use(VueRouter)
 
@@ -61,6 +63,15 @@ const routes = [
         component: SingleForumPage,
         meta: {
           title: 'Forum',
+          requiresAuth: true,
+        }
+      },
+      {
+        path:'all-forum/',
+        name:'all-forum',
+        component: AllForum,
+        meta: {
+          title: 'All forum',
           requiresAuth: true,
         }
       },
