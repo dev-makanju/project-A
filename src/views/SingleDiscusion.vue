@@ -8,9 +8,7 @@
       mb="6rem"
       max-width="1440px"
       >
-         <c-grid-item :display="{ base:'none' , xl:'block' }">
-            
-         </c-grid-item>
+         <c-grid-item :display="{ base:'none' , xl:'block' }"></c-grid-item>
          <c-grid-item>
             <c-box :display="{ base:'block' , md:'none' }">
                <BaseForum :forumData="forumData"/>

@@ -26,7 +26,12 @@
                <c-text font-size="16px" font-weight="600" color="#555555">{{ data.topic }}</c-text>
             </c-box>
          </router-link>
-         <BaseShare :answer="data.answer" :pin="data.pins"/>
+         <BaseShare 
+            :url="`${getBaseUrl()}/topic/${data._id}`" 
+            :title="`${data.uploader?.firstName}  ${data.uploader?.lastName}  ` + 'created a topic on protektMe'"
+            :description="data.topic" 
+            :answer="data.answer" 
+            :pin="data.pins"/>
          <c-box mt="1rem">
             <!-- content editable div -->
             <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment"/>
@@ -79,6 +84,9 @@ export default {
       ...mapActions(['commentOnTopic']),
       returnFirstLetter(value){
          return value.charAt(0);
+      },
+      getBaseUrl(){
+         return window.location.origin;
       },
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); 

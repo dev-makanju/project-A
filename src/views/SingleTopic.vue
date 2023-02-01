@@ -48,7 +48,7 @@
                         <c-text font-size="16px" font-weight="600" color="#555555">{{ data.topic }}</c-text>
                      </c-box>
                      <BaseShare 
-                        :url="$route.fullPath" 
+                        :url="`${getBaseUrl()}${$route.fullPath}`" 
                         :title="`${data.uploader?.firstName}  ${data.uploader?.lastName}  ` + 'created a topic on protektMe'"
                         :description="data.topic"
                         :answer="data.answer" 
@@ -136,6 +136,9 @@
                this.forumData.loading = false;
                err;
             })
+         },
+         getBaseUrl(){
+            return window.location.origin;
          },
          formatTime(value){
             return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
