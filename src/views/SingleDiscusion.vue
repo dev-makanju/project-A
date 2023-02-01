@@ -9,27 +9,9 @@
       max-width="1440px"
       >
          <c-grid-item :display="{ base:'none' , xl:'block' }">
-            <Basefilter/>
-            <c-box mt="2rem">
-               <BaseSort/>
-            </c-box>
+            
          </c-grid-item>
          <c-grid-item>
-            <c-box mb="1rem" :display="{ base:'block' , xl:'none'}">
-                  <c-menu>
-                     <c-menu-button right-icon="chevron-down">
-                        Filters
-                     </c-menu-button>
-                     <c-menu-list>
-                        <c-box>
-                           <Basefilter/>
-                           <c-box mt="2rem">
-                              <BaseSort/>
-                           </c-box>
-                        </c-box>
-                     </c-menu-list>
-                  </c-menu>
-            </c-box>
             <c-box :display="{ base:'block' , md:'none' }">
                <BaseForum :forumData="forumData"/>
             </c-box>
@@ -47,28 +29,21 @@
 </template>
 <script>
 
-   import { CStack ,CSpinner , CGrid, CGridItem , CBox , CMenu , CMenuButton , CMenuList } from '@chakra-ui/vue';
-   import Basefilter from '@/components/customs/BaseFlter.vue';
-   import BaseSort from '@/components/customs/BaseSort.vue';
+   import { CStack ,CSpinner , CGrid, CGridItem , CBox } from '@chakra-ui/vue';
    import BaseForum from '@/components/customs/BaseForum.vue';
    import TopicPost from '@/components/customs/BasePost.vue';
    import { mapActions } from 'vuex'
 
    export default {
-      name:'the-topics',
+      name:'single-discussion',
       components: {
          CGrid, 
          CStack,
          CSpinner,
          CGridItem,
-         Basefilter,
          CBox,
-         BaseSort,
          BaseForum,
          TopicPost,
-         CMenu,
-         CMenuButton,
-         CMenuList,
       },
       data(){
          return {
@@ -106,7 +81,8 @@
                err;
             })
          },
-         fetchAllTopics(){
+         fetchSingleTopic(){
+            const id = this.$route.params.id
             this.topics.loading = true;
             this.getAllTopicAction().then(res => {
                if(res.status){
@@ -122,7 +98,7 @@
             const newComment = {
                createdAt: new Date().toLocaleString(),
                content: data.input.answer,
-               replied_by: {
+               replied_by:{
                   firstName: "Oluwafemi",
                   lastName: "Abbey",
                   occupation: 'Software Engineer',

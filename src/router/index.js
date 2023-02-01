@@ -9,7 +9,9 @@ import TopicView from '@/views/TopicView';
 import NotFound from '../views/NotFound.vue';
 import SingleForumPage from '../views/SingleForum.vue';
 import PageShell from '@/layouts/PageShell';
-import store from '../store'
+import store from '../store';
+import SingleTopic from '../views/SingleTopic.vue';
+import SingleDiscuss from '../views/SingleDiscusion.vue';
 
 Vue.use(VueRouter)
 
@@ -59,6 +61,24 @@ const routes = [
         component: SingleForumPage,
         meta: {
           title: 'Forum',
+          requiresAuth: true,
+        }
+      },
+      {
+        path:'topic/:id',
+        name:'single-topic',
+        component: SingleTopic,
+        meta: {
+          title: 'Forum',
+          requiresAuth: true,
+        }
+      },
+      {
+        path:'discussion/:id',
+        name:'single-discuss',
+        component: SingleDiscuss,
+        meta: {
+          title: 'discussion',
           requiresAuth: true,
         }
       },

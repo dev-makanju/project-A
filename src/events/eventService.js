@@ -66,7 +66,7 @@ export default {
       return apiClient.get('topic/topics-on-forum' , data);
    },
    replyOnTopic(data){
-      return apiClient.post(`topic/reply-a-topic/${data}`);
+      return apiClient.patch(`topic/answer-a-topic/${data.id}` , data.input);
    },
    followForum(data){
       return apiClient.patch('forum/enroll-a-forum' ,data);

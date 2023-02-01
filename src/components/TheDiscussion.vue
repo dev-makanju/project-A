@@ -120,13 +120,25 @@ export default {
          firstName: "Oluwafemi",
          lastName: "Abbey",
          occupation: 'Software Engineer',
-         content: data.comment,
+         content: data.input.comment,
       }
       console.log(newComment)
 
       this.discussion.data.forEach(item => {
          if(item._id === data.id){
-            item.replies.prepend(newComment);
+            const newComment = {
+               createdAt: new Date().toLocaleString(),
+               firstName: "Oluwafemi",
+               lastName: "Abbey",
+               occupation: 'Software Engineer',
+               content: data.input.comment,
+            }
+
+            this.discussion.data.forEach(item => {
+               if(item._id === data.id){
+                  item.replies.unshift(newComment);
+               } 
+            });
          } 
       });
       },

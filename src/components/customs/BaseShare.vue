@@ -32,11 +32,9 @@
             <c-box  display="flex" gap="1rem" flex-direction="row">
                <ShareNetwork
                   network="facebook"
-                  url="https://news.vuejs.org/issues/180"
-                  title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                  description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                  quote="The hot reload is so fast it\'s near instant. - Evan You"
-                  hashtags="vuejs,vite"
+                  :url="url"
+                  :title="title"
+                  :description="description"
                >
                <c-box cursor="pointer">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,11 +51,9 @@
                </ShareNetwork>
                <ShareNetwork
                   network="linkedin"
-                  url="https://news.vuejs.org/issues/180"
-                  title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                  description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                  quote="The hot reload is so fast it\'s near instant. - Evan You"
-                  hashtags="vuejs,vite"
+                  :url="url"
+                  :title="title"
+                  :description="description"
                >
                <c-box cursor="pointer">
                   <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,12 +69,10 @@
                </c-box>
                </ShareNetwork>
                <ShareNetwork
-                  network="whatsapp"
-                  url="https://news.vuejs.org/issues/180"
-                  title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                  description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                  quote="The hot reload is so fast it\'s near instant. - Evan You"
-                  hashtags="vuejs,vite"
+                  network="twitter"
+                  :url="url"
+                  :title="title"
+                  :description="description"
                >
                <c-box cursor="pointer">
                   <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,12 +81,10 @@
                </c-box>
                </ShareNetwork>
                <ShareNetwork
-                  network="twitter"
-                  url="https://news.vuejs.org/issues/180"
-                  title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                  description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                  quote="The hot reload is so fast it\'s near instant. - Evan You"
-                  hashtags="vuejs,vite"
+                  network="whatsapp"
+                  :url="url"
+                  :title="title"
+                  :description="description"
                >
                <c-box cursor="pointer">
                   <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

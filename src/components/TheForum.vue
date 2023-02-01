@@ -33,7 +33,7 @@
                </c-box>
             </c-box>
             <c-box v-if="!topics.loading">
-               <TopicPost :title="'Hot Topics'" :topic="topics"/>
+               <TopicPost :title="'Hot Topics'" @replied="onReplyTopic" :topic="topics"/>
             </c-box>
             <c-box v-else>
                <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="topics.loading" is-inline :spacing="4">
@@ -147,6 +147,7 @@
                loading: false,
                data: [],
             }
+            
          }
       },
       created(){
@@ -156,7 +157,7 @@
          })   
       },
       methods: {
-         ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction' , 'getAllTopicAction' , 'createAForum']),
+         ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction' , 'getAllTopicAction' , 'createAForum' ]),
          
          fetchPageData(){
             if(this.$store.state.discussions.length !== 0){
@@ -275,13 +276,27 @@
                content: data.input.comment,
             }
 
-            console.log(data)
-
             this.discussion.data.forEach(item => {
                if(item._id === data.id){
-                  console.log(newComment)
                   item.replies.unshift(newComment);
-                  console.log(item)
+               } 
+            });
+         },
+         onReplyTopic(data){
+            const newComment = {
+               createdAt: new Date().toLocaleString(),
+               content: data.input.answer,
+               replied_by:{
+                  firstName: "Oluwafemi",
+                  lastName: "Abbey",
+                  occupation: 'Software Engineer',
+               }
+            }
+            console.log(data)
+
+            this.topics.data.forEach(item => {
+               if(item._id === data.id){
+                  item.answer.unshift(newComment);
                } 
             });
          },

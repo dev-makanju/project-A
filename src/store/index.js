@@ -25,6 +25,9 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
+    DEFAULT(){
+      //just a placeholder form
+    },
     UPDATE_DISCUSS(){
       //
     },
@@ -112,11 +115,11 @@ export default new Vuex.Store({
         return err.response;
       }
     },
-    async getSingleTopicAction(data){
+    async getSingleTopicAction({commit},data){
       try{
         const response = await eventService.getSingleTopic(data);
         if(response.status){
-           console.log(response);
+           commit('DEFAULT')
         }
         return response;
       }catch(err){
@@ -201,7 +204,17 @@ export default new Vuex.Store({
         const response = await eventService.commentOnDiscussion(data);
         if(response.status){
           commit('UPDATE_DICUSSION_COMMENT' , false)
-          console.log(response);
+        }
+        return response;
+      }catch(err){
+        return err.response;
+      }
+    },
+    async commentOnTopic({commit} , data){
+      try{
+        const response = await eventService.replyOnTopic(data);
+        if(response.status){
+          commit('UPDATE_DICUSSION_COMMENT' , false)
         }
         return response;
       }catch(err){
