@@ -29,7 +29,7 @@
                      <c-button @click="createForum" :is-loading="isCreating" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Create Forum</c-button>
                   </c-box>
                <c-box>
-                  <BaseCard :forumData="forumCard"/>
+                  <BaseCard @following="isFollowing" :forumData="forumCard"/>
                </c-box>
             </c-box>
             <c-box v-if="!topics.loading">
@@ -55,7 +55,7 @@
             </p>
             <c-box mt="2rem">
                <c-box v-if="!discussion.loading">   
-                  <BaseDiscussion :title="'Popular Discussion'" :discussion="discussion.data"/>
+                  <BaseDiscussion :title="'Popular Discussion'" @replied="onReply" :discussion="discussion.data"/>
                   <p @click.prevent="redirect('discussion')">
                      <c-text 
                         v-if="discussion.data.length !== 0" 
@@ -195,18 +195,20 @@
            }else{
                let input = {
                   name: this.forumName,
+                  description: this.forumDesc,
+                  image:'https://cdn.pixabay.com/photo/2016/04/15/08/04/strawberry-1330459_960_720.jpg'
                }
                this.isCreating = true;
                this.createAForum(input).then(res => {
                   if(res.status === 201){
-                     console.log(res)
                      this.isCreating = false;
                      this.title = 'Hurray!!!'
                      this.description = 'forum created successfuly!'
                      this.status = 'success' 
                      this.showToast();
-                     this.forumName = ''
-                     this.forumDesc = '' 
+                     this.forumName = '';
+                     this.forumDesc = '';
+ 
                   }else{    
                      this.isCreating = false;
                      this.title = 'Oops!!!';
@@ -262,6 +264,32 @@
             }).catch(err => {
                this.topics.loading = false;
                err;
+            })
+         },
+         onReply(data){
+            const newComment = {
+               createdAt: new Date().toLocaleString(),
+               firstName: "Oluwafemi",
+               lastName: "Abbey",
+               occupation: 'Software Engineer',
+               content: data.input.comment,
+            }
+
+            console.log(data)
+
+            this.discussion.data.forEach(item => {
+               if(item._id === data.id){
+                  console.log(newComment)
+                  item.replies.unshift(newComment);
+                  console.log(item)
+               } 
+            });
+         },
+         isFollowing(value){
+            this.forumCard.data.forEach(item => {
+               if(item._id === value){
+                  item.isFollowing = true;
+               }
             })
          }
       }

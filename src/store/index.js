@@ -31,6 +31,14 @@ export default new Vuex.Store({
     UPDATE_TOPIC(){
       //
     },
+    UPDATE_DICUSSION_COMMENT(){
+      //
+    },
+    UPDATE_FORUM(state , payload){
+      if(state.forum.length < 5){
+        state.forum = state.forum.push(payload);
+      }
+    },
     SET_ALL_FORUM(state , payload){
       state.forum = payload.forums.slice(0 , 5)
     },
@@ -52,7 +60,7 @@ export default new Vuex.Store({
       try{
         const response = await eventService.createForum(data)
         if(response.status){
-          commit('SET_FOLLOW');
+          commit('UPDATE_FORUM' , response.data.forum);
         }
         return response;
       }catch(err){
@@ -188,6 +196,18 @@ export default new Vuex.Store({
         return err.response;
       }
     },
+    async commentOnDiscussion({commit} , data){
+      try{
+        const response = await eventService.commentOnDiscussion(data);
+        if(response.status){
+          commit('UPDATE_DICUSSION_COMMENT' , false)
+          console.log(response);
+        }
+        return response;
+      }catch(err){
+        return err.response;
+      }
+    }
   },
   modules: {
     auth,

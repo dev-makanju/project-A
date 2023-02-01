@@ -67,20 +67,36 @@
                         Explore the definition, and examples of interpersonal conflict, and the primary types.
                      </c-text>
                      <c-box mt="1rem" position="absolute" bottom="12px">
-                        <c-button 
-                           variant-color="blue" 
-                           mb=".5rem" 
-                           border="none" 
-                           border-radius="7px" 
-                           cursor="pointer" 
-                           font-size="14px"
-                           @click="follow(forum.name , forum._id)"
-                           :is-loading="forum._id === selected"
-                        >
-                           follow
-                        </c-button>
+                        <template>
+                           <c-box v-if="forum?.isFollowing">
+                              <c-text 
+                                 font-size="14px" 
+                                 mb="1rem" 
+                                 line-height="1.5" 
+                                 color="blue" 
+                                 font-weight="600"
+                              >
+                                 following
+                              </c-text>
+                           </c-box>
+                           <c-box v-else>
+                              <c-button 
+                                 variant-color="blue" 
+                                 mb=".5rem" 
+                                 border="none" 
+                                 border-radius="7px" 
+                                 cursor="pointer" 
+                                 font-size="14px"
+                                 @click="follow(forum?.name , forum._id)"
+                                 :is-loading="forum._id === selected"
+                              >
+                                 follow
+                              </c-button>
+                           </c-box>
+                        </template>
                            <c-flex font-size="10px" color="blue">
-                           {{ forum?.enrolled?.length }} Enrolled | {{ forum?.followers?.length }} Members | {{ forum?.topics?.length }} Active daily Post</c-flex>
+                           {{ forum?.enrolled?.length }} Enrolled | {{ forum?.followers?.length }} Members | {{ forum?.topics?.length }} Active daily Post
+                           </c-flex>
                      </c-box>
                   </c-box>
                </c-flex>
@@ -151,6 +167,7 @@ export default {
                this.description = `You have succefully followed ${name} forum`
                this.status = 'success'
                this.showToast()
+               this.$emit('following' , id)
                return; 
             }
             this.title = 'Failed!'

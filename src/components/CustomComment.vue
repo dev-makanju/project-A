@@ -102,7 +102,7 @@ export default {
   components: {
     VEmojiPicker,
   },
-  props: ["successful"],
+  props: ["successful" , "id"],
   data() {
     return {
       isChecked: false,
@@ -151,7 +151,8 @@ export default {
       }
     },
     submitComment() {
-      this.$emit("newComment", this.$refs.comment.innerHTML);
+      this.showEmoji = false;
+      this.$emit("newComment", this.$refs.comment.innerHTML , this.id);
       this.$refs.commentInput.classList.add("opacity");
       this.$refs.commentBtn.disabled = true;
       this.$refs.commentBtn.style.cursor = "not-allowed";

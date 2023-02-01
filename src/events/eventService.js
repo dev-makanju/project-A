@@ -12,8 +12,6 @@ const apiClient = axios.create({
    }
 });
 
-//
-
 const apiService = axios.create({
    baseURL:'https://forum-vmjl.onrender.com/api/v1/',
    headers:{
@@ -62,7 +60,7 @@ export default {
       return apiClient.get(`topic/${data}`);
    },
    answerSingleTopic(data){
-      return apiClient.post(`topic/answer-a-topic/${data}`);
+      return apiClient.patch(`topic/answer-a-topic/${data}` , data.input);
    },
    getAllTopicOnForum(data){
       return apiClient.get('topic/topics-on-forum' , data);
@@ -75,5 +73,8 @@ export default {
    },
    getAllTopics(){
       return apiClient.get('topic/get-topics-by-pins');
-   }
+   },
+   commentOnDiscussion(data){
+      return apiClient.patch(`discussion/add-comment/${data.id}` , data.input);
+   },
 }

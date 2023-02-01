@@ -30,19 +30,37 @@
                         class="image-holder" onerror="this.style.display='none'">
                      </div>
                      <c-text font-size="14px" mt="1rem" line-height="1.5" color="#555555" font-weight="600">
-                        Where does it come from?
-                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by Eng
+                      {{ forum?.description }}
                      </c-text>
 
-                     <c-text 
-                        font-size="14px" 
-                        mt="1rem" 
-                        line-height="1.5" 
-                        color="blue" 
-                        font-weight="600"
-                     >
-                        following
-                     </c-text>
+                     <template>
+                        <c-box v-if="forum?.isFollowing">
+                           <c-text 
+                              font-size="14px" 
+                              mt="1rem" 
+                              line-height="1.5" 
+                              color="blue" 
+                              font-weight="600"
+                           >
+                              following
+                           </c-text>
+                        </c-box>
+                        <c-box v-else>
+                           <c-button 
+                              variant-color="blue" 
+                              mb=".5rem" 
+                              border="none" 
+                              border-radius="7px" 
+                              cursor="pointer" 
+                              font-size="14px"
+                              @click="follow(forum?.name , forum._id)"
+                              :is-loading="forum._id === selected"
+                           >
+                              follow
+                           </c-button>
+                        </c-box>
+                     </template>
+      
                      <c-text font-size="12px" color="#001027" opacity=".7">created on: {{ formatTime( forum.createdAt ) }}</c-text>
 
                      <c-text font-size="12px" color="blue" mt="1rem">
@@ -192,6 +210,7 @@ export default {
          forum_discuss: {},
          forum:{},
          forumLoading: false,
+         selected: '',
       }
    },
    mounted(){
@@ -205,7 +224,7 @@ export default {
       })
    },
    methods: {
-      ...mapActions([ 'getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum' , 'createAtopic', 'createADiscuss']),
+      ...mapActions([ 'followAforum','getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum' , 'createAtopic', 'createADiscuss']),
       returnFirstLetter(value){
          return value?.charAt(0);
       },
@@ -309,25 +328,28 @@ export default {
             err;
          })
       },
+      getForumAndDisscussion(){
+         // fetch topic by topic
+         if(this.$store.state.forum_topic.data.length !== 0){
+            this.forum_topic = this.$store.state.forum_topic.data;
+         }else{
+            this.fetchTopicByForum(this.forum.name)
+         }
+         // fetch dicussion under topic
+         if(this.$store.state.forum_discuss.data.length !== 0){
+            this.forum_discuss = this.$store.state.forum_discuss.data;
+         }else {
+            this.fetchDiscussByForum(this.forum.name)
+         }
+      },
       fetchSingleAction(){
          const id = this.$route.params.id
          this.forumLoading = true;
          this.getSingleForumAction(id).then(res => {
-            if(res.status){
+            if(res.status === 200){
                this.forumLoading = false;
                this.forum = res.data.forum;
-               // fetch topic by topic
-               if(this.$store.state.forum_topic.data.length !== 0){
-                  this.forum_topic = this.$store.state.forum_topic.data;
-               }else{
-                  this.fetchTopicByForum(this.forum.name)
-               }
-               // fetch dicussion under topic
-               if(this.$store.state.forum_discuss.data.length !== 0){
-                  this.forum_discuss = this.$store.state.forum_discuss.data;
-               }else{
-                  this.fetchDiscussByForum(this.forum.name)
-               }
+               this.getForumAndDisscussion();
             }
          }).catch(err => {
             this.forumLoading = false;
@@ -339,6 +361,7 @@ export default {
             forum_name: name
          }
          this.getTopicByForum(data).then(res => {
+            console.log(res , 'topic')
             if(res.status){
                //
             }
@@ -351,12 +374,41 @@ export default {
             forum_name: name
          }
          this.getDiscussionByForum(data).then(res => {
+            console.log(res , 'dicuss')
             if(res.status){
                //
             }
          }).catch(err => {
             err;
          })
+      },
+      follow(name , id){
+         this.selected = id
+         let data = {
+            forum_name: name,
+         }
+         this.followAforum(data).then(res => {
+            this.selected = ''
+            if(res.status === 200){
+               this.title = 'Success'
+               this.description = `You have succefully followed ${name} forum`
+               this.status = 'success'
+               this.forum.isFollowing = true;
+               this.showToast()
+               return; 
+            }
+            this.title = 'Failed!'
+            this.description = res.data.message
+            this.status = 'error'
+            this.showToast()
+         }).catch(err => {
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = 'Oops!, something went wrong'
+            this.status = 'error'
+            this.showToast()
+            err;
+         });
       },
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); //=> "Friday 2:00pm 1 Feb 2013"

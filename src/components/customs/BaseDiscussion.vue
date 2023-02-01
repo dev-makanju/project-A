@@ -34,12 +34,12 @@
          <BaseShare :buttonText="'replies'" :answer="data.replies" :pin="data.retweet"/>
          <c-box mt="1rem">
             <!-- content editable div -->
-            <CustomComment :title="'comment'"/>
+            <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
          </c-box>
          <c-box padding="12px">
             <c-box>
                <!-- show comment -->
-               <BaseComment/>
+               <BaseComment :answer="data.replies"/>
             </c-box>
          </c-box>
       </c-box>
@@ -52,6 +52,7 @@ import CustomComment from '@/components/CustomComment.vue';
 import BaseComment from '@/components/customs/BaseComment.vue';
 import BaseShare from '@/components/customs/BaseShare.vue';
 import Moment from "moment";
+import { mapActions } from 'vuex';
 
 export default {
    name: 'BaseDiscussion',
@@ -71,9 +72,59 @@ export default {
       CText,
       CustomComment,
    },
+   data(){
+      return {
+         titleContent: '',
+         description: '',
+         status:'',
+         successful: false,
+      }
+   },
    methods: {
+      ...mapActions(['commentOnDiscussion']), 
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
+      },
+      showToast(){
+         this.$toast({
+            title: this.titleContent,
+            description: this.description,
+            status: this.status,
+            duration: 10000,
+            position:'top',
+            variant: 'subtle',
+         })
+      },
+      SubmitComment(value , id){
+         let data = {
+            id: id,
+            input: {
+               comment: value
+            }
+         }
+         this.commentOnDiscussion(data).then(res => {
+            if(res.status === 201){
+               this.titleContent = 'Success!!';
+               this.description = 'You added a comment!';
+               this.status = 'success'; 
+               this.successful = true;
+               this.showToast();
+               this.$emit('replied' , data )
+            }else{
+               this.titleContent = 'Failed Comment!!!';
+               this.description = 'An error occured , please try again!';
+               this.successful = true;
+               this.status = 'error'; 
+               this.showToast();
+            }
+         }).catch(err => {
+            this.titleContent = 'Error!!!';
+            this.successful = true;
+            this.description = 'Please try again!';
+            this.status = 'error'; 
+            this.showToast();
+            err;
+         });
       }
    }
 }

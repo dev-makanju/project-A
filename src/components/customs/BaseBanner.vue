@@ -132,7 +132,6 @@ export default {
          switch(forum){
             case 'forum':
                this.isForum = true;
-               console.log(forum)
                break;
             case 'discussion':
                this.isDiscussion = true;
@@ -148,7 +147,6 @@ export default {
    },
    watch:{
       $route(){
-         console.log('changed');
          this.checkScreen();
       }
    }
