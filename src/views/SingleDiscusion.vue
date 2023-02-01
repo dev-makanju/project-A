@@ -84,7 +84,7 @@
          fetchSingleTopic(){
             const id = this.$route.params.id
             this.topics.loading = true;
-            this.getAllTopicAction().then(res => {
+            this.getAllTopicAction(id).then(res => {
                if(res.status){
                   this.topics.loading = false;
                   this.topics.data = res.data.topics;
