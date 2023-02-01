@@ -63,7 +63,7 @@ export default {
       return apiClient.patch(`topic/answer-a-topic/${data}` , data.input);
    },
    getAllTopicOnForum(data){
-      return apiClient.get('topic/topics-on-forum' , data);
+      return apiClient.get('topic/topics-on-forum' , data );
    },
    replyOnTopic(data){
       return apiClient.patch(`topic/answer-a-topic/${data.id}` , data.input);

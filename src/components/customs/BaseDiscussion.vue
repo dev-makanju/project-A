@@ -2,30 +2,32 @@
    <c-box>
       <c-heading color="rgba(0, 0, 0, 0.8)" font-size="30px" padding=".5rem 0px">{{ title }}</c-heading>
       <c-box v-for="data in discussion"  :key="data._id" padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
-         <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
-            <c-box>
-               <c-box padding="10px" h="50px" w="50px" display="flex" align-items="center" justify-content="center" border="1px solid #eee" border-radius="50%" bgColor="#390d0d">
-                  <c-text font-size="20px" font-weight="bold" color="#fff">{{ data.uploader.firstName.charAt(0) }}</c-text>
-               </c-box>
-            </c-box>
-            <c-box display="flex" gap=".4rem" pb="10px" w="full" justify-content="space-between">
+         <router-link class="nav-link" :to="{name: 'single-discuss' , params:{id:data._id}}">
+             <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
                <c-box>
-                  <c-heading color="#001027" font-size="16px">{{ data.uploader.firstName }} {{ data.uploader.lastName }}</c-heading>
-                  <c-text font-size="12px" color="#001027" opacity=".7">{{ data.uploader.occupation }}</c-text>
-                  <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime(data.uploader.createdAt) }}</c-text>
+                  <c-box padding="10px" h="50px" w="50px" display="flex" align-items="center" justify-content="center" border="1px solid #eee" border-radius="50%" bgColor="#390d0d">
+                     <c-text font-size="20px" font-weight="bold" color="#fff">{{ data.uploader.firstName.charAt(0) }}</c-text>
+                  </c-box>
                </c-box>
-               <c-box display="flex" gap=".2rem">
-                  <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
-                  <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
-                  <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+               <c-box display="flex" gap=".4rem" pb="10px" w="full" justify-content="space-between">
+                  <c-box>
+                     <c-heading color="#001027" font-size="16px">{{ data.uploader.firstName }} {{ data.uploader.lastName }}</c-heading>
+                     <c-text font-size="12px" color="#001027" opacity=".7">{{ data.uploader.occupation }}</c-text>
+                     <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime(data.uploader.createdAt) }}</c-text>
+                  </c-box>
+                  <c-box display="flex" gap=".2rem">
+                     <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                     <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                     <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                  </c-box>
                </c-box>
             </c-box>
-         </c-box>
-         <c-box padding="12px">
-            <c-text font-size="16px" font-weight="600" color="#555555">How does the flow of people, goods and culture impact places?</c-text>
-            <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ data.content }}</c-text>
-            <c-text font-size="10px" mt=".5rem" font-weight="600" text-decoration="underline" cursor="pointer" color="#555555">View more</c-text>
-         </c-box>
+            <c-box padding="12px">
+               <c-text font-size="16px" font-weight="600" color="#555555">How does the flow of people, goods and culture impact places?</c-text>
+               <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ data.content }}</c-text>
+               <c-text font-size="10px" mt=".5rem" font-weight="600" text-decoration="underline" cursor="pointer" color="#555555">View more</c-text>
+            </c-box>
+         </router-link>
          <c-box>
             <c-box bgColor="#eee" height="300px" border="1px solid #eee">
                <img class="discussion-image" src="https://cdn.pixabay.com/photo/2017/08/30/07/56/clock-2696234_960_720.jpg" onerror="this.style.display='none'">
@@ -131,7 +133,7 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .discussion-image {
       height: 300px;
       width: 100%;

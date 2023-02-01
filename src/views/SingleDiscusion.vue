@@ -13,11 +13,52 @@
             <c-box :display="{ base:'block' , md:'none' }">
                <BaseForum :forumData="forumData"/>
             </c-box>
-            <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="topics.loading" is-inline :spacing="4">
+            <c-stack  h="400px" w="100%" display="flex" justify-content="center" align-items="center" v-if="loading" is-inline :spacing="4">
                <c-spinner size="lg" />
             </c-stack>
             <c-box v-else>
-               <TopicPost @replied="onReplyTopic" :title="'Topics'" :topic="topics"/>
+               <!-- copy and paste single dicussion -->
+               <c-box padding="20px" box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" mt="1rem">
+                     <c-box display="flex" padding="10px 10px 0px 10px" gap="1rem">
+                        <c-box>
+                           <c-box padding="10px" h="50px" w="50px" display="flex" align-items="center" justify-content="center" border="1px solid #eee" border-radius="50%" bgColor="#390d0d">
+                              <c-text font-size="20px" font-weight="bold" color="#fff">{{ data.uploader?.firstName?.charAt(0) }}</c-text>
+                           </c-box>
+                        </c-box>
+                        <c-box display="flex" gap=".4rem" pb="10px" w="full" justify-content="space-between">
+                           <c-box>
+                              <c-heading color="#001027" font-size="16px">{{ data?.uploader?.firstName }} {{ data.uploader?.lastName }}</c-heading>
+                              <c-text font-size="12px" color="#001027" opacity=".7">{{ data.uploader?.occupation }}</c-text>
+                              <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime(data.uploader?.createdAt) }}</c-text>
+                           </c-box>
+                           <c-box display="flex" gap=".2rem">
+                              <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                              <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                              <c-box h="4px" w="4px" bgColor="#1667DF" border-radius="50%"></c-box>
+                           </c-box>
+                        </c-box>
+                     </c-box>
+                     <c-box padding="12px">
+                        <c-text font-size="16px" font-weight="600" color="#555555">How does the flow of people, goods and culture impact places?</c-text>
+                        <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ data.content }}</c-text>
+                     </c-box>
+                  <c-box>
+                     <c-box bgColor="#eee" height="300px" border="1px solid #eee">
+                        <img class="discussion-image" src="https://cdn.pixabay.com/photo/2017/08/30/07/56/clock-2696234_960_720.jpg" onerror="this.style.display='none'">
+                     </c-box>
+                  </c-box>
+                  <BaseShare :buttonText="'replies'" :answer="data.replies" :pin="data.retweet"/>
+                  <c-box mt="1rem">
+                     <!-- content editable div -->
+                     <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
+                  </c-box>
+                  <c-box padding="12px">
+                     <c-box>
+                        <!-- show comment -->
+                        <BaseComment :answer="data.replies"/>
+                     </c-box>
+                  </c-box>
+               </c-box>
             </c-box>
          </c-grid-item>
          <c-grid-item :display="{ base:'none' , md:'block' }">
@@ -27,10 +68,13 @@
 </template>
 <script>
 
-   import { CStack ,CSpinner , CGrid, CGridItem , CBox } from '@chakra-ui/vue';
+   import { CStack ,CSpinner , CGrid, CGridItem , CBox , CText, CHeading } from '@chakra-ui/vue';
    import BaseForum from '@/components/customs/BaseForum.vue';
-   import TopicPost from '@/components/customs/BasePost.vue';
    import { mapActions } from 'vuex'
+   import Moment from "moment"; 
+   import CustomComment from '@/components/CustomComment.vue';
+   import BaseComment from '@/components/customs/BaseComment.vue';
+   import BaseShare from '@/components/customs/BaseShare.vue';
 
    export default {
       name:'single-discussion',
@@ -41,7 +85,11 @@
          CGridItem,
          CBox,
          BaseForum,
-         TopicPost,
+         CustomComment,
+         BaseShare,
+         BaseComment,
+         CText,
+         CHeading,
       },
       data(){
          return {
@@ -49,10 +97,12 @@
                loading: false,
                data: [],
             },
-            topics: {
-               loading: false,
-               data: [],
-            }
+            titleContent: '',
+            description:'',
+            status: '', 
+            successful: false,
+            loading: false,
+            data: {},
          }
       },
       mounted(){
@@ -62,11 +112,11 @@
             }else{
                this.getForum();
             }
-            this.fetchAllTopics();
+            this.fetchSingleDiscuss()
          })
       },
       methods: {
-         ...mapActions([ 'getAllForumAction','getAllTopicAction']), 
+         ...mapActions([ 'getAllForumAction','getSingleDiscussion' , 'commentOnDiscussion']), 
          getForum(){
             this.forumData.loading = true;
             this.getAllForumAction().then(res => {
@@ -79,34 +129,80 @@
                err;
             })
          },
-         fetchSingleTopic(){
+         getBaseUrl(){
+            return window.location.origin;
+         },
+         formatTime(value){
+            return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
+         },
+         returnFirstLetter(value){
+           return value?.charAt(0);
+         },
+         showToast(){
+            this.$toast({
+               title: this.titleContent,
+               description: this.description,
+               status: this.status,
+               duration: 10000,
+               position:'top',
+               variant: 'subtle',
+            })
+         },
+         scrollToView(){
+            const view = document.getElementById('scroll-track')
+            view.scrollIntoView({behavior: "smooth"});
+         },
+         fetchSingleDiscuss(){
             const id = this.$route.params.id
-            this.topics.loading = true;
-            this.getAllTopicAction(id).then(res => {
+            this.loading = true;
+            this.getSingleDiscussion(id).then(res => {
                if(res.status){
-                  this.topics.loading = false;
-                  this.topics.data = res.data.topics;
+                  this.loading = false;
+                  this.data = res.data.content;
                }
             }).catch(err => {
-               this.topics.loading = false;
+               this.loading = false;
                err;
             })
          },
-         onReplyTopic(data){
-            const newComment = {
-               createdAt: new Date().toLocaleString(),
-               content: data.input.answer,
-               replied_by:{
-                  firstName: "Oluwafemi",
-                  lastName: "Abbey",
-                  occupation: 'Software Engineer',
-               }
+         SubmitComment(value , id){
+         let data = {
+            id: id,
+            input: {
+               answer: value
             }
-
-            this.topics.data.forEach(item => {
-               if(item._id === data.id){
-                  item.answer.unshift(newComment);
-               } 
+         }
+         this.commentOnDiscussion(data).then(res => {
+               if(res.status === 201){
+                  this.titleContent = 'Success!!';
+                  this.description = 'You added a comment!';
+                  this.status = 'success'; 
+                  this.successful = true;
+                  this.showToast();
+                  const newComment = {
+                     createdAt: new Date().toLocaleString(),
+                     content: data.input.answer,
+                     replied_by:{
+                        firstName: "Oluwafemi",
+                        lastName: "Abbey",
+                        occupation: 'Software Engineer',
+                     }
+                  }
+                  this.data.answer.unshift(newComment);
+               }else{
+                  this.titleContent = 'Failed Comment!!!';
+                  this.description = 'An error occured , please try again!';
+                  this.successful = true;
+                  this.status = 'error'; 
+                  this.showToast();
+               }
+            }).catch(err => {
+               this.titleContent = 'Error!!!';
+               this.successful = true;
+               this.description = 'Please try again!';
+               this.status = 'error'; 
+               this.showToast();
+               err;
             });
          },
       }

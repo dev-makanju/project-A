@@ -149,11 +149,11 @@ export default new Vuex.Store({
         return err.response;
       }
     },
-    async getSingleDiscussion(data){
+    async getSingleDiscussion({commit},data){
       try{
-        const response = await eventService.replyOnTopic(data);
+        const response = await eventService.getSingleDiscuss(data);
         if(response.status){
-          //
+          commit("DEFAULT");
         } 
         return response;
       }catch(err){
