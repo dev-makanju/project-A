@@ -9,14 +9,16 @@
       >
          <c-box dispaly="flex">
             <!-- App name -->
-            <c-box display='flex' gap="10px" align-items="center">
-               <c-box>
-                  <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
+            <router-link class="nav-link" :to="{name:'home'}">
+               <c-box display='flex' gap="10px" align-items="center">
+                  <c-box>
+                     <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
+                  </c-box>
+                  <c-heading :display="{base:'none' ,sm: 'block'}" color="white" fontSize="20px">
+                     ProtektMe
+                  </c-heading>
                </c-box>
-               <c-heading :display="{base:'none' ,sm: 'block'}" color="white" fontSize="20px">
-                  ProtektMe
-               </c-heading>
-            </c-box>
+            </router-link>
          </c-box>
          <c-box display="flex" align-items="center" gap="1rem" v-if="!isIndexPage">
             <c-box 

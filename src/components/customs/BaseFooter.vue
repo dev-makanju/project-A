@@ -2,14 +2,16 @@
    <c-box padding="2rem" bgColor="#1B2643" width="100%">   
       <c-flex :width="{ base:'90%', md: '80%' }" m="auto" :flex-wrap="{ base:'wrap' , lg:'nowrap'}" gap="2.5rem">
          <c-box dispaly="flex">
-            <c-box mb="1.5rem" display='flex' gap="10px" align-items="center">
-               <c-box>
-                  <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
+            <router-link class="nav-link" :to="{name: 'home'}">
+               <c-box mb="1.5rem" display='flex' gap="10px" align-items="center">
+                  <c-box>
+                     <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
+                  </c-box>
+                  <c-heading color="white" fontSize="20px">
+                     ProtektMe
+                  </c-heading>
                </c-box>
-               <c-heading color="white" fontSize="20px">
-                  ProtektMe
-               </c-heading>
-            </c-box>
+            </router-link>
             <c-box>
                <c-text letterSpacing=".6px" color="rgba(255, 255, 255, 0.6)" fontSize="12px">
                   Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. In malesuada laoreet id porttitor augue amet nec praesent. Aliquam nunc dui mollis volutpat orci a urna elementum. Vitae malesuada placerat fermentum pellentesque. Ultrices.
@@ -32,15 +34,15 @@
                </ul>
             </c-flex>
             <c-flex>
-               <ul class="footer-link">
+               <ul v-if="$store.getters.isLoggedIn" class="footer-link">
                   <li>              
-                     <c-link font-size="14px" color="white" as="router-link" to="/">Forum</c-link>   
+                     <c-link font-size="14px" color="white" as="router-link" to="/forum">Forum</c-link>   
                   </li>
                   <li>              
-                     <c-link font-size="14px" color="white" as="router-link" to="/">Topics</c-link>   
+                     <c-link font-size="14px" color="white" as="router-link" to="/topics">Topics</c-link>   
                   </li>
                   <li>              
-                     <c-link font-size="14px" color="white" as="router-link" to="/">Discussion</c-link>   
+                     <c-link font-size="14px" color="white" as="router-link" to="/discussion">Discussion</c-link>   
                   </li>
                   <li>              
                      <c-link font-size="14px" color="white" as="router-link" to="/">Chat</c-link>   

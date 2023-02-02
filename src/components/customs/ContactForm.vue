@@ -11,9 +11,9 @@
             padding="2rem"
             >
             <c-box w="full" mt="1rem">   
-               <c-input border="1px solid #eeeeee" placeholder="Please Input your email address"/>
+               <c-input v-model.trim="email" border="1px solid #eeeeee" placeholder="Please Input your email address"/>
                <c-box mt="2rem" w="full" display="flex" justify-content="center">
-                  <c-button variant-color="green" bgColor="#FFC872" color="#000" border="none">Subscribe Now</c-button>
+                  <c-button @click="submitForm" variant-color="blue" bgColor="#FFC872" color="#000" border="none">Subscribe Now</c-button>
                </c-box>
             </c-box>
          </c-box>
@@ -31,7 +31,42 @@ export default {
       CBox,
       CInput,
       CButton,
-   }
+   },
+   data(){
+      return {
+         email: '',
+         title: '',
+         status: '',
+         content:'',
+      }
+   },
+   methods: {
+      showToast() {
+         this.$toast({
+            title: this.title,
+            description: this.content,
+            status: this.status,
+            duration: 10000,
+            position: top,
+         })
+      },
+      submitForm(){
+         const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+         const email = regex.test(this.email);
+         
+         if(email){
+            this.title = 'Thank You !!'
+            this.content = "You have successfully sign up for our newsletter"
+            this.status = 'success';
+            this.showToast() 
+            return;
+         }
+            this.title = 'Invalid Email !!'
+            this.content = "Kindly provide a valid email address"
+            this.status = 'error';
+            this.showToast();
+      }
+   },
 }
 </script>
 <style lang="scss">
