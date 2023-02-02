@@ -49,8 +49,26 @@
                   overflow="hidden"
                >
                   <div class="img-hdr">
-                     <img src="https://cdn.pixabay.com/photo/2023/01/07/07/16/houses-7702757_960_720.jpg" 
-                     class="image-holder" onerror="this.style.display='none'">
+                     <template>
+                        <c-box v-if="forum?.photo !== ''">
+                           <img 
+                              :src="forum?.photo" 
+                              class="image-holder" 
+                              onerror="this.style.display='none'"
+                           >
+                        </c-box>
+                        <c-box 
+                           v-else
+                           padding="10px" display="flex" align-items="center" 
+                           justify-content="center" 
+                           h="100%" 
+                           w="100%"  
+                           :bgColor="`${returnBgColor()}`">
+                           <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id} , query:{name:forum.name}}">
+                              <c-text font-size="60px" font-weight="bold" color="#fff">{{ returnFirstLetter(forum?.name) }}</c-text>
+                           </router-link>
+                        </c-box>
+                     </template>
                   </div>
                   <c-box p=".8rem" h="full" position="relative">   
                      <c-flex justify-content="space-between" w="full">
@@ -64,7 +82,7 @@
                         </c-box>
                      </c-flex>
                      <c-text font-size="14px" mt=".5rem">
-                        Explore the definition, and examples of interpersonal conflict, and the primary types.
+                        {{ truncate(forum.description)  }}
                      </c-text>
                      <c-box mt="1rem" position="absolute" bottom="12px">
                         <template>
@@ -156,6 +174,16 @@ export default {
             position:'top',
             variant: 'subtle',
          })
+      },
+      truncate(data){
+         return data.slice(0 , 100) + '...'
+      },
+      returnFirstLetter(value){
+         return value.charAt(0);
+      },
+      returnBgColor(){
+         const randomColor = Math.floor(Math.random()*16777215).toString(16);
+         return "#"+randomColor;
       },
       follow(name , id){
          this.selected = id

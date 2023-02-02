@@ -185,7 +185,7 @@
             }
          }
          this.commentOnDiscussion(data).then(res => {
-               this.successful = true
+               this.successful = true;
                if(res.status === 201){
                   this.titleContent = 'Success!!';
                   this.description = 'You added a comment!';

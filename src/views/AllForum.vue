@@ -60,11 +60,7 @@
          ...mapActions([ 'getAllForumAction']),
          
          fetchPageData(){
-            if(this.$store.state.forum.length !== 0){
-               this.forumCard.data = this.$store.state.forum;
-            }else {
-               this.getForum();
-            }
+            this.getForum();
          },
          redirect(value){
             this.$router.push({ name: value})
@@ -84,7 +80,7 @@
             this.getAllForumAction().then(res => {
                if(res.status){
                   this.forumCard.loading = false;
-                  this.forumCard.data = this.$store.state.forum
+                  this.forumCard.data = res.data.forums;
                }
             }).catch(err => {
                this.forumCard.loading = false;

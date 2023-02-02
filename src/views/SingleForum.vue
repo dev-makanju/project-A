@@ -113,7 +113,6 @@
                                     <c-button @click="postTopic" :is-loading="isLoadingTopic" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Topic</c-button>
                                  </c-box>   
                                  <!-- <TopicPost :title="'Topics'" :topic="topics"/> -->
-                                 <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
                            <c-tab-panel>
@@ -131,7 +130,6 @@
                                     <c-button @click="postDisscussion" :is-loading="isLoadingDiscuss" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Discussion</c-button>
                                  </c-box>
                                  <!-- <BaseDiscussion :title="'Discussions'"/> -->
-                                 <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
                         </c-tab-panels>

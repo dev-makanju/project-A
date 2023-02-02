@@ -23,14 +23,30 @@
                </c-box>
             </c-box>
             <c-box padding="12px">
-               <c-text font-size="16px" font-weight="600" color="#555555">How does the flow of people, goods and culture impact places?</c-text>
-               <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ data.content }}</c-text>
+               <c-text font-size="16px" font-weight="600" color="#555555">{{ data.title }}</c-text>
+               <template>
+                  <c-box v-if="$route.name === 'single-discuss'">
+                     <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ data.content }}</c-text>
+                  </c-box>
+                  <c-box v-else>
+                     <c-text font-size="14px" mt=".5rem" font-weight="400" color="#555555">{{ truncate(data.content) }}</c-text>
+                  </c-box>
+               </template>
                <c-text font-size="10px" mt=".5rem" font-weight="600" text-decoration="underline" cursor="pointer" color="#555555">View more</c-text>
             </c-box>
          </router-link>
          <c-box>
-            <c-box bgColor="#eee" height="300px" border="1px solid #eee">
-               <img class="discussion-image" src="https://cdn.pixabay.com/photo/2017/08/30/07/56/clock-2696234_960_720.jpg" onerror="this.style.display='none'">
+            <c-box v-if="data.image !== ''" bgColor="#eee" height="300px" border="1px solid #eee">
+               <img class="discussion-image" :src="data.image" onerror="this.style.display='none'">
+            </c-box>
+            <c-box 
+               v-else
+               padding="10px" display="flex" align-items="center" 
+               justify-content="center" 
+               h="100%" 
+               w="100%"  
+               :bgColor="`${returnBgColor()}`">
+                  <c-text font-size="150px" font-weight="bold" color="#fff">{{ returnFirstLetter(data?.title) }}</c-text>
             </c-box>
          </c-box>
          <BaseShare 
@@ -79,6 +95,16 @@ export default {
       },
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); 
+      },
+      truncate(data){
+         return  data.slice(0 , 400) + '...'
+      },
+      returnFirstLetter(value){
+         return value.charAt(0);
+      },
+      returnBgColor(){
+         const randomColor = Math.floor(Math.random()*16777215).toString(16);
+         return "#"+randomColor;
       },
    }
 }
