@@ -20,6 +20,7 @@
                   <c-spinner size="lg" />
                </c-stack>
             </c-box>
+            <!--  block below -->
             <c-box v-else> 
                <c-heading font-size="30px" mt="1rem" mb="1rem" color="rgba(0, 0, 0, 0.8)">{{ forum.name }} Forum</c-heading>
                <c-box>
@@ -102,6 +103,8 @@
                            
                         <c-tab-panels>
                            <c-tab-panel>
+                              <!-- create topic -->
+
                               <c-box mt="2rem">  
                                  <c-box box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" p="1rem" mb="2rem">
                                     <c-form-control is-required mt="1rem">
@@ -109,12 +112,14 @@
                                     </c-form-control>
                                     <c-button @click="postTopic" :is-loading="isLoadingTopic" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Topic</c-button>
                                  </c-box>   
-                                 <TopicPost :title="'Topics'" :topic="topics"/>
+                                 <!-- <TopicPost :title="'Topics'" :topic="topics"/> -->
                                  <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
                            <c-tab-panel>
                               <c-box mt="2rem">
+                                 <!-- create a dicussion -->
+
                                  <c-box box-shadow="0px 2px 5px rgba(0 , 0 , 0 , .1)" p="1rem" mb="2rem">
                                     <c-form-control is-required>
                                        <c-form-label for="fname">Discussion Title</c-form-label>
@@ -125,7 +130,7 @@
                                     </c-form-control>
                                     <c-button @click="postDisscussion" :is-loading="isLoadingDiscuss" cursor="pointer" variant-color="blue" size="md" border="none" mt="1rem">Post Discussion</c-button>
                                  </c-box>
-                                 <BaseDiscussion :title="'Discussions'"/>
+                                 <!-- <BaseDiscussion :title="'Discussions'"/> -->
                                  <c-text text-align="center" font-size="12px" mt="1rem" color="blue" font-style="italic" cursor="pointer">view more...</c-text>
                               </c-box>
                            </c-tab-panel>
@@ -162,8 +167,8 @@ import {
    CSpinner , 
 } from '@chakra-ui/vue';
 import BaseForum from '@/components/customs/BaseForum.vue';
-import TopicPost from '@/components/customs/BasePost.vue';
-import BaseDiscussion from '@/components/customs/BaseDiscussion.vue';
+// import TopicPost from '@/components/customs/BasePost.vue';
+// import BaseDiscussion from '@/components/customs/BaseDiscussion.vue';
 import { mapActions } from 'vuex';
 import Moment from "moment";
 
@@ -173,12 +178,12 @@ export default {
       CStack , 
       CSpinner, 
       CText,
-      BaseDiscussion,
+      // BaseDiscussion,
       CGrid, 
       CGridItem,
       CBox,
       BaseForum,
-      TopicPost,
+      // TopicPost,
       CHeading,
       CTabs,
       CTabList,
@@ -221,10 +226,12 @@ export default {
             this.getForum();
          }
          this.fetchSingleAction();
+         this.fetchTopicByForum();
+         this.fetchDiscussByForum();
       })
    },
    methods: {
-      ...mapActions([ 'followAforum','getAllForumAction','getSingleForumAction','getTopicByForum','getDiscussionByForum' , 'createAtopic', 'createADiscuss']),
+      ...mapActions([ 'followAforum','getAllForumAction','getSingleForumAction','createAtopic', 'createADiscuss']),
       returnFirstLetter(value){
          return value?.charAt(0);
       },
@@ -246,7 +253,9 @@ export default {
          this.showToast();    
          }else{
             let input = {
-               forum_name: this.forum.name,
+               forum_name: this.$route.query.name,
+               image:'https://cdn.pixabay.com/photo/2021/07/27/11/22/mountains-6496638_960_720.jpg',
+               title: this.discussTitle,
                content: this.discussionContent
             }
             this.isLoadingDiscuss = true;
@@ -260,13 +269,14 @@ export default {
                   this.showToast();
                   this.discussTitle = '';
                   this.discussionContent = ''; 
-               }else{    
-                  this.isLoadingDiscuss = false;
-                  this.title = 'Oops!!!';
-                  this.description = 'Error creating discussion!';
-                  this.status = 'error';  
-                  this.showToast();
-               }
+                  this.$router.push({name:'discussion'});
+                  return;
+               }    
+               this.isLoadingDiscuss = false;
+               this.title = 'Oops!!!';
+               this.description = 'Error creating discussion!';
+               this.status = 'error';  
+               this.showToast();
             }).catch(err => {
                this.isLoadingDiscuss = false;
                this.title = 'Oops!!!'
@@ -286,26 +296,25 @@ export default {
          }else{
             let input = {
                content: this.topicContent,
-               forum: this.forum.name,
+               forum: this.$route.query.name,
             }
             this.isLoadingTopic = true;
             this.createAtopic(input).then(res => {
                if(res.status === 201){
-                  console.log(res)
                   this.isLoadingTopic = false;
                   this.title = 'Hurray!!!'
                   this.description = 'Topic created successfuly!'
                   this.status = 'success' 
                   this.showToast();
-                  this.discussTitle = ''
-                  this.discussionContent = '' 
-               }else{    
-                  this.isLoadingTopic = false;
-                  this.title = 'Oops!!!';
-                  this.description = 'Error creating topic!';
-                  this.status = 'error';  
-                  this.showToast();
-               }
+                  this.content = ''
+                  this.$router.push({name:'topics'});
+                  return;
+               }    
+               this.isLoadingTopic = false;
+               this.title = 'Oops!!!';
+               this.description = 'Error creating topic!';
+               this.status = 'error';  
+               this.showToast();
             }).catch(err => {
                this.isLoadingTopic = false;
                this.title = 'Oops!!!';
@@ -344,8 +353,15 @@ export default {
       },
       fetchSingleAction(){
          const id = this.$route.params.id
+         const name = this.$route.query.name
          this.forumLoading = true;
-         this.getSingleForumAction(id).then(res => {
+         const input = {
+            id: id,
+            input: {
+               name: name
+            }
+         }
+         this.getSingleForumAction(input).then(res => {
             if(res.status === 200){
                this.forumLoading = false;
                this.forum = res.data.forum;
@@ -353,32 +369,6 @@ export default {
             }
          }).catch(err => {
             this.forumLoading = false;
-            err;
-         })
-      },
-      fetchTopicByForum(name){
-         const data = {
-            forum_name: name
-         }
-         this.getTopicByForum(data).then(res => {
-            console.log(res)
-            if(res.status){
-               //
-            }
-         }).catch(err => {
-            err;
-         })
-      },
-      fetchDiscussByForum(name){
-         const data = {
-            forum_name: name
-         }
-         this.getDiscussionByForum(data).then(res => {
-            console.log(res)
-            if(res.status){
-               //
-            }
-         }).catch(err => {
             err;
          })
       },

@@ -39,14 +39,14 @@
                   border="1px solid #eee" 
                   border-radius="50%" 
                   :bgColor="`${returnBgColor()}`">
-                  <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id}}">
+                  <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id} , query:{name:forum.name}}">
                      <c-text font-size="20px" font-weight="bold" color="#fff">{{ returnFirstLetter(forum.name) }}</c-text>
                   </router-link>
                </c-box>
             </c-box>
             <c-box display="flex" justify-content="space-between" w="full" border-bottom="1px solid #eee" gap=".4rem" pb="10px">
                <c-box>
-                  <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id}}">
+                  <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id} , query:{name:forum.name}}">
                      <c-heading color="#555555" font-size="16px">{{ forum.name }}</c-heading>
                   </router-link>
                   <c-text font-size="12px" color="#555555" opacity=".5">{{ forum.followers.length }} followers/ {{ forum.discussion.length }} active daily post / {{ forum.enrolled.length }} menbers engagement</c-text>

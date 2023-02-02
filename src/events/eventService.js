@@ -33,7 +33,7 @@ export default {
       return apiClient.post('forum/create' , data);
    },
    getSingleForum(data){
-      return apiClient.get(`forum/get-forum/${data}`);
+      return apiClient.get(`forum/get-forum/${data.id}`);
    },
    getPopularDiscussion(){
       return apiClient.get('discussion/discussion-by-retweet');
@@ -45,7 +45,7 @@ export default {
       return apiClient.post('discussion/create' , data);
    },
    getDiscussionOnForum(data){
-      return apiClient.get('discussion/on-forum/' , data);
+      return apiClient.get('discussion/on-forum/', data);
    },
    getUser(){
       return apiClient.get('user/me');
@@ -66,6 +66,7 @@ export default {
       return apiClient.patch(`topic/answer-a-topic/${data}` , data.input);
    },
    getAllTopicOnForum(data){
+      console.log(data)
       return apiClient.get('topic/topics-on-forum' , data );
    },
    replyOnTopic(data){

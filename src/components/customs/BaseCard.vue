@@ -54,7 +54,7 @@
                   </div>
                   <c-box p=".8rem" h="full" position="relative">   
                      <c-flex justify-content="space-between" w="full">
-                        <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id}}">
+                        <router-link class="forum-link" :to="{name:'single-forum' , params:{id: forum._id} , query: {name: forum.name}}">
                            <c-heading font-size="20px" color="#2A2A2A">{{ forum.name }}</c-heading>
                         </router-link>
                         <c-box display="flex" gap=".2rem">
