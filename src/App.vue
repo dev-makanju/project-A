@@ -14,9 +14,11 @@ export default {
     //
   },
   mounted(){
-    if(this.$store.getters.isLoggedIn){
-      this.fetchUserInformation()
-    }
+    this.$nextTick(function () {
+      if(this.$store.getters.isLoggedIn){
+        this.fetchUserInformation()
+      }
+    })
   },
   methods: {
     ...mapActions(['getUserInfo']),

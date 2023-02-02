@@ -8,6 +8,7 @@
          max-width="1440px"
       >
          <c-box dispaly="flex">
+            <!-- App name -->
             <c-box display='flex' gap="10px" align-items="center">
                <c-box>
                   <img class="logo" src="../../assets/sponsor/logoicon.png" oneerror="this.style.display='none'">
@@ -18,29 +19,39 @@
             </c-box>
          </c-box>
          <c-box display="flex" align-items="center" gap="1rem" v-if="!isIndexPage">
-            <c-box :display="{base: 'none' , lg: 'flex' }" v-if="isLoggedIn">
-            <c-box display='flex' gap="10px" align-items="center">
-               <ul class="nav-link">
-                  <li>
-                     <router-link class="link" :to="{name:'forum'}">Home</router-link>
-                  </li>
-                  <li>
-                     <router-link class="link" :to="{name:'topics'}">Topic</router-link>
-                  </li>
-                  <li>
-                     <router-link class="link" :to="{name:'discussion'}">Discussion</router-link>
-                  </li>
-               </ul>
+            <c-box 
+               v-if="isAuthenticated" 
+               :display="{base: 'none' , lg: 'flex' }"
+               >
+               <!-- App navigation for logged in user -->
+               <c-box display='flex' gap="10px" align-items="center">
+                  <ul class="nav-link">
+                     <li>
+                        <router-link class="link" :to="{name:'forum'}">Home</router-link>
+                     </li>
+                     <li>
+                        <router-link class="link" :to="{name:'topics'}">Topic</router-link>
+                     </li>
+                     <li>
+                        <router-link class="link" :to="{name:'discussion'}">Discussion</router-link>
+                     </li>
+                  </ul>
+               </c-box>
             </c-box>
-            </c-box>
-            <c-box  :display="{lg: 'flex' }" :gap="{base:'10px' , sm:'1rem'}">
+            <c-box :display="{lg: 'flex' }" :gap="{base:'10px' , sm:'1rem'}">
                <c-box :display="{base: 'none' , lg: 'flex' }">   
                   <c-input-group>
                      <c-input-left-element><c-icon name="search" color="gray.300" /></c-input-left-element>
                      <c-input type="text" placeholder="search..."/>
                   </c-input-group>
                </c-box>
-               <c-box display='flex' gap="10px" align-items="center" v-if="isLoggedIn">
+               <c-box 
+                  v-if="isAuthenticated" 
+                  display='flex' 
+                  gap="10px" 
+                  align-items="center"
+               >
+                  <!-- Auth user avarter icon logged in -->
                   <c-box>
                      <div class="img-holder">
                         <c-text font-size="22px" color="#fff" font-weight="600">
@@ -51,7 +62,10 @@
                </c-box>
             </c-box>
             <!-- hamburger link -->
-            <c-box :display="{base: 'flex' , lg: 'none' }">
+            <c-box 
+                  v-if="isAuthenticated"  
+                  :display="{base: 'flex' , lg: 'none' }"
+               >
                <div>
                   <c-box @click="isOpen=true" cursor="pointer" display="flex" gap="3px" flex-direction="column">
                      <c-box w="35px" h="5px" border-radius="2px" bgColor='#fff'></c-box>
@@ -85,13 +99,20 @@
                   <c-input type="text" placeholder="search..."/>
                </c-input-group>
             </c-box>
-            <c-box v-if="!this.$store.getters.isLoggedIn" display="flex" gap="10px">
+            <c-box 
+               v-if="isAuthenticated === false" 
+               display="flex" 
+               gap="10px"
+            >
                <c-box :display="{base:'none' , lg:'flex'}">
                   <router-link class="btn__lin__nav" :to="{name:'sign-up'}">Sign Up</router-link>
                </c-box>
                <router-link class="btn__lin__nav active" :to="{name:'sign-in'}">Sign In</router-link>
             </c-box>
-            <c-box v-if="this.$store.getters.isLoggedIn" display="flex" gap="10px">
+            <c-box 
+               v-else 
+               display="flex" 
+               gap="10px">
                <router-link class="btn__lin__nav" :to="{name:'forum'}">Forum</router-link>
             </c-box>
          </template>
@@ -140,14 +161,13 @@
       },
       data(){
          return {
-            isLoggedIn: true,
             isIndexPage: false,
             isOpen: false,
             placement: 'left'
          }
       },
       mounted(){
-
+         this.isLandingPage();
       },
       methods: {
          ...mapGetters(['user']),
@@ -164,9 +184,14 @@
          isLandingPage(){
             if(this.$route.name === 'home'){
                this.isIndexPage = true
-            }else{
-               this.isIndexPage = false
+               return;
             }
+            this.isIndexPage = false
+         },
+      },
+      computed: {
+         isAuthenticated(){
+            return this.$store.getters.isLoggedIn;
          },
       },
       watch:{

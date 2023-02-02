@@ -121,7 +121,7 @@ export default {
       this.$refs.commentInput.classList.remove("opacity");
       this.$refs.commentBtn.disabled = false;
       this.$refs.commentBtn.style.cursor = "pointer";
-      this.$emit("resetSuccessful");
+      this.$emit("reset");
     },
   },
   methods: {

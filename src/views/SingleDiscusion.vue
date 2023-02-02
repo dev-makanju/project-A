@@ -57,7 +57,7 @@
                         :description="data.topic"/>
                   <c-box mt="1rem">
                      <!-- content editable div -->
-                     <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
+                     <CustomComment @reset="resetForm" :successful="successful" :id="data._id" @newComment="SubmitComment" :title="'comment'"/>
                   </c-box>
                   <c-box padding="12px">
                      <c-box>
@@ -138,6 +138,9 @@
                err;
             })
          },
+         resetForm(){
+            this.successful = false;
+         },
          getBaseUrl(){
             return window.location.origin;
          },
@@ -178,36 +181,34 @@
          let data = {
             id: id,
             input: {
-               answer: value
+               comment: value
             }
          }
          this.commentOnDiscussion(data).then(res => {
+               this.successful = true
                if(res.status === 201){
                   this.titleContent = 'Success!!';
                   this.description = 'You added a comment!';
                   this.status = 'success'; 
-                  this.successful = true;
                   this.showToast();
                   const newComment = {
                      createdAt: new Date().toLocaleString(),
-                     content: data.input.answer,
-                     replied_by:{
+                     content: data.input.comment,
+                     replied_by: {
                         firstName: this.$store.state.auth.firstname,
                         lastName: this.$store.state.auth.lastname,
                         occupation: this.$store.state.auth.occupation,
                      }
                   }
-                  this.data.answer.unshift(newComment);
-               }else{
-                  this.titleContent = 'Failed Comment!!!';
-                  this.description = 'An error occured , please try again!';
-                  this.successful = true;
-                  this.status = 'error'; 
-                  this.showToast();
+                  this.data.replies.unshift(newComment);
+                  return;
                }
+               this.titleContent = 'Failed Comment!!!';
+               this.description = 'An error occured , please try again!';
+               this.status = 'error'; 
+               this.showToast();
             }).catch(err => {
                this.titleContent = 'Error!!!';
-               this.successful = true;
                this.description = 'Please try again!';
                this.status = 'error'; 
                this.showToast();

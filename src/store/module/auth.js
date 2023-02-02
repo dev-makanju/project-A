@@ -34,6 +34,9 @@ const mutations = {
    LOGGED_OUT(state){
       state.token = ''
    },
+   USER_AUTH(state , payload){
+      state.token = payload.token;
+   },
    USER_DATA( state , payload){
       state.user = payload;
       state.firstname = payload.firstName;
@@ -51,11 +54,11 @@ const actions = {
          if(response.status === 200){
             const token = response.data.token;
             localStorage.setItem("mastertoken" , token);
-            axios.defaults.headers.common['Authorization'] = token;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const data = {
                token: token, 
             }  
-            commit("USER_DATA" , data);
+            commit("USER_AUTH" , data);
          }
          return response;
       }catch(err){
@@ -71,7 +74,7 @@ const actions = {
          }
          return res
       }catch(err){
-         return err.response
+         return err.response;
       }
    },
    //GET LOGGED IN USER 

@@ -1,6 +1,6 @@
 <template>
    <c-flex width="100%" flex-direction="rows" h="100vh">
-      <c-box flex="1" display="flex" justify-content="center" mt="1rem">
+      <c-box flex="1" display="flex" justify-content="center" mt="1rem" align-items="center">
          <c-box w="400px">
             <c-box display="flex" ml="1rem" mr="1rem" align-items="center" justify-content="space-between">  
                <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
@@ -17,7 +17,7 @@
                   <input type="password" v-model="password" placeholder="Enter your password" required>
                </div>
                <div class="form__control__check">
-                  <input type="checkbox">
+                  <input type="checkbox" value="lsRememberMe" id="rememberMe">
                   <label for="">Remember me</label>
                </div>
                
@@ -25,7 +25,9 @@
                   <c-button @click="loginUser" w="full" variant-color="blue" size="md" border="none"
                      :is-loading="loading"
                      loading-text="signing in"
-                  >Sign In</c-button>
+                  >
+                     Sign In
+                  </c-button>
                </c-box>
 
                <c-box mt="1.5rem" display="flex" justify-content="center" align-items="center">
@@ -74,8 +76,11 @@ export default {
          statusInfo: '',
       }
    },
+   mounted(){
+      this.remenberMe();
+   },
    methods: {
-      ...mapActions(['userLogin']),
+      ...mapActions(['userLogin','getUserInfo']),
       validate(){
          this.emailError = this.email === ''
          this.passwordError = this.password === ''
@@ -90,6 +95,16 @@ export default {
             variant: 'subtle',
          })
       },
+      remenberMe(){
+         const rmCheck = document.getElementById("rememberMe");
+         if (localStorage.checkbox && localStorage.checkbox !== "") {
+            rmCheck.setAttribute("checked", "checked");
+            this.email = localStorage.email;
+         } else {
+            rmCheck.removeAttribute("checked");
+            this.email = "";
+         }
+      },
       loginUser(){
          if(this.email === '' || this.password === ''){
             this.validate();
@@ -98,26 +113,36 @@ export default {
               email: this.email,
               password: this.password,
             }
+            const rmCheck = document.getElementById("rememberMe");
+            if (rmCheck.checked && this.email !== "") {
+               localStorage.username = this.email;
+               localStorage.checkbox = rmCheck.value;
+            } else {
+               localStorage.username = "";
+               localStorage.checkbox = "";
+            }
+
             this.loading = true;
             this.userLogin(input).then( res => {
                if(res.status === 200){
                   this.loading = false;
-                  console.log(res.data.message , 'error')
                   this.$router.push('/forum');
-               }else {
-                  this.toastTitle = 'Oops!!!'
-                  this.statusInfo = 'error';
-                  this.loading = false;
-                  this.messageInfo = res.data.message
-                  this.showToast()
+                  this.$store.dispatch('getUserInfo');
+                  window.location.reload();
+                  return;
                }
+               this.toastTitle = 'Oops!!!'
+               this.statusInfo = 'error';
+               this.loading = false;
+               this.messageInfo = res.data.message
+               this.showToast()
             }).catch(err => {
                this.toastTitle = 'An Error occured!'
                this.loading = false;
                this.statusInfo = 'error';
                this.messageInfo = 'please try again'
                this.showToast()
-               console.log(err);
+               err;
             });
          }
       }

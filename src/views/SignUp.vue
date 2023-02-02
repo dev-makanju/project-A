@@ -3,7 +3,7 @@
       <c-box flex="1" bgColor="#006BBB" :display="{base:'none', md:'flex'}" justify-content="center" align-items="center">
          <img class="form__iamge" src="../assets/sponsor/form2.svg" onerror="this.style.display='none'">   
       </c-box>
-      <c-box flex="1" display="flex" justify-content="center" mt="1rem" overflow-y="auto">
+      <c-box flex="1" display="flex" justify-content="center" overflow-y="auto">
          <c-box w="400px">
             <c-box display="flex" ml="1rem" mr="1rem" align-items="center" justify-content="space-between">  
                <img class="logo" src="../assets/sponsor/logoicon.png" onerror="this.style.display='none'">
@@ -95,7 +95,7 @@ export default {
       }
    },
     methods: {
-      ...mapActions(['userSignUp']),
+      ...mapActions(['userSignUp' , 'userLogin' , 'getUserInfo']),
       validate(){
          this.emailError = this.email === '';
          this.passwordError = this.password === '';
@@ -103,7 +103,12 @@ export default {
          this.firstNameError = this.firstname === '';
          this.lastNameError = this.lastname === '';
          this.occupationError = this.occupation === '';
-         this.confirmError = this.password !== this.confirmPass;
+         if(this.password !== this.confirmPass){
+            this.toastTitle='Validation Error!!'
+            this.messageInfo='Confirm password is not a match';
+            this.statusInfo='error';
+            this.showToast();
+         }
       },
        showToast() {
          this.$toast({
@@ -128,28 +133,50 @@ export default {
             this.validate();
          }else{
             let input = {
-              email: this.email,
-              password: this.password,
-              firstname : this.firstname,
-              lastname: this.lastname,
-              occupation: this.occupation,
-              confirmpassword: this.confirmPass,
+               email: this.email,
+               password: this.password,
+               firstname : this.firstname,
+               lastname: this.lastname,
+               occupation: this.occupation,
+               confirmpassword: this.confirmPass,
+            }
+
+            let logInput = {
+               email: this.email,
+               password: this.password,               
             }
             this.loading = true;
             this.userSignUp(input).then( res => {
                if(res.status === 201){
-                  this.loading = false;
-                  this.statusInfo = 'success';
-                  this.toastTitle = 'Hurray!!'
-                  console.log(res.data)
-                  this.messageInfo = res.data.message
-                  this.showToast()
-                  this.$router.push('/sign-in');
+                     this.userLogin(logInput).then( res => {
+                        if(res.status === 200){
+                           this.loading = false;
+                           this.statusInfo = 'success';
+                           this.toastTitle = 'Hurray!!'
+                           this.messageInfo = 'You have successfully created an account'
+                           this.showToast()
+                           this.$router.push({ name:'forum' });
+                           this.$store.dispatch('getUserInfo');
+                           window.location.reload();
+                           return;
+                        }
+                        this.loading = false;
+                        this.toastTitle = 'Oops!!!'
+                        this.statusInfo = 'error';
+                        this.messageInfo = res.data.message
+                        this.showToast()
+                     }).catch(err => {
+                        this.loading = false;
+                        this.toastTitle = 'An Error occured!'
+                        this.statusInfo = 'error';
+                        this.messageInfo = 'please try again'
+                        this.showToast()
+                        err;
+                     });
                }else {
                   this.statusInfo = 'error';
                   this.toastTitle = 'Error!'
                   this.loading = false;
-                  console.log(res.data.message)
                   this.messageInfo = res.data.message
                   this.showToast()
                }
@@ -161,6 +188,9 @@ export default {
             });
          }
       }
+   },
+   watch: {
+      //
    }
 }
 </script>

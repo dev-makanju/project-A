@@ -56,7 +56,7 @@
                      />
                      <c-box mt="1rem">
                         <!-- content editable div -->
-                        <CustomComment :successful="successful" :id="data._id" @newComment="SubmitComment"/>
+                        <CustomComment  @reset="resetForm" :successful="successful" :id="data._id" @newComment="SubmitComment"/>
                      </c-box>
                      <c-box padding="12px">
                         <c-box>
@@ -139,6 +139,9 @@
          },
          getBaseUrl(){
             return window.location.origin;
+         },
+         resetForm(){
+            this.successful = false;
          },
          formatTime(value){
             return Moment(value).format( "dddd h:mma D MMM YYYY" ); 

@@ -201,7 +201,7 @@ export default new Vuex.Store({
     },
     async commentOnDiscussion({commit} , data){
       try{
-        const response = await eventService.commentOnDiscussion(data);
+        const response = await eventService.addDiscussionComment(data);
         if(response.status){
           commit('UPDATE_DICUSSION_COMMENT' , false)
         }

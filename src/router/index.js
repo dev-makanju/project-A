@@ -134,7 +134,8 @@ router.beforeEach((to , from , next) => {
     const user = store.getters.isLoggedIn;
     if(to.matched.some(res => res.meta.requiresGuest)){
       if(user){
-        return next({ name:'forum' });
+         next({name:'forum' });
+         return;
       }
       next();
     }else{
@@ -146,10 +147,10 @@ router.beforeEach((to , from , next) => {
 router.beforeEach((to , from , next) => {
     const user = store.getters.isLoggedIn;
     if(to.matched.some(res => res.meta.requiresAuth)){
-      if(user){
-        return next();
+      if(!user){
+        return next({ name:'sign-in' })
       }
-      return next({ name:'sign-in' });
+      next();
     }else{
       return next();
     }

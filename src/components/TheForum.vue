@@ -150,11 +150,11 @@
             
          }
       },
-      created(){
+      mounted(){
          this.$nextTick(function () {
             this.fetchAllTopics();
             this.fetchPageData();
-         })   
+         });   
       },
       methods: {
          ...mapActions([ 'getAllForumAction' , 'getAllTopicAction' , 'getAllDiscussAction' , 'getAllTopicAction' , 'createAForum' ]),

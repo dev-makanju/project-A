@@ -77,7 +77,7 @@ export default {
    getAllTopics(){
       return apiClient.get('topic/get-topics-by-pins');
    },
-   commentOnDiscussion(data){
+   addDiscussionComment(data){
       return apiClient.patch(`discussion/add-comment/${data.id}` , data.input);
    },
 }
