@@ -14,7 +14,7 @@
             </router-link>
             <c-box>
                <c-text letterSpacing=".6px" color="rgba(255, 255, 255, 0.6)" fontSize="12px">
-                  Sem convallis turpis amet consectetur scelerisque purus arcu nunc. Venenatis feugiat elit aliquet congue turpis pharetra nec. In malesuada laoreet id porttitor augue amet nec praesent. Aliquam nunc dui mollis volutpat orci a urna elementum. Vitae malesuada placerat fermentum pellentesque. Ultrices.
+                  This forum is created for educational purpose , as a tool to infming the general public about the issues concerning social media data breach in nigeria among start up businesses
                </c-text>
             </c-box>
          </c-box>
@@ -142,7 +142,7 @@
       </c-flex>
       <c-flex justify-content="center" mt="4rem" mb="2rem">
             <c-text letterSpacing=".6px" color="rgba(255, 255, 255, 0.6)" fontSize="14px">
-               Protekme Social copyright 2022
+               ProtektMe Social &copy; 2022
             </c-text>
       </c-flex>
    </c-box>

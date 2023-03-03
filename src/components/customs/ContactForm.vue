@@ -1,7 +1,7 @@
 <template>
    <c-box bgColor="rgba(255, 200, 114, 0.15)">    
       <div class="contact__form">
-         <h2>Subscribe to our News Letters</h2>
+         <h2>Subscribe to our News Letter</h2>
          <c-box 
             height="200px" 
             bgColor="#ffffff" 

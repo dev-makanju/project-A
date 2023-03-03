@@ -88,7 +88,7 @@
                                  <c-heading color="#001027" font-size="20px">{{forum.createdBy?.firstName}} {{forum.createdBy?.lastName}}</c-heading>
                                  <c-text font-size="12px" color="#001027" opacity=".7">{{ forum?.createdBy?.occupation }}</c-text>
                                  <c-text font-size="12px" color="#001027" opacity=".7">{{ formatTime( forum?.createdBy?.createdAt ) }}</c-text>
-                                 <c-text font-size="12px" color="blue" opacity=".7" mt="1rem">{{ forum?.createdBy?.email }}</c-text>
+                                 <c-text font-size="12px" color="blue" opacity=".7" mt="1rem">{{ returnProtected(forum?.createdBy?.email) }}</c-text>
                               </c-box>
                            </c-box>
                         </c-box>
@@ -285,6 +285,12 @@ export default {
             });
          }
       },
+
+      returnProtected(value){
+         const res = value.slice(10 , -1)
+         return '*********'+res;
+      },
+
       postTopic(){
          if(this.topicContent === ''){
          this.title = 'Oops!!!'
