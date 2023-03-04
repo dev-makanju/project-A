@@ -224,8 +224,6 @@ export default {
             this.getForum();
          }
          this.fetchSingleAction();
-         this.fetchTopicByForum();
-         this.fetchDiscussByForum();
       })
    },
    methods: {
@@ -285,12 +283,10 @@ export default {
             });
          }
       },
-
       returnProtected(value){
-         const res = value.slice(10 , -1)
+         const res = value?.slice(10 , -1)
          return '*********'+res;
       },
-
       postTopic(){
          if(this.topicContent === ''){
          this.title = 'Oops!!!'
