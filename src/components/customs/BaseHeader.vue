@@ -22,7 +22,6 @@
          </c-box>
          <c-box display="flex" align-items="center" gap="1rem" v-if="!isIndexPage">
             <c-box 
-               v-if="isAuthenticated" 
                :display="{base: 'none' , lg: 'flex' }"
                >
                <!-- App navigation for logged in user -->
@@ -65,7 +64,6 @@
             </c-box>
             <!-- hamburger link -->
             <c-box 
-                  v-if="isAuthenticated"  
                   :display="{base: 'flex' , lg: 'none' }"
                >
                <div>

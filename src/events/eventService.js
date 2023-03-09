@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '../router'
 
 const token = localStorage.getItem('mastertoken');
 
@@ -30,7 +31,11 @@ export default {
       return apiService.post('auth/sign-up',data);
    },
    createForum(data){
-      return apiClient.post('forum/create' , data);
+      if(token){
+         return apiClient.post('forum/create' , data);
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
    getSingleForum(data){
       return apiClient.get(`forum/get-forum/${data.id}`);
@@ -42,7 +47,11 @@ export default {
       return apiClient.get('forum/get-all-forums');
    },
    createDiscuss(data){
-      return apiClient.post('discussion/create' , data);
+      if(token){
+         return apiClient.post('discussion/create' , data);
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
    getDiscussionOnForum(data){
       return apiClient.get('discussion/on-forum/', data);
@@ -51,34 +60,64 @@ export default {
       return apiClient.get('user/me');
    },
    discussComment(data){
-      return apiClient.post(`discussion/add-comment/${data}`);
+      if(token){
+         return apiClient.post(`discussion/add-comment/${data}`);
+      }else{
+         router.push({name:'sign-in'});
+      }
    },
    getSingleDiscuss(data){
       return apiClient.get(`discussion/${data}`);
    },
    createTopic(data){
-      return apiClient.post(`topic/create` , data);
+      if(token){
+         return apiClient.post(`topic/create` , data);
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
    getSingleTopic(data){
       return apiClient.get(`topic/${data}`);
    },
    answerSingleTopic(data){
-      return apiClient.patch(`topic/answer-a-topic/${data}` , data.input);
+      if(token){
+         return apiClient.patch(`topic/answer-a-topic/${data}` , data.input);
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
    getAllTopicOnForum(data){
-      console.log(data)
       return apiClient.get('topic/topics-on-forum' , data );
    },
    replyOnTopic(data){
-      return apiClient.patch(`topic/answer-a-topic/${data.id}` , data.input);
+      if(token){
+         return apiClient.patch(`topic/answer-a-topic/${data.id}` , data.input);
+      }else{
+         router.push({name:'sign-in'});
+      }
    },
    followForum(data){
-      return apiClient.patch('forum/enroll-a-forum' ,data);
+      if(token){
+         return apiClient.patch('forum/enroll-a-forum' , data);
+      }else{
+         router.push({name:'sign-in'})
+      }
+   },
+   unfollowForum(data){
+      if(token){
+         return apiClient.delete('forum/unfollow-forum' , data)
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
    getAllTopics(){
       return apiClient.get('topic/get-topics-by-pins');
    },
    addDiscussionComment(data){
-      return apiClient.patch(`discussion/add-comment/${data.id}` , data.input);
+      if(token){
+         return apiClient.patch(`discussion/add-comment/${data.id}` , data.input);
+      }else{
+         router.push({name:'sign-in'})
+      }
    },
 }

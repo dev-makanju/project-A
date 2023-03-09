@@ -45,7 +45,6 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomeView,
-        requiresGuest: true,
       },
       {
         path:'forum',
@@ -53,7 +52,6 @@ const routes = [
         component: ForumView,
         meta: {
           title: 'Forum',
-          requiresAuth: true,
         }
       },
       {
@@ -62,7 +60,6 @@ const routes = [
         component: SingleForumPage,
         meta: {
           title: 'Forum',
-          requiresAuth: true,
         }
       },
       {
@@ -71,7 +68,6 @@ const routes = [
         component: AllForum,
         meta: {
           title: 'All forum',
-          requiresAuth: true,
         }
       },
       {
@@ -80,7 +76,6 @@ const routes = [
         component: SingleTopic,
         meta: {
           title: 'Forum',
-          requiresAuth: true,
         }
       },
       {
@@ -89,7 +84,6 @@ const routes = [
         component: SingleDiscuss,
         meta: {
           title: 'discussion',
-          requiresAuth: true,
         }
       },
       {
@@ -98,7 +92,6 @@ const routes = [
         component: DiscussionView,
         meta: {
           title: 'Discussion',
-          requiresAuth: true,
         }
       },
       {
@@ -107,7 +100,6 @@ const routes = [
         component: TopicView,
         meta: {
           title: 'Topic',
-          requiresAuth: true,
         }
       },
     ]

@@ -171,6 +171,17 @@ export default new Vuex.Store({
         return err.response;
       }
     },
+    async unFollowAction({commit} , data){
+      try{
+        const response = await eventService.unfollowForum(data)
+        if(response.status){
+          commit('DEFAULT');
+        }
+        return response;
+      }catch(err){
+         err;
+      }
+    },
     async getTopicByForum({commit} , data){
       try{
         commit('SET_FORUM_TOPIC' , true)

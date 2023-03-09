@@ -35,16 +35,23 @@
                      </c-text>
 
                      <template>
-                        <c-box v-if="forum?.isFollowing">
-                           <c-text 
-                              font-size="14px" 
-                              mt="1rem" 
-                              line-height="1.5" 
-                              color="blue" 
-                              font-weight="600"
-                           >
-                              following
-                           </c-text>
+                        <c-box 
+                           v-if="forum?.isFollowing" 
+                           @click="unfollowForum(forum._id , forum.name)"
+                        >
+                              <c-button
+                                 variant-color="blue" 
+                                 font-size="14px" 
+                                 mb="1rem" 
+                                 line-height="1.5" 
+                                 color="white"
+                                 border="1px solid #fff" 
+                                 font-weight="600"
+                                 cursor="pointer"
+                                 :is-loading="forum._id === selected"
+                              >
+                                 following
+                              </c-button>
                         </c-box>
                         <c-box v-else>
                            <c-button 
@@ -141,6 +148,29 @@
          <c-grid-item :display="{ base:'none' , lg:'block' }">
             <BaseForum :forumData="forumData"/>
          </c-grid-item>
+         <div>
+            <c-modal
+               :is-open="isOpen"
+               :on-close="close"
+            >
+               <c-modal-content ref="content">
+               <c-modal-header>UnFollow {{ forum_name }} Forum</c-modal-header>
+               <c-modal-close-button />
+               <c-modal-body>
+                  <c-text>
+                     You will not be able to see notifications update from this forum , however you will still be able to view all forum post.
+                  </c-text>
+               </c-modal-body>
+               <c-modal-footer>
+                  <c-button border="1px solid #fff" @click="unfollow" variant-color="blue" mr="3">
+                     Unfollow
+                  </c-button>
+                  <c-button border="1px solid #fff" @click="close">Cancel</c-button>
+               </c-modal-footer>
+               </c-modal-content>
+               <c-modal-overlay />
+            </c-modal>
+      </div>
    </c-grid>
 </template>
 <script>
@@ -163,6 +193,13 @@ import {
    CButton,
    CStack , 
    CSpinner , 
+   CModal,
+   CModalOverlay,
+   CModalContent,
+   CModalHeader,
+   CModalFooter,
+   CModalBody,
+   CModalCloseButton
 } from '@chakra-ui/vue';
 import BaseForum from '@/components/customs/BaseForum.vue';
 // import TopicPost from '@/components/customs/BasePost.vue';
@@ -192,7 +229,14 @@ export default {
       CFormLabel,
       CInput,
       CTextarea, 
-      CButton
+      CButton,
+      CModal,
+      CModalOverlay,
+      CModalContent,
+      CModalHeader,
+      CModalFooter,
+      CModalBody,
+      CModalCloseButton
    },
    data(){
       return {
@@ -214,6 +258,9 @@ export default {
          forum:{},
          forumLoading: false,
          selected: '',
+         forum_name: '',
+         unfollowId: '',
+         isOpen: false,
       }
    },
    mounted(){
@@ -227,7 +274,7 @@ export default {
       })
    },
    methods: {
-      ...mapActions([ 'followAforum','getAllForumAction','getSingleForumAction','createAtopic', 'createADiscuss']),
+      ...mapActions([ 'followAforum','getAllForumAction','getSingleForumAction','createAtopic', 'createADiscuss' , 'unFollowAction']),
       returnFirstLetter(value){
          return value?.charAt(0);
       },
@@ -331,6 +378,7 @@ export default {
             if(res.status){
                this.forumData.loading = false;
                this.forumData.data = this.$store.state.forum;
+               console.log(this.forumData.data)
             }
          }).catch(err => {
             this.forumData.loading = false;
@@ -399,6 +447,42 @@ export default {
             this.showToast()
             err;
          });
+      },
+      unfollowForum(value , name){
+         this.isOpen = true;
+         this.forum_name = name
+         this.unfollowId = value;
+      },
+      unfollow(){
+         this.isOpen = false;
+         this.selected = this.unfollowId;
+         let data = {
+            name: this.forum_name
+         }
+         this.unFollowAction(data).then(res => {
+            if(res.success){
+               this.title = 'Success'
+               this.description = `You have successfully unfollow ${this.forum_name} forum`
+               this.status = 'success'
+               this.showToast()
+               return; 
+            }
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = res.data.message
+            this.status = 'error'
+            this.showToast()
+         }).catch(err => {
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = 'Oops!, something went wrong'
+            this.status = 'error'
+            this.showToast()
+            err;
+         })
+      },
+      close() {
+         this.isOpen = false
       },
       formatTime(value){
          return Moment(value).format( "dddd h:mma D MMM YYYY" ); //=> "Friday 2:00pm 1 Feb 2013"

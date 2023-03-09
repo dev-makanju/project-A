@@ -32,7 +32,7 @@
       CHeading, 
    } from '@chakra-ui/vue';
    import BaseCard from '@/components/customs/BaseCard.vue';
-   import { mapActions } from 'vuex'
+   import { mapActions } from 'vuex';
 
    export default {
       name:'the-topics',

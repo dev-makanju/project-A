@@ -86,16 +86,23 @@
                      </c-text>
                      <c-box mt="1rem" position="absolute" bottom="12px">
                         <template>
-                           <c-box v-if="forum?.isFollowing">
-                              <c-text 
+                           <c-box
+                              v-if="forum?.isFollowing"
+                              @click="unfollowForum(forum._id , forum.name)"
+                           >
+                              <c-button
+                                 variant-color="blue" 
                                  font-size="14px" 
                                  mb="1rem" 
                                  line-height="1.5" 
-                                 color="blue" 
+                                 color="white"
+                                 border="1px solid #fff" 
                                  font-weight="600"
+                                 cursor="pointer"
+                                 :is-loading="forum._id === selected"
                               >
                                  following
-                              </c-text>
+                              </c-button>
                            </c-box>
                            <c-box v-else>
                               <c-button 
@@ -125,6 +132,29 @@
             <c-button variant-color="blue" size="md" border="none">see more</c-button>
          </router-link>
       </c-box>
+        <div>
+            <c-modal
+               :is-open="isOpen"
+               :on-close="close"
+            >
+               <c-modal-content ref="content">
+               <c-modal-header>UnFollow {{ forum }} Forum</c-modal-header>
+               <c-modal-close-button />
+               <c-modal-body>
+                  <c-text>
+                     You will not be able to see notifications update from this forum , however you will still be able to view all forum post.
+                  </c-text>
+               </c-modal-body>
+               <c-modal-footer>
+                  <c-button border="1px solid #fff" @click="unfollow" variant-color="blue" mr="3">
+                     Unfollow
+                  </c-button>
+                  <c-button border="1px solid #fff" @click="close">Cancel</c-button>
+               </c-modal-footer>
+               </c-modal-content>
+               <c-modal-overlay />
+            </c-modal>
+      </div>
    </div>
 </template>
 <script>
@@ -135,8 +165,15 @@ import {
    CButton, 
    CFlex, 
    CHeading, 
+   CModal,
+   CModalOverlay,
+   CModalContent,
+   CModalHeader,
+   CModalFooter,
+   CModalBody,
+   CModalCloseButton
 } from '@chakra-ui/vue';
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
 
 export default {
    name:'base-card',
@@ -151,9 +188,19 @@ export default {
       CButton, 
       CFlex, 
       CHeading,
+      CModal,
+      CModalOverlay,
+      CModalContent,
+      CModalHeader,
+      CModalFooter,
+      CModalBody,
+      CModalCloseButton
    },
    data(){
       return {
+         forum: '',
+         unfollowId: '',
+         isOpen: false,
          title: '',
          description: '',
          status: '',
@@ -161,7 +208,10 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['followAforum']),
+      close() {
+         this.isOpen = false
+      },
+      ...mapActions(['followAforum' , 'unFollowAction']),
       findLength(value){
          return value.length;
       },
@@ -184,6 +234,39 @@ export default {
       returnBgColor(){
          const randomColor = Math.floor(Math.random()*16777215).toString(16);
          return "#"+randomColor;
+      },
+      unfollowForum(value , name){
+         this.isOpen = true;
+         this.forum = name
+         this.unfollowId = value;
+      },
+      unfollow(){
+         this.isOpen = false;
+         this.selected = this.unfollowId;
+         let data = {
+            name: this.forum
+         }
+         this.unFollowAction(data).then(res => {
+            if(res.success){
+               this.title = 'Success'
+               this.description = `You have successfully unfollow ${this.forum} forum`
+               this.status = 'success'
+               this.showToast()
+               return; 
+            }
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = res.data.message
+            this.status = 'error'
+            this.showToast()
+         }).catch(err => {
+            this.selected = ''
+            this.title = 'Failed!'
+            this.description = 'Oops!, something went wrong'
+            this.status = 'error'
+            this.showToast()
+            err;
+         })
       },
       follow(name , id){
          this.selected = id
