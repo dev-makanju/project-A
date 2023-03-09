@@ -27,7 +27,7 @@
                   <h1 v-scrollanimation class="big-text">Welcome to our community</h1>
                   <p>We Aim to help reduce the risk of data using Social Media</p>
                   
-                  <router-link class="next-link" to="/sign-up">Join Us</router-link>
+                  <router-link class="next-link" to="/forum">View Forum</router-link>
 
                   <c-text font-size="1rem 0px" color="#fff">and make a difference</c-text>
                </div>
